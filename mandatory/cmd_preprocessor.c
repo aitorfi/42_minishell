@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/24 12:45:19 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:08:26 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	**preprocess(char *line, t_mshell *mini_data)
 	do_expand(ret, mini_data);
 	return (ret);
 }
-/*
+
 int	main(int argc, char **argv, char **envp)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -94,4 +94,4 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env(mini_data.env_custom);
 	free(line);
 	return (0);
-}*/
+}

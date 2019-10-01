@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/24 12:37:38 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:11:11 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ int	do_expand(char **ret, t_mshell *mini_data)
 
 	i = 0;
 	while (ret[i])
-	{
+	{	
+		printf("antes: %s\n", ret[i]);  ////
 		if (check_expand(ret[i]))
 		{
 			where_dollar = check_dollar(ret[i]);
@@ -109,6 +110,7 @@ int	do_expand(char **ret, t_mshell *mini_data)
 					return (1);
 			}
 		}
+		exec_trim(ret[i], ret, i);
 		i++;
 	}
 	return (0);
