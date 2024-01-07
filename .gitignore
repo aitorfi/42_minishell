@@ -2,5 +2,6 @@
 *.out
 *.a
 minishell
+flujo.txt
 /.vscode/
 .DS_Store

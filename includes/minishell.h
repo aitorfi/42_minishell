@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/06 17:59:01 by alejandro        ###   ########.fr       */
+/*   Updated: 2024/01/07 11:35:30 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,27 @@
 #include <readline/history.h>
 #include "../libft/libft.h"
 
+typedef enum e_operation
+{
+	IN_REDIR_OP, 			// < operator
+	IN_REDIR_APPEND_OP,		// << operator
+	OUT_REDIR_OP,			// > operator
+	OUT_REDIR_APPEND_OP,	// >> operator
+	COMMAND_OP,
+	FILE_OP
+}	t_operation;
+
+typedef struct s_ast
+{
+	t_operation		operation;
+	char			*path;
+	char			**args;
+	struct s_ast	*left;
+	struct s_ast	*right;
+}					t_ast;
+
+char	*preprocess(char *line);
+void	set_signal_handlers();
+t_ast	**build_ast(char *line);
+void	process_ast(t_ast **ast);
 #endif
