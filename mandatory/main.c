@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/07 11:27:46 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:40:25 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static void	readline_loop(char *prompt)
 		add_history(line);
 		preprocess(line);
 		ast = build_ast(line);
+		if (ast == NULL)
+			// TODO: Handle ast build error
 		process_ast(ast);
 		// TODO: Hay que liberar el ast
 		free(line);
