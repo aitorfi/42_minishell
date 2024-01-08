@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/08 16:07:53 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:19:39 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ void	set_signal_handlers();
 t_ast	**build_ast(char *line);
 void	process_ast(t_ast **ast);
 int		do_pwd(void);
-
+char	**do_env(char **envp);
+void	ft_free_env(char **env_custom);
 #endif
