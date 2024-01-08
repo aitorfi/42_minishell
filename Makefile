@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
+#    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/07 11:20:35 by afidalgo         ###   ########.fr        #
+#    Updated: 2024/01/08 15:37:50 by alvicina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ HEADER_SRCS = minishell.h
 HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
-MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c
+MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c builtin_pwd.c
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)
