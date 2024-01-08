@@ -41,6 +41,7 @@ char	*preprocess(char *line);
 void	set_signal_handlers();
 t_ast	**build_ast(char *line);
 void	process_ast(t_ast **ast);
+int		do_pwd(void);
 char	**do_env(char **envp);
 void	ft_free_env(char **env_custom);
 #endif
