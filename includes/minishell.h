@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/08 17:19:39 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:40:55 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_ast
 	struct s_ast	*right;
 }					t_ast;
 
-char	*preprocess(char *line);
+char	**preprocess(char *line);
 void	set_signal_handlers();
 t_ast	**build_ast(char *line);
 void	process_ast(t_ast **ast);
