@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/07 14:13:46 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:25:53 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@ typedef struct s_ast
 	struct s_ast	*right;
 }					t_ast;
 
-char		*preprocess(char *line);
+char		**preprocess(char *line);
 void		set_signal_handlers();
 t_ast		**build_ast(char *line);
 void		process_ast(t_ast **ast);
+int			do_pwd(void);
+char		**do_env(char **envp);
+void		ft_free_env(char **env_custom);
 char		*is_operator(char *str);
 t_operation	which_operator(char *operator);
 void		*free_massive(void *ptr, ...);
