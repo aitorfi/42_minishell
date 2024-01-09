@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:37:18 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/07 14:13:22 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/09 20:29:20 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 void	*free_ast(t_ast **ast)
 {
 	(void) ast;
+	return (NULL);
+}
+
+void	*free_ast_node(t_ast *node)
+{
+	if (node->args)
+		free(node->args);
+	free(node);
 	return (NULL);
 }
 
@@ -29,6 +37,8 @@ t_ast	*new_node(t_operation op, char *path, char **args)
 	node->operation = op;
 	node->path = path;
 	node->args = args;
+	node->left = NULL;
+	node->right = NULL;
 	return (node);
 }
 

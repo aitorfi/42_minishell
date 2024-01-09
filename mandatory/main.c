@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/08 20:22:40 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/09 20:12:40 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	readline_loop(char *prompt)
 		line = readline(prompt);
 		add_history(line);
 		line_split = preprocess(line);
-		ast = build_ast(line);
+		ast = build_ast(line_split);
 		if (ast == NULL)
 			// TODO: Handle ast build error
 		process_ast(ast);

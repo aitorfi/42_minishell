@@ -6,37 +6,22 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:43:23 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/07 13:56:00 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:42:13 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*is_operator(char *str)
+int	is_operator(char *str)
 {
-	int		i;
-	char	*operator;
+	int	len;
 
-	i = OPERATOR_MAX_LEN;
-	while (i > 0)
-	{
-		operator = ft_substr(str, 0, i);
-		if (operator == NULL)
-			return (NULL);
-		if (!ft_strncmp(operator, "<", i)
-			|| !ft_strncmp(operator, "<<", i)
-			|| !ft_strncmp(operator, ">", i)
-			|| !ft_strncmp(operator, ">>", i)
-			|| !ft_strncmp(operator, "|", i))
-		{
-			break ;
-		}
-		free(operator);
-		i--;
-	}
-	if (i == 0)
-		return (ft_strdup(""));
-	return (operator);
+	len = ft_strlen(str);
+	return (!ft_strncmp(str, "<", len)
+		|| !ft_strncmp(str, "<<", len)
+		|| !ft_strncmp(str, ">", len)
+		|| !ft_strncmp(str, ">>", len)
+		|| !ft_strncmp(str, "|", len));
 }
 
 t_operation	which_operator(char *operator)
