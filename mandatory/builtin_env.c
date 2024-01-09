@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:25 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/08 18:23:08 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/09 13:25:09 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static char	**set_env(char **envp)
 		return (env_custom);
 }
 
-char	**do_env(char **envp)
+char	**do_env(char **envp, int print)
 {
 	char	**env_custom;
 
@@ -100,7 +100,8 @@ char	**do_env(char **envp)
 		perror("env could not be found");
 		return (NULL);
 	}
-	print_env(env_custom);
+	if (print)
+		print_env(env_custom);
 	return (env_custom);
 }
 

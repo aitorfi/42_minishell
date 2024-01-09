@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/08 19:40:55 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:11:32 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,22 @@ typedef struct s_ast
 	struct s_ast	*right;
 }					t_ast;
 
+typedef struct s_mshell
+{
+	char	**env_custom;
+}			t_mshell;
+
+
 char	**preprocess(char *line);
 void	set_signal_handlers();
 t_ast	**build_ast(char *line);
 void	process_ast(t_ast **ast);
 int		do_pwd(void);
-char	**do_env(char **envp);
+char	**do_env(char **envp, int print);
 void	ft_free_env(char **env_custom);
+char	*ft_get_env(char *env_to_get, char **envp);
+int		do_cd(t_mshell *mini_data, char **arguments);
+int		ft_update_env(char	*new_content, t_mshell *mini_data, char *which);
+char	*ft_set_env(char *env_to_set);
+
 #endif
