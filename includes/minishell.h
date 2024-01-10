@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/10 11:27:57 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:34:31 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		do_cd(t_mshell *mini_data, char **arguments);
 int		ft_update_env(char	*new_content, t_mshell *mini_data, char *which);
 char	*ft_set_env(char *env_to_set);
 int 	ft_exec_update_env(t_mshell *mini_data, char *which, char *to_change);
-int		set_cd_special_case(char *cwd, char *arguments);
+char	*set_cd_special_case(char *cwd, char *arguments, t_mshell *mini_data);
+int		do_cd_exec(char *cwd, t_mshell *mini_data, char *arguments, int free_b);
 
 #endif
