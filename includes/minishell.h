@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/09 18:11:32 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:27:57 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,20 @@ char	**preprocess(char *line);
 void	set_signal_handlers();
 t_ast	**build_ast(char *line);
 void	process_ast(t_ast **ast);
+
+// modulo - Builtin -> PWD
 int		do_pwd(void);
+
+// modulo - Builtin -> ENV
 char	**do_env(char **envp, int print);
 void	ft_free_env(char **env_custom);
+
+// modulo - Builtin -> CD
 char	*ft_get_env(char *env_to_get, char **envp);
 int		do_cd(t_mshell *mini_data, char **arguments);
 int		ft_update_env(char	*new_content, t_mshell *mini_data, char *which);
 char	*ft_set_env(char *env_to_set);
+int 	ft_exec_update_env(t_mshell *mini_data, char *which, char *to_change);
+int		set_cd_special_case(char *cwd, char *arguments);
 
 #endif
