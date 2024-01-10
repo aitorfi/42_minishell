@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/09 20:33:51 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:12:03 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_ast	*create_op_node(t_ast **ast, char **args, int index);
 static t_ast	*get_left_node(char **args, int index);
 static t_ast	*get_right_node_command(char **args, int index);
-static t_ast	*get_right_node_file(char **args, int index);
+static t_ast	*get_right_node_heredoc(char **args, int index);
 
 t_ast	**build_ast(char **args)
 {
@@ -53,10 +53,19 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 		if (node->left == NULL)
 			return (free_massive(node));
 	}
-	if (node->operation == OUT_REDIR_OP || node->operation == OUT_REDIR_APPEND_OP)
-		node->right = get_right_node_file(args, index + 1);
-	else
+	if (node->operation == PIPE_OP)
+	{
 		node->right = get_right_node_command(args, index + 1);
+	}
+	else if (node->operation == IN_REDIR_APPEND_OP)
+	{
+		node->right = get_right_node_heredoc(args, index + 1);
+		node->operation = IN_REDIR_OP;
+	}
+	else
+	{
+		node->right = new_node(FILE_OP, args[index + 1], NULL);
+	}
 	if (node->right == NULL)
 	{
 		free_ast_node(node->left);
@@ -118,11 +127,15 @@ static t_ast	*get_right_node_command(char **args, int index)
 	return (node);
 }
 
-static t_ast	*get_right_node_file(char **args, int index)
+static t_ast	*get_right_node_heredoc(char **args, int index)
 {
-	(void) args;
-	(void) index;
 	t_ast	*node = NULL;
+	char	*line;
+	// char	*hist_line;
 
+	while (ft_strncmp(line, args[index], ft_strlen(line)))
+	{
+
+	}
 	return (node);
 }
