@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:25 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/11 11:27:04 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:35:58 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	**set_env_init(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	env_custom = malloc(sizeof(char *) * i + 1);
+	env_custom = malloc(sizeof(char *) * (i + 1));
 	if (env_custom == NULL)
 		return (NULL);
 	else

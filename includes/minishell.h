@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/11 11:20:05 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:53:00 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ int		do_pwd(void);
 // modulo - Builtin -> CD
 int		do_cd(t_mshell *mini_data, char **arguments);
 
+// modulo - Builtin -> ECHO
+int		do_echo(char **arguments);
+
 // modulo aux - para inicializar y guardar las variables de entorno
 //----> init_environment.c <----
 char	**do_env_init(char **envp, int print);
@@ -65,8 +68,5 @@ int		ft_update_env(char	*new_content, t_mshell *mini_data, char *which);
 char	*ft_set_env(char *env_to_set);
 int 	ft_exec_update_env(t_mshell *mini_data, char *which, char *to_change);
 void	ft_free_env(char **env_custom);
-
-int		do_echo(char **arguments);
-
 
 #endif
