@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   init_environment.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:25 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/09 13:25:09 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:27:04 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,11 @@
 // Hay que hacer free una vez no hagan falta las variables de entorno.
 // Para ello he creado la funcion ft_free_env que libera la memoria 
 // dinamica asignada.
-// NOTA: de momento este modulo imprime pero NO libera el resultado 
-// ya que nos hara falta
-// durante la ejecucion del programa. Tal vez podriamos
-// necesitar que NO printee. Habria que modificarlo para ello y que ello 
-// fuera gestionaado
-// desde otro lugar;
+// NOTA: de momento este modulo NO imprime (aunque puede si se le pasa
+// un valor - int print - != 0) y NO libera el resultado 
+// ya que nos hara falta durante la ejecucion del programa.
 
-void	ft_free_env(char **env_custom)
-{
-	size_t	i;
-
-	i = 0;
-	while (env_custom[i])
-	{
-		free(env_custom[i]);
-		i++;
-	}
-	free(env_custom);
-}
-
-static void	print_env(char **env_custom)
+static void	print_env_init(char **env_custom)
 {
 	size_t	i;
 
@@ -50,7 +34,7 @@ static void	print_env(char **env_custom)
 	}
 }
 
-static char	**get_env(char **env_custom, char **envp)
+static char	**get_env_init(char **env_custom, char **envp)
 {
 	size_t	i;
 
@@ -69,7 +53,7 @@ static char	**get_env(char **env_custom, char **envp)
 	return (env_custom);
 }
 
-static char	**set_env(char **envp)
+static char	**set_env_init(char **envp)
 {
 	size_t	i;
 	char	**env_custom;
@@ -84,24 +68,24 @@ static char	**set_env(char **envp)
 		return (env_custom);
 }
 
-char	**do_env(char **envp, int print)
+char	**do_env_init(char **envp, int print)
 {
 	char	**env_custom;
 
-	env_custom = set_env(envp);
+	env_custom = set_env_init(envp);
 	if (env_custom == NULL)
 	{
 		perror("env could not be found");
 		return (NULL);
 	}
-	env_custom = get_env(env_custom, envp);
+	env_custom = get_env_init(env_custom, envp);
 	if (env_custom == NULL)
 	{
 		perror("env could not be found");
 		return (NULL);
 	}
 	if (print)
-		print_env(env_custom);
+		print_env_init(env_custom);
 	return (env_custom);
 }
 

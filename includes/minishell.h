@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/10 17:34:31 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:20:05 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,21 @@ void	process_ast(t_ast **ast);
 // modulo - Builtin -> PWD
 int		do_pwd(void);
 
-// modulo - Builtin -> ENV
-char	**do_env(char **envp, int print);
-void	ft_free_env(char **env_custom);
-
 // modulo - Builtin -> CD
-char	*ft_get_env(char *env_to_get, char **envp);
 int		do_cd(t_mshell *mini_data, char **arguments);
+
+// modulo aux - para inicializar y guardar las variables de entorno
+//----> init_environment.c <----
+char	**do_env_init(char **envp, int print);
+
+// modulo aux - para modificiar variables entorno
+//----> environment_utils.c <----
+char	*ft_get_env(char *env_to_get, char **envp);
 int		ft_update_env(char	*new_content, t_mshell *mini_data, char *which);
 char	*ft_set_env(char *env_to_set);
 int 	ft_exec_update_env(t_mshell *mini_data, char *which, char *to_change);
-char	*set_cd_special_case(char *cwd, char *arguments, t_mshell *mini_data);
-int		do_cd_exec(char *cwd, t_mshell *mini_data, char *arguments, int free_b);
+void	ft_free_env(char **env_custom);
+
+
 
 #endif
