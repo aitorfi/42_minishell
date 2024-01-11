@@ -25,8 +25,7 @@ HEADER_SRCS = minishell.h
 HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
-MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c builtin_env.c builtin_pwd.c builtin_echo.c
-
+MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c init_environment.c builtin_pwd.c builtin_cd.c environment_utils.c builtin_echo.c
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)
