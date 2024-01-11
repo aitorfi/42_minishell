@@ -66,6 +66,7 @@ char	*ft_set_env(char *env_to_set);
 int 	ft_exec_update_env(t_mshell *mini_data, char *which, char *to_change);
 void	ft_free_env(char **env_custom);
 
+int		do_echo(char **arguments);
 
 
 #endif
