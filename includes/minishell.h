@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/11 17:57:59 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/12 09:21:37 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ int		do_cd(t_mshell *mini_data, char **arguments);
 int		do_echo(char **arguments);
 
 // modulo - Builtin -> EXPORT
-int	do_export(t_mshell *mini_data, char **arguments);
+int		do_export(t_mshell *mini_data, char **arguments);
+int		check_sort_export(char **env_to_export);
+void	sort_export(char **env_to_export);
+size_t	compare_lens(char *s1, char *s2);
+void	print_export(char **env_to_export);
 
 // modulo - builtin -> ENV
 int	execute_env(char **environment);
