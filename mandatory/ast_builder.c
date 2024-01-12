@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/10 20:12:03 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/12 19:15:02 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ t_ast	**build_ast(char **args)
 	t_ast	**ast;
 	int		i;
 
-	ast = malloc(sizeof(t_ast *));
+	ast = ft_calloc(1, sizeof(t_ast *));
 	if (ast == NULL)
 		return (NULL);
 	i = 0;
 	while (args[i])
 	{
-		if (is_operator(args[i]))
+		if (which_operator(args[i]))
 		{
 			if (create_op_node(ast, args, i) == NULL)
-				return (free_ast(ast));
+				return (free_ast(ast[0]));
 		}
 		i++;
 	}
@@ -64,7 +64,7 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 	}
 	else
 	{
-		node->right = new_node(FILE_OP, args[index + 1], NULL);
+		node->right = new_node(FILE_OP, ft_strdup(args[index + 1]), NULL);
 	}
 	if (node->right == NULL)
 	{
@@ -83,7 +83,7 @@ static t_ast	*get_left_node(char **args, int index)
 	int		node_args_len;
 
 	i = index;
-	while (i >= 0 && !is_operator(args[i]))
+	while (i >= 0 && !which_operator(args[i]))
 		i--;
 	node_args_len = index - i;
 	node_args = ft_calloc(node_args_len + 1, sizeof(char *));
@@ -92,7 +92,7 @@ static t_ast	*get_left_node(char **args, int index)
 	i = 0;
 	while (i < node_args_len)
 	{
-		node_args[i] = args[index - node_args_len + i + 1];
+		node_args[i] = ft_strdup(args[index - node_args_len + i + 1]);
 		i++;
 	}
 	node = new_node(COMMAND_OP, node_args[0], node_args);
@@ -109,7 +109,7 @@ static t_ast	*get_right_node_command(char **args, int index)
 	int		node_args_len;
 
 	i = index;
-	while (args[i] && !is_operator(args[i]))
+	while (args[i] && !which_operator(args[i]))
 		i++;
 	node_args_len = i - index;
 	node_args = ft_calloc(node_args_len + 1, sizeof(char *));
@@ -118,7 +118,7 @@ static t_ast	*get_right_node_command(char **args, int index)
 	i = 0;
 	while (i < node_args_len)
 	{
-		node_args[i] = args[index + i];
+		node_args[i] = ft_strdup(args[index + i]);
 		i++;
 	}
 	node = new_node(COMMAND_OP, node_args[0], node_args);
@@ -129,13 +129,14 @@ static t_ast	*get_right_node_command(char **args, int index)
 
 static t_ast	*get_right_node_heredoc(char **args, int index)
 {
-	t_ast	*node = NULL;
-	char	*line;
-	// char	*hist_line;
+	t_ast	*node;
+	char	*path;
 
-	while (ft_strncmp(line, args[index], ft_strlen(line)))
-	{
-
-	}
+	path = create_heredoc(args[index]);
+	if (path == NULL)
+		return (NULL);
+	node = new_node(FILE_OP, path, NULL);
+	if (node == NULL)
+		return (free_massive(path));
 	return (node);
 }

@@ -3,5 +3,6 @@
 *.a
 minishell
 flujo.txt
+/minishell.dSYM/
 /.vscode/
 .DS_Store
