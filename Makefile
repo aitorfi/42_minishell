@@ -6,7 +6,7 @@
 #    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/12 09:19:39 by alvicina         ###   ########.fr        #
+#    Updated: 2024/01/12 11:28:28 by alvicina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ HEADER_SRCS = minishell.h
 HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
-MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c init_environment.c builtin_pwd.c builtin_cd.c environment_utils.c builtin_echo.c builtin_env.c builtin_export.c builtin_export_sort.c
+MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c init_environment.c builtin_pwd.c builtin_cd.c environment_utils.c builtin_echo.c builtin_env.c builtin_export.c builtin_export_utils.c
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)

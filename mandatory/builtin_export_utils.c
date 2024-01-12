@@ -1,16 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_export_sort.c                              :+:      :+:    :+:   */
+/*   builtin_export_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:00:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/12 09:27:58 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:47:50 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	print_error_export(char *arguments)
+{
+	ft_putstr_fd("minishell> export `", 2);
+	ft_putstr_fd(arguments, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
 
 void	print_export(char **env_to_export)
 {

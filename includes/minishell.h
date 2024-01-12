@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/12 09:21:37 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:47:55 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		check_sort_export(char **env_to_export);
 void	sort_export(char **env_to_export);
 size_t	compare_lens(char *s1, char *s2);
 void	print_export(char **env_to_export);
+void	print_error_export(char *arguments);
 
 // modulo - builtin -> ENV
 int	execute_env(char **environment);
