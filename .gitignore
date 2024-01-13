@@ -3,6 +3,7 @@
 *.a
 minishell
 flujo.txt
+heredoc
 /minishell.dSYM/
 /.vscode/
 .DS_Store
