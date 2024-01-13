@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:43:23 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/12 18:24:54 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/13 12:58:40 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,54 +47,4 @@ char	*which_operator_str(t_operation operator)
 	if (operator == FILE_OP)
 		return ("FILE_OP");
 	return ("");
-}
-
-void	*free_massive(void *ptr, ...)
-{
-	va_list	args;
-
-	va_start(args, ptr);
-	free(ptr);
-	ptr = va_arg(args, void *);
-	while (ptr)
-	{
-		free(ptr);
-		ptr = va_arg(args, void *);
-	}
-	va_end(args);
-	return (NULL);
-}
-
-void	*free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-	return (NULL);
-}
-
-char	*create_file(char *path, char *content)
-{
-	int	fd;
-
-	fd = open(path, O_RDWR | O_CREAT, 0000644);
-	if (fd == -1)
-	{
-		perror("Error");
-		return (NULL);
-	}
-	if (write(fd, content, ft_strlen(content)) == -1)
-	{
-		perror("Error");
-		close(fd);
-		return (NULL);
-	}
-	close(fd);
-	return (path);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/12 18:15:15 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/13 13:26:55 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ char		*which_operator_str(t_operation operator);
 void		*free_massive(void *ptr, ...);
 void		*free_split(char **split);
 char		*create_file(char *path, char *content);
-void		*free_ast(t_ast *node);
+void		*free_ast(t_ast **ast);
 void		*free_ast_node(t_ast *node);
 void		print_ast(t_ast *node, int depth);
 t_ast		*new_node(t_operation op, char *path, char **args);
-t_ast		*new_command_node(char *command);
 char		*create_heredoc(char *limit);
+int			handle_history(char *line, t_ast **ast);
+int			notify_error(char *msg);
+void		*notify_error_ptr(char *msg);
+char		*get_file_content(int fd);
 #endif

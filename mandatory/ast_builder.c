@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/12 19:15:02 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/13 13:28:59 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static t_ast	*get_right_node_heredoc(char **args, int index);
 t_ast	**build_ast(char **args)
 {
 	t_ast	**ast;
+	t_ast	*node;
 	int		i;
 
 	ast = ft_calloc(1, sizeof(t_ast *));
@@ -30,8 +31,10 @@ t_ast	**build_ast(char **args)
 	{
 		if (which_operator(args[i]))
 		{
-			if (create_op_node(ast, args, i) == NULL)
-				return (free_ast(ast[0]));
+			node = create_op_node(ast, args, i);
+			if (node == NULL)
+				return (free_ast(ast));
+			ast[0] = node;
 		}
 		i++;
 	}
@@ -54,24 +57,16 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 			return (free_massive(node));
 	}
 	if (node->operation == PIPE_OP)
-	{
 		node->right = get_right_node_command(args, index + 1);
-	}
 	else if (node->operation == IN_REDIR_APPEND_OP)
-	{
 		node->right = get_right_node_heredoc(args, index + 1);
-		node->operation = IN_REDIR_OP;
-	}
 	else
-	{
 		node->right = new_node(FILE_OP, ft_strdup(args[index + 1]), NULL);
-	}
 	if (node->right == NULL)
 	{
 		free_ast_node(node->left);
 		return (free_massive(node));
 	}
-	ast[0] = node;
 	return (node);
 }
 

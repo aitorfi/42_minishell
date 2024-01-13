@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/12 18:18:23 by afidalgo         ###   ########.fr        #
+#    Updated: 2024/01/13 12:58:32 by aitorfi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 MPATH_SRCS  = \
 	main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c \
-	builtin_env.c builtin_pwd.c utils.c ast_utils.c heredoc.c
+	builtin_env.c builtin_pwd.c utils.c ast_utils.c heredoc.c history_manager.c \
+	error_utils.c file_utils.c
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)

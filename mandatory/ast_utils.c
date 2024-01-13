@@ -3,21 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:37:18 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/12 18:50:58 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/13 13:30:17 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	*free_ast(t_ast *node)
+static void	*free_ast_recursive(t_ast *node);
+
+void	*free_ast(t_ast **ast)
+{
+	free_ast_recursive(ast[0]);
+	free(ast);
+	return (NULL);
+}
+
+static void	*free_ast_recursive(t_ast *node)
 {
 	if (node)
 	{
-		free_ast(node->left);
-		free_ast(node->right);
+		free_ast_recursive(node->left);
+		free_ast_recursive(node->right);
 		free_ast_node(node);
 	}
 	return (NULL);
@@ -43,21 +52,6 @@ t_ast	*new_node(t_operation op, char *path, char **args)
 	node->args = args;
 	node->left = NULL;
 	node->right = NULL;
-	return (node);
-}
-
-t_ast	*new_command_node(char *command)
-{
-	t_ast	*node;
-	char	**args;
-
-	args = ft_split(command, ' ');
-	if (args == NULL)
-		return (NULL);
-	node = new_node(COMMAND_OP, args[0], args);
-	if (node == NULL)
-		return (free_split(args));
-	free_split(args);
 	return (node);
 }
 

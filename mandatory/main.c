@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/12 19:15:15 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/13 14:03:49 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	readline_loop(char *prompt)
 		line = readline(prompt);
 		if (line == NULL)
 			exit(EXIT_FAILURE);
-		add_history(line);
 		line_split = preprocess(line);
 		ast = build_ast(line_split);
 		if (ast == NULL)
@@ -44,11 +43,16 @@ static void	readline_loop(char *prompt)
 			free(line);
 			exit(EXIT_FAILURE);
 		}
-		print_ast(ast[0], 0);
 		free_split(line_split);
+		if (handle_history(line, ast) == EXIT_FAILURE)
+		{
+			free_ast(ast);
+			free(line);
+			exit(EXIT_FAILURE);
+		}
+		print_ast(ast[0], 0); // TODO: Esta linea hay que quitarla y eliminar la función
 		process_ast(ast);
-		free_ast(ast[0]);
-		free(ast);
+		free_ast(ast);
 		free(line);
 	}
 	// TODO: Esta función nunca llega a ejecutarse, hay que ponerla en la función 
