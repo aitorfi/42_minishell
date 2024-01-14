@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/14 13:01:16 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:55:57 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ typedef struct s_ast
 	struct s_ast	*right;
 }					t_ast;
 
+typedef struct s_mshell
+{
+	char	**env_custom;
+}			t_mshell;
+
+
 char		**preprocess(char *line);
 void		set_signal_handlers();
 t_ast		**build_ast(char **args);
@@ -65,4 +71,28 @@ void		*notify_error_ptr(char *msg);
 char		*get_file_content_fd(int fd);
 char		*get_file_content(char *path);
 void		delete_heredoc(t_ast **ast);
+int			do_cd(t_mshell *mini_data, char **arguments);
+int			do_echo(char **arguments);
+int		do_export(t_mshell *mini_data, char **arguments);
+int		check_sort_export(char **env_to_export);
+void	sort_export(char **env_to_export);
+size_t	compare_lens(char *s1, char *s2);
+void	print_export(char **env_to_export);
+void	print_error_export(char *arguments);
+int		change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
+int		add_export_env(t_mshell *mini_data, char *arguments);
+
+// modulo - builtin -> ENV
+int	execute_env(char **environment);
+
+// modulo aux - para inicializar y guardar las variables de entorno
+//----> init_environment.c <----
+char	**do_env_init(char **envp, int print);
+
+// modulo aux - para modificiar variables entorno
+//----> environment_utils.c <----
+char	*ft_get_env(char *env_to_get, char **envp);
+int		ft_update_env(char	*new_content, t_mshell *mini_data, char *which);
+char	*ft_set_env(char *env_to_set);
+int 	ft_exec_update_env(t_mshell *mini_data, char *which, char *to_change);
 #endif
