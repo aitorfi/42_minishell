@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 09:14:27 by alvicina          #+#    #+#             */
-/*   Updated: 2023/09/29 13:03:18 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/13 12:12:24 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static size_t	ft_strtrim_start(char const *s1, char const *set)
 static size_t	ft_strtrim_finish(char const *s1, char const *set)
 {
 	size_t	i;
-	size_t	c;
+	int		c;
 	size_t	final;
 
 	c = ft_strlen(s1);

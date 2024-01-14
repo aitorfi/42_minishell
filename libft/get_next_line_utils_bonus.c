@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:46:06 by alvicina          #+#    #+#             */
-/*   Updated: 2023/11/24 11:27:18 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 10:52:33 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_free_gnl(char **s1)
+char	*ft_free_gnl(char **s1, int return_null)
 {
 	free (*s1);
 	*s1 = NULL;
-	return (0);
+	if (return_null)
+		return (0);
+	else
+		return (ft_strdup(""));
 }
 
 char	*ft_substr_gnl(char *str, unsigned int start, size_t len)

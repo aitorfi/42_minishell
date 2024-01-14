@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 19:13:16 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/14 12:05:08 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:53:15 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ char	*ft_substr_gnl(char *s, unsigned int start, size_t len);
 char	*ft_strchr_gnl(const char *s, int c);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*get_next_line(int fd);
-char	*ft_free_gnl(char **s1);
+char	*ft_free_gnl(char **s1, int return_null);
 int		ft_check_equal(char *s);
 #endif

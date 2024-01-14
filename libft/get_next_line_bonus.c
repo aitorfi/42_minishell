@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:45:42 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/05 17:25:26 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 10:56:30 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*ft_third_part(char **save, char **line, char *buf, char **temp)
 		*temp = ft_strchr_gnl(*save, '\n');
 		*line = ft_substr_gnl(*save, 0, *temp - *save + 1);
 		if (!*line)
-			return (ft_free_gnl(save));
+			return (ft_free_gnl(save, 1));
 		return (*line);
 	}
 	return ((char *) 1);
@@ -75,12 +75,12 @@ static char	*ft_get_read(int fd, char *buf, char **save, int nb_bytes)
 	{
 		nb_bytes = read(fd, buf, BUFFER_SIZE);
 		if (nb_bytes == -1)
-			return (ft_free_gnl(save));
+			return (ft_free_gnl(save, 1));
 		buf[nb_bytes] = 0;
 		if (nb_bytes == 0)
 		{
 			if (!ft_strlen(*save))
-				return (ft_free_gnl(save));
+				return (ft_free_gnl(save, 0));
 			else
 				return (temp = *save, *save = NULL, temp);
 		}

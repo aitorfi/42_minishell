@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
+#    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/12 19:53:42 by alvicina         ###   ########.fr        #
+#    Updated: 2024/01/14 13:52:03 by afidalgo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = minishell
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -g3 #-fsanitize=address
 LREADLINE_FLAGS = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 READLINE        = -I /Users/$(USER)/.brew/opt/readline/include
 
@@ -25,7 +25,11 @@ HEADER_SRCS = minishell.h
 HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
-MPATH_SRCS  = main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c init_environment.c builtin_pwd.c builtin_cd.c environment_utils.c builtin_echo.c builtin_env.c builtin_export.c builtin_export_utils.c builtin_export_sort.c
+MPATH_SRCS  = \
+	main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c \
+	builtin_env.c builtin_pwd.c utils.c ast_utils.c heredoc.c \
+	error_utils.c file_utils.c init_environment.c builtin_cd.c environment_utils.c \
+	builtin_echo.c builtin_export.c builtin_export_utils.c builtin_export_sort.c
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)

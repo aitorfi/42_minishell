@@ -1,7 +1,12 @@
 *.o
 *.out
 *.a
+*.log
+*.sh
+*.supp
+*.dSYM
 minishell
 flujo.txt
+heredoc
 /.vscode/
 .DS_Store
