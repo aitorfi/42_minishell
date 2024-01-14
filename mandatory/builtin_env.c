@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:54:26 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/11 12:40:49 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:05:54 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	execute_env(char **environment)
 	i = 0;
 	while (environment[i])
 	{
+		if (!ft_check_equal(environment[i]))
+			i++;
 		ft_putstr_fd(environment[i], 1);
 		write(1, "\n", 1);
 		i++;
@@ -44,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 	mini_data.env_custom = do_env_init(envp, 0);
 	if (mini_data.env_custom == NULL)
 		return (1);
-	/*i = 0;
+	i = 0;
 	while (mini_data.env_custom[i])
 	{
 		printf("%s\n", mini_data.env_custom[i]);
