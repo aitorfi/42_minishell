@@ -4,9 +4,9 @@
 *.log
 *.sh
 *.supp
+*.dSYM
 minishell
 flujo.txt
 heredoc
-/minishell.dSYM/
 /.vscode/
 .DS_Store

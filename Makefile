@@ -6,7 +6,7 @@
 #    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/14 11:36:14 by afidalgo         ###   ########.fr        #
+#    Updated: 2024/01/14 12:25:02 by afidalgo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = minishell
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -g3 #-fsanitize=address
 LREADLINE_FLAGS = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 READLINE        = -I /Users/$(USER)/.brew/opt/readline/include
 
@@ -27,7 +27,7 @@ HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 MPATH_SRCS  = \
 	main.c sig_handler.c cmd_preprocessor.c ast_builder.c ast_processor.c \
-	builtin_env.c builtin_pwd.c utils.c ast_utils.c heredoc.c history_manager.c \
+	builtin_env.c builtin_pwd.c utils.c ast_utils.c heredoc.c \
 	error_utils.c file_utils.c
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))

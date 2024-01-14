@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/14 11:27:12 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:01:16 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,5 @@ int			notify_error(char *msg);
 void		*notify_error_ptr(char *msg);
 char		*get_file_content_fd(int fd);
 char		*get_file_content(char *path);
+void		delete_heredoc(t_ast **ast);
 #endif

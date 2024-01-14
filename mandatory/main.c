@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/14 10:35:50 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:45:39 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	readline_loop(char *prompt)
 		line = readline(prompt);
 		if (line == NULL)
 			exit(EXIT_FAILURE);
+		add_history(line);
 		line_split = preprocess(line);
 		ast = build_ast(line_split);
 		if (ast == NULL)
@@ -44,13 +45,6 @@ static void	readline_loop(char *prompt)
 			exit(EXIT_FAILURE);
 		}
 		free_split(line_split);
-		if (handle_history(line, ast) == EXIT_FAILURE)
-		{
-			free_ast(ast);
-			free(line);
-			exit(EXIT_FAILURE);
-		}
-		print_ast(ast[0], 0); // TODO: Esta linea hay que quitarla y eliminar la función
 		process_ast(ast);
 		free_ast(ast);
 		free(line);

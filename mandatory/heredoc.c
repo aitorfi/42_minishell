@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/14 11:04:22 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:44:28 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static char	*get_heredoc_path(void);
 
 char	*create_heredoc(char *limit)
 {
-	int		heredoc_end_found;
 	char	*line;
 	char	*hist_line;
 	char	*path;
@@ -28,20 +27,20 @@ char	*create_heredoc(char *limit)
 	path = get_heredoc_path();
 	if (path == NULL)
 		return (free_massive(hist_line));
-	heredoc_end_found = 0;
-	while (!heredoc_end_found)
+	line = readline("heredoc> ");
+	if (line == NULL)
+		return (free_massive(hist_line));
+	while (ft_strncmp(line, limit, ft_strlen(line)) != 0)
 	{
-		line = readline("heredoc> ");
-		if (line == NULL)
-			return (free_massive(hist_line));
-		if (ft_strncmp(line, limit, ft_strlen(line)) == 0)
-			heredoc_end_found = 1;
-		if (heredoc_end_found)
-			create_file(path, hist_line);
 		hist_line = join_lines(hist_line, line);
 		if (hist_line == NULL)
 			return (free_massive(path));
+		line = readline("heredoc> ");
+		if (line == NULL)
+			return (free_massive(hist_line));
 	}
+	create_file(path, hist_line);
+	free_massive(line, hist_line);
 	return (path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:37:18 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/14 11:10:38 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:14:09 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	*free_ast_node(t_ast *node)
 {
 	if (node->args)
 		free_split(node->args);
+	else if (node->path)
+		free(node->path);
 	if (node->limit)
 		free(node->limit);
 	free(node);
