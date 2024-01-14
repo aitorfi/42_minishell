@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:58:14 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/13 14:07:13 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/14 11:28:56 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,20 @@ char	*create_file(char *path, char *content)
 	return (path);
 }
 
-char	*get_file_content(int fd)
+char	*get_file_content(char *path)
+{
+	int		fd;
+	char	*content;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (notify_error_ptr("Error"));
+	content = get_file_content_fd(fd);
+	close(fd);
+	return (content);
+}
+
+char	*get_file_content_fd(int fd)
 {
 	char	*content;
 	char	*del;
@@ -49,7 +62,6 @@ char	*get_file_content(int fd)
 		free(del);
 		free(line);
 		line = get_next_line(fd);
-		printf("line = %s\n", line);
 		if (line == NULL)
 			return (free_massive(content));
 	}

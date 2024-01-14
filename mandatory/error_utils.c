@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:55:54 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/13 12:57:33 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/14 11:26:55 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,22 @@ void	*free_massive(void *ptr, ...)
 	}
 	va_end(args);
 	return (NULL);
+}
+
+int	free_massive_exit_failure(void *ptr, ...)
+{
+	va_list	args;
+
+	va_start(args, ptr);
+	free(ptr);
+	ptr = va_arg(args, void *);
+	while (ptr)
+	{
+		free(ptr);
+		ptr = va_arg(args, void *);
+	}
+	va_end(args);
+	return (EXIT_FAILURE);
 }
 
 void	*free_split(char **split)

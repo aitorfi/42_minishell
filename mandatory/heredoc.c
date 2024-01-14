@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/12 19:13:47 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 11:04:22 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ char	*create_heredoc(char *limit)
 		if (hist_line == NULL)
 			return (free_massive(path));
 	}
-	add_history(hist_line);
 	return (path);
 }
 

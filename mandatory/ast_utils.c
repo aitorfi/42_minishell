@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:37:18 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/13 13:30:17 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/14 11:10:38 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ void	*free_ast_node(t_ast *node)
 {
 	if (node->args)
 		free_split(node->args);
+	if (node->limit)
+		free(node->limit);
 	free(node);
 	return (NULL);
 }
 
-t_ast	*new_node(t_operation op, char *path, char **args)
+t_ast	*new_node(t_operation op, char *path, char **args, char *limit)
 {
 	t_ast	*node;
 
@@ -50,6 +52,7 @@ t_ast	*new_node(t_operation op, char *path, char **args)
 	node->operation = op;
 	node->path = path;
 	node->args = args;
+	node->limit = limit;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
@@ -69,6 +72,7 @@ void	print_ast(t_ast *node, int depth)
 		}
 		ft_printf("operation = %s ", which_operator_str(node->operation));
 		ft_printf("path = %s ", node->path);
+		ft_printf("limit = %s ", node->limit);
 		if (node->args)
 		{
 			i = 0;

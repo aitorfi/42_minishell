@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/13 13:28:59 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/14 11:09:21 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 {
 	t_ast	*node;
 
-	node = new_node(which_operator(args[index]), NULL, NULL);
+	node = new_node(which_operator(args[index]), NULL, NULL, NULL);
 	if (node == NULL)
 		return (NULL);
 	if (ast[0])
@@ -61,7 +61,7 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 	else if (node->operation == IN_REDIR_APPEND_OP)
 		node->right = get_right_node_heredoc(args, index + 1);
 	else
-		node->right = new_node(FILE_OP, ft_strdup(args[index + 1]), NULL);
+		node->right = new_node(FILE_OP, ft_strdup(args[index + 1]), NULL, NULL);
 	if (node->right == NULL)
 	{
 		free_ast_node(node->left);
@@ -90,7 +90,7 @@ static t_ast	*get_left_node(char **args, int index)
 		node_args[i] = ft_strdup(args[index - node_args_len + i + 1]);
 		i++;
 	}
-	node = new_node(COMMAND_OP, node_args[0], node_args);
+	node = new_node(COMMAND_OP, node_args[0], node_args, NULL);
 	if (node == NULL)
 		return (free_massive(node_args));
 	return (node);
@@ -116,7 +116,7 @@ static t_ast	*get_right_node_command(char **args, int index)
 		node_args[i] = ft_strdup(args[index + i]);
 		i++;
 	}
-	node = new_node(COMMAND_OP, node_args[0], node_args);
+	node = new_node(COMMAND_OP, node_args[0], node_args, NULL);
 	if (node == NULL)
 		return (free_massive(node));
 	return (node);
@@ -130,7 +130,7 @@ static t_ast	*get_right_node_heredoc(char **args, int index)
 	path = create_heredoc(args[index]);
 	if (path == NULL)
 		return (NULL);
-	node = new_node(FILE_OP, path, NULL);
+	node = new_node(FILE_OP, path, NULL, ft_strdup(args[index]));
 	if (node == NULL)
 		return (free_massive(path));
 	return (node);

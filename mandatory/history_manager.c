@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history_manager.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:35:36 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/13 13:39:37 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/14 11:28:22 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,26 @@ int	handle_history(char *line, t_ast **ast)
 
 static int	add_heredoc_to_history(char *line, t_ast **ast)
 {
-	int		fd;
 	char	*content;
+	char	*del;
+	char	*hist;
 
-	fd = open(ast[0]->right->path, O_RDONLY);
-	if (fd == -1)
-		return (notify_error("Error"));
-	content = get_file_content(fd);
+	content = get_file_content(ast[0]->right->path);
 	if (content == NULL)
-	{
-		printf("content error\n");
-		close(fd);
 		return (EXIT_FAILURE);
-	}
-
-	printf("content = %s\n", content);
-	printf("line = %s\n", line);
-
-	close(fd);
-	add_history(ft_strjoin(line, content));
-	free(content);
+	hist = ft_strjoin(line, "\n");
+	if (hist == NULL)
+		return (free_massive_exit_failure(content));
+	del = hist;
+	hist = ft_strjoin(hist, content);
+	free_massive(del, content);
+	if (hist == NULL)
+		return (EXIT_FAILURE);
+	del = hist;
+	hist = ft_strjoin(hist, ast[0]->right->limit);
+	free(del);
+	if (hist == NULL)
+		return (EXIT_FAILURE);
+	add_history(hist);
 	return (EXIT_SUCCESS);
 }
