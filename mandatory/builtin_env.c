@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:54:26 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/12 16:54:02 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:05:54 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	execute_env(char **environment)
 	i = 0;
 	while (environment[i])
 	{
+		if (!ft_check_equal(environment[i]))
+			i++;
 		ft_putstr_fd(environment[i], 1);
 		write(1, "\n", 1);
 		i++;

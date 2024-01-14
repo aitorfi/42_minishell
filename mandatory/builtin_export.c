@@ -6,15 +6,13 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 16:39:36 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/12 19:55:29 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:32:59 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-
-void	exec_export_env(t_mshell *mini_data, char *arguments)
+static int	exec_export_env(t_mshell *mini_data, char *arguments)
 {
 	size_t	i;
 	size_t	j;
@@ -25,11 +23,20 @@ void	exec_export_env(t_mshell *mini_data, char *arguments)
 	i = 0;
 	while (mini_data->env_custom[i])
 	{
-		if (!ft_strncmp(mini_data->env_custom[i], arguments, j + 1))
-			return (change_export_env(mini_data, arguments, i));
+		if (!ft_strncmp(mini_data->env_custom[i], arguments, j)
+			&& (mini_data->env_custom[i][j] == 0
+			|| mini_data->env_custom[i][j] == '='))
+		{
+			if (change_export_env(mini_data, arguments, i))
+				return (1);
+			else
+				return (0);
+		}
 		i++;
 	}
-	add_export_env(mini_data, arguments);
+	if (add_export_env(mini_data, arguments))
+		return (1);
+	return (0);
 }
 
 static int	check_export_args(char *arguments)
@@ -49,7 +56,7 @@ static int	check_export_args(char *arguments)
 	return (0);
 }
 
-static char	**do_export_args(t_mshell *mini_data, char **arguments)
+static int	do_export_args(t_mshell *mini_data, char **arguments)
 {
 	size_t	i;
 
@@ -62,10 +69,11 @@ static char	**do_export_args(t_mshell *mini_data, char **arguments)
 			print_error_export(arguments[i]);
 			i++;
 		}
-		exec_export_env(mini_data, arguments[i]);
+		if (exec_export_env(mini_data, arguments[i]))
+			return (1);
 		i++;
 	}
-	return (NULL);
+	return (0);
 }
 
 static char	**do_export_no_args(t_mshell *mini_data)
@@ -110,15 +118,19 @@ int	do_export(t_mshell *mini_data, char **arguments)
 		return (0);
 	}
 	else
-		do_export_args(mini_data, arguments);
+	{
+		if (do_export_args(mini_data, arguments))
+			return (1);
+	}
 	return (0);
 }
 /*
 int	main(int argc, char **argv, char **envp)
 {
 	t_mshell	mini_data;
-	char		*arguments[4];
+	char		*arguments[8];
 	size_t		i;
+	char		*arguments2[2];
 	
 	(void) argc;
 	//i = 0;
@@ -129,9 +141,13 @@ int	main(int argc, char **argv, char **envp)
 	//}
 	(void) argv;
 	arguments[0] = "export";
-	arguments[1] = "HOME=PEPE";
+	arguments[1] = "HOME=Alejandro";
 	arguments[2] = "_2=((()))";
-	arguments[3] = NULL;
+	arguments[3] = "Zeta";
+	arguments[4] = "Zeta1=Hola";
+	arguments[5] = "Zeta2";
+	arguments[6] = "Zeta2=pepe";
+	arguments[7] = NULL;
 	mini_data.env_custom = do_env_init(envp, 0);
 	i = 0;
 	while (mini_data.env_custom[i])
@@ -150,6 +166,12 @@ int	main(int argc, char **argv, char **envp)
 		printf("%s\n", mini_data.env_custom[i]);
 		i++;
 	}
+	arguments2[0] = "export";
+	arguments2[1] = NULL;
+	printf("********************************************\n");
+	do_export(&mini_data, arguments2);
+	printf("********************************************\n");
+	execute_env(mini_data.env_custom);
 	ft_free_env(mini_data.env_custom);
 	//system("leaks a.out");
 	return (0);

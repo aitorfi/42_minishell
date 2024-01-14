@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 19:13:16 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/12 16:45:13 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:05:08 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,5 @@ char	*ft_strchr_gnl(const char *s, int c);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*get_next_line(int fd);
 char	*ft_free_gnl(char **s1);
+int		ft_check_equal(char *s);
 #endif

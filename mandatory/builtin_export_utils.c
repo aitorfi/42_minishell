@@ -6,16 +6,20 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:00:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/12 19:55:34 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:32:36 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	change_export_env(t_mshell *mini_data, char *arguments, size_t pos)
+int	change_export_env(t_mshell *mini_data, char *arguments, size_t pos)
 {
 	free(mini_data->env_custom[pos]);
 	mini_data->env_custom[pos] = ft_strdup(arguments);
+	if (mini_data->env_custom[pos] == NULL)
+		return (1);
+	else
+		return (0);
 }
 
 int	add_export_env(t_mshell *mini_data, char *arguments)
@@ -33,9 +37,13 @@ int	add_export_env(t_mshell *mini_data, char *arguments)
 	while (mini_data->env_custom[i])
 	{
 		new_env[i] = ft_strdup(mini_data->env_custom[i]);
+		if (new_env[i] == NULL)
+			return (ft_putstr_fd("could not update env", 2), 1);
 		i++;
 	}
 	new_env[i] = ft_strdup(arguments);
+	if (new_env[i] == NULL)
+		return (ft_putstr_fd("could not update env", 2), 1);
 	new_env[++i] = NULL;
 	ft_free_env(mini_data->env_custom);
 	return (mini_data->env_custom = new_env, 0);
