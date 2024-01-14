@@ -6,11 +6,11 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:47:08 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/07 11:33:05 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/14 14:00:25 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	set_signal_handlers()
+void	set_signal_handlers(void)
 {
 	//? Los procesos hijo tendrán las señales anuladas también?
 
