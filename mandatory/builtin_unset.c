@@ -6,11 +6,37 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:48:08 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/15 13:33:22 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:46:12 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static int	make_change_unset(t_mshell *mini_data, size_t pos, char **new_env)
+{
+	size_t	j;
+	size_t	i;
+
+	i = 0;
+	j = 0;
+	while (mini_data->env_custom[j])
+	{
+		if (j != pos)
+		{
+			new_env[i] = ft_strdup(mini_data->env_custom[j]);
+			if (new_env[i] == NULL)
+				return (ft_putstr_fd("could not update env", 2), 1);
+			i++;
+			j++;
+		}
+		else
+			j++;
+	}
+	new_env[i] = NULL;
+	ft_free_env(mini_data->env_custom);
+	mini_data->env_custom = new_env;
+	return (0);
+}
 
 static int	change_unset_env(t_mshell *mini_data, size_t pos)
 {
@@ -26,23 +52,9 @@ static int	change_unset_env(t_mshell *mini_data, size_t pos)
 		return (ft_putstr_fd("could not update env", 2), 1);
 	i = 0;
 	j = 0;
-
-	// a partir de aqui, sacar a otra funcion
-	while (mini_data->env_custom[j])
-	{
-		if (j != pos)
-		{
-			new_env[i] = ft_strdup(mini_data->env_custom[j]);
-			if (new_env[i] == NULL)
-				return (ft_putstr_fd("could not update env", 2), 1);
-			i++;
-			j++;
-		}
-		else
-			j++;
-	}
-	new_env[i] = NULL;
-	return (ft_free_env(mini_data->env_custom), mini_data->env_custom = new_env, 0);
+	if (make_change_unset(mini_data, pos, new_env))
+		return (1);
+	return (0);
 }
 
 static int	exec_unset_env(t_mshell *mini_data, char *arguments)
@@ -81,7 +93,6 @@ int	do_unset(t_mshell *mini_data, char **arguments)
 {
 	size_t	i;
 
-	(void) mini_data;
 	i = 1;
 	if (!arguments[i])
 		return (0);
@@ -97,9 +108,8 @@ int	do_unset(t_mshell *mini_data, char **arguments)
 		i++;
 	}
 	return (0);
-	
 }
-
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	t_mshell	mini_data;
@@ -116,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
 	//}
 	(void) argv;
 	arguments[0] = "export";
-	arguments[1] = "pepe";
+	arguments[1] = "";
 	arguments[2] = "_2=((()))";
 	arguments[3] = "1";
 	arguments[4] = "Zeta1=Hola";
@@ -154,4 +164,4 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env(mini_data.env_custom);
 	//system("leaks a.out");
 	return (0);
-}
+}*/
