@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:12:45 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/11 12:58:27 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:42:01 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ char *arguments, int free_b)
 	char	*cwd_af;
 
 	if (chdir(arguments))
+	{
+		free(arguments);
 		return (perror("cd: could not change to directory"), 4);
+	}
 	if (ft_update_env(cwd_be, mini_data, "OLDPWD") == -1)
 		return (ft_putstr_fd("cd: could not update env", 2), 3);
 	cwd_af = getcwd(NULL, 0);
@@ -125,8 +128,9 @@ int	do_cd(t_mshell *mini_data, char **arguments)
 			return (ft_putstr_fd("cd: could not set especial case", 2), 1);
 		free_b = 1;
 	}
-	free(cwd);
-	return (do_cd_exec(cwd, mini_data, arguments[i], free_b));
+	if (do_cd_exec(cwd, mini_data, arguments[i], free_b))
+		return (free(cwd), 1);
+	return (free(cwd), 0);
 }
 /*
 int	main(int argc, char **argv, char **envp)
@@ -140,23 +144,23 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	arguments[0] = "cd";
-	arguments[1] = "..";
+	arguments[1] = "-";
 	arguments[2] = NULL;
-	mini_data.env_custom = do_env_init(envp, 0);
-	while (mini_data.env_custom[i])
-	{
-		printf("%s\n", mini_data.env_custom[i]);
-		i++;
-	}
+	mini_data.env_custom = do_env_init(envp, 1);
+	//while (mini_data.env_custom[i])
+	//{
+	//	printf("%s\n", mini_data.env_custom[i]);
+	//	i++;
+	//}
 	i = 0;
-	printf("********************************************************\n");
+	printf("****************DESPUES DEL CD********************\n");
 	do_cd(&mini_data, arguments);
 	printf("********************************************************\n");
-	while (mini_data.env_custom[i])
-	{
-		printf("%s\n", mini_data.env_custom[i]);
-		i++;
-	}
+	//while (mini_data.env_custom[i])
+	//{
+	//	printf("%s\n", mini_data.env_custom[i]);
+	//	i++;
+	//}
 	cwd = getcwd(NULL, 0);
 	printf("********************************************************\n");
 	printf("cwd: %s\n", cwd);
