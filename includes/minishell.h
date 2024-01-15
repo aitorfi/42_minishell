@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/15 13:32:29 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:48:09 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
 
 // builtin_unset:
-int	do_unset(t_mshell *mini_data, char **arguments);
+int			do_unset(t_mshell *mini_data, char **arguments);
 
 // init_environment:
 // Modulo auxiliar para inicializar y guardar las variables de entorno
