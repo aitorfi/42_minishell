@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/14 14:19:36 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:32:29 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int			execute_env(char **environment);
 
 // builtin_export:
 int			do_export(t_mshell *mini_data, char **arguments);
+int			check_export_args(char *arguments);
 
 // builtin_export_sort:
 int			check_sort_export(char **env_to_export);
@@ -106,6 +107,9 @@ void		print_export(char **env_to_export);
 void		print_error_export(char *arguments);
 int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
+
+// builtin_unset:
+int	do_unset(t_mshell *mini_data, char **arguments);
 
 // init_environment:
 // Modulo auxiliar para inicializar y guardar las variables de entorno
