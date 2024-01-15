@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:48:08 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/15 15:46:12 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/15 16:23:16 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int	main(int argc, char **argv, char **envp)
 	char		*arguments[8];
 	size_t		i;
 	char		*arguments2[2];
+	char		*arguments3[5];
 	
 	(void) argc;
 	//i = 0;
@@ -126,10 +127,10 @@ int	main(int argc, char **argv, char **envp)
 	//}
 	(void) argv;
 	arguments[0] = "export";
-	arguments[1] = "";
+	arguments[1] = "pepon=";
 	arguments[2] = "_2=((()))";
-	arguments[3] = "1";
-	arguments[4] = "Zeta1=Hola";
+	arguments[3] = "Zeta1";
+	arguments[4] = "Zeta1=holaaaaa";
 	arguments[5] = "Zeta2";
 	arguments[6] = "Zeta2=pepe";
 	arguments[7] = NULL;
@@ -157,9 +158,14 @@ int	main(int argc, char **argv, char **envp)
 	do_export(&mini_data, arguments2);
 	printf("********************************************\n");
 	//execute_env(mini_data.env_custom);
-	if (do_unset(&mini_data, arguments))
+	arguments3[0] = "unset";
+	arguments3[1] = "pepon";
+	arguments3[2] = "Zeta1";
+	arguments3[3] = "Zeta2";
+	arguments3[4] = NULL;
+	if (do_unset(&mini_data, arguments3))
 		return (1);
-	printf("********************************************\n");
+	printf("hola********************************************\n");
 	do_export(&mini_data, arguments2);
 	ft_free_env(mini_data.env_custom);
 	//system("leaks a.out");
