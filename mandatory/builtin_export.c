@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 16:39:36 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/14 12:32:59 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:32:09 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	exec_export_env(t_mshell *mini_data, char *arguments)
 	return (0);
 }
 
-static int	check_export_args(char *arguments)
+int	check_export_args(char *arguments)
 {
 	size_t	i;
 
@@ -143,7 +143,7 @@ int	main(int argc, char **argv, char **envp)
 	arguments[0] = "export";
 	arguments[1] = "HOME=Alejandro";
 	arguments[2] = "_2=((()))";
-	arguments[3] = "Zeta";
+	arguments[3] = "1";
 	arguments[4] = "Zeta1=Hola";
 	arguments[5] = "Zeta2";
 	arguments[6] = "Zeta2=pepe";
