@@ -6,15 +6,36 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:20:53 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/07 11:27:28 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:45:26 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// TODO: Esta función tiene que leer el ast y llamar a las funciones 
-// TODO: que haga falta en función del tipo de nodo que esté leyendo
+static int	read_ast_node_recursive(t_ast *node, t_ast_node_type type, int *rfd, int *wfd);
+
 void	process_ast(t_ast **ast)
 {
-	(void) ast; // Esto es para que no de error de parámetro sin usar.
+	read_ast_node_recursive(ast[0], ROOT, NULL, NULL);
+}
+
+static int	read_ast_node_recursive(t_ast *node, t_ast_node_type type, int *rfd, int *wfd)
+{
+	int	pipe_fds[2];
+
+	if (!node)
+		return (EXIT_SUCCESS);
+	if (node->operation == PIPE_OP)
+	{
+		if (pipe(pipe_fds) == -1)
+			return (notify_error("Error"));
+		read_ast_node_recursive(node->left, LEFT, NULL, pipe_fds[1]);
+		read_ast_node_recursive(node->right, RIGHT, pipe_fds[0], wfd);
+	}
+	else
+	{
+		read_ast_node_recursive(node->left, LEFT, NULL, NULL);
+		read_ast_node_recursive(node->right, RIGHT, NULL, NULL);
+	}
+	return (EXIT_SUCCESS);
 }
