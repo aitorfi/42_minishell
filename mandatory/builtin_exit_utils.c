@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:37:33 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/16 18:53:50 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/17 09:42:43 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	do_exit_atoi(char *arguments)
 	ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arguments, 2);
-	ft_putstr_fd(": numeric arguments required\n", 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
 	exit(g_result); // antes del exit hay que liberar todo;
 }
 
@@ -63,7 +63,7 @@ void	check_exit_args(char **arguments, int *flag)
 		else
 		{
 			*flag = 0;
-			break;
+			break ;
 		}
 	}
 }
@@ -81,4 +81,3 @@ int	is_number(char *arguments)
 	}
 	return (1);
 }
-
