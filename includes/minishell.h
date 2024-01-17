@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/15 15:48:09 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:53:59 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+
+int	g_result;
 
 typedef enum e_operation
 {
@@ -107,6 +109,15 @@ void		print_export(char **env_to_export);
 void		print_error_export(char *arguments);
 int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
+
+// builtin_exit
+int		do_exit(char **arguments);
+
+// builtin_exit_utils
+void	check_exit_args(char **arguments, int *flag);
+int		ft_atoi_exit(char *str);
+int		is_number(char *arguments);
+void	do_exit_atoi(char *arguments);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
