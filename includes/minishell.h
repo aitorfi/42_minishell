@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/16 18:53:59 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:32:20 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,15 @@ typedef struct s_mshell
 {
 	char	**env_custom;
 }			t_mshell;
+
+typedef struct s_preprocess
+{
+	size_t	init;
+	size_t	count;
+	size_t	final;
+	int		flag_single;
+	int		flag_double;
+}			t_preprocess;
 
 // sig_handler:
 void		set_signal_handlers(void);

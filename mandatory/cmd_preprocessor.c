@@ -6,21 +6,21 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/17 18:15:36 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:24:00 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char **get_double(char *line, size_t d_quote, char c)
+static int get_quote(char *line, size_t d_quote, char c, char ***where_quote)
 {
-	char	**where_double;
 	size_t	i;
 	size_t	j;
+	char	**temp;
 	
-	where_double = malloc(sizeof(char *) * (d_quote + 1));
-	if (where_double == NULL)
-		return (ft_putstr_fd("could not process line\n", 2), g_result = 1, NULL);
+	temp = malloc(sizeof(char *) * (d_quote + 1));
+	if (temp == NULL)
+		return (ft_putstr_fd("could not process line\n", 2), g_result = 1, 1);
 	i = 0;
 	j = 0;
 	while (line[i])
@@ -28,28 +28,26 @@ static char **get_double(char *line, size_t d_quote, char c)
 		if (line[i] == c)
 		{
 			printf("%c\n", line[i]);
-			where_double[j++] = &line[i++];
+			temp[j++] = &line[i++];
 		}
 		i++;
 	}
-	where_double[j] = NULL;
-	//i = 0;
-	//while (where_double[i])
-	//{
-	//	printf("%p\n", where_double[i]);
-	//	i++;
-	//}
-	return (where_double);
+	temp[j] = NULL;
+	*where_quote = temp;
+	return (0);
 }
 
-static void print_error_double_quote(void)
+static void print_error_quote(int c)
 {
 	g_result = 1;
-	ft_putstr_fd("minishell> unexpected EOF while looking for matching \"\n", 2);
+	if (c == '\"')
+		ft_putstr_fd("minishell> unexpected EOF while looking for matching \"\n", 2);
+	else
+		ft_putstr_fd("minishell> unexpected EOF while looking for matching \'\n", 2);
 	exit(g_result);
 }
 
-static int check_quote(char *line, char c)
+static size_t check_quote(char *line, char c)
 {
 	size_t	i;
 	size_t	d_quote;
@@ -63,7 +61,7 @@ static int check_quote(char *line, char c)
 		i++;
 	}
 	if (d_quote % 2 != 0)
-		print_error_double_quote();
+		print_error_quote(c);
 	return (d_quote);
 }
 
@@ -87,24 +85,36 @@ static char	*replace_chars(char *str, char *to_find, char replace)
 	return (str);
 }
 
+static int	quote(char *line, int c, char ***where_quote)
+{
+	size_t	quote;
+
+	quote = check_quote(line, c); 
+	if (quote)
+	{
+		 if (get_quote(line, quote, c, where_quote))
+			return (1);
+		return (0);
+	}
+	return (0);
+}
+
 char	**preprocess(char *line)
 {	
 	char	**ret;
-	size_t	double_quote;
-	size_t	single_quote;
 	char	**where_double;
+	char	**where_single;
 	
-	where_double = NULL;
+	where_double = NULL; //hay que liberar
+	where_single = NULL; //hay que liberar
+	ret = NULL;
 	line = replace_chars(line, "\t\n\v\f\r", ' ');
-	double_quote = check_quote(line, '\"');
-	if (double_quote)
-	{
-		where_double = get_double(line, double_quote, '\"');
-		if (where_double == NULL)
-			return (NULL);
-	}
-	single_quote = check_quote(line, '\'');
-	ret = ft_split(line, ' ');
+	if (quote(line, '\"', &where_double))
+		return (NULL);
+	if (quote(line, '\'', &where_single))
+		return (NULL);
+	// hay que meter funcion para comparar si hay una doble dentro de dos simples y al reves
+	ret = ft_split_preprocess(line, ' '); // hay que liberar
 	if (ret == NULL)
 		return (NULL);
 	return (ret);
