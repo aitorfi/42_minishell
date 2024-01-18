@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/18 12:24:00 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:51:06 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int get_quote(char *line, size_t d_quote, char c, char ***where_quote)
 }
 
 static void print_error_quote(int c)
-{
+{	
 	g_result = 1;
 	if (c == '\"')
 		ft_putstr_fd("minishell> unexpected EOF while looking for matching \"\n", 2);
@@ -60,8 +60,6 @@ static size_t check_quote(char *line, char c)
 			d_quote++;
 		i++;
 	}
-	if (d_quote % 2 != 0)
-		print_error_quote(c);
 	return (d_quote);
 }
 
@@ -99,6 +97,80 @@ static int	quote(char *line, int c, char ***where_quote)
 	return (0);
 }
 
+static void	compare_exec(char **limit, char **under_limit, char *line, char	c, size_t single_num)
+{
+	size_t	i;
+	size_t	flag;
+	
+	i = 0;
+	flag = 0;
+	printf("under: %p\n", under_limit[i]);
+	printf("limit: %p\n", limit[i]);
+	printf("under: %p\n", under_limit[i + 1]);
+	printf("limit: %p\n", limit[i + 1]);
+	while (limit[i] && line)
+	{
+		while (line < limit[i])
+		{
+			if (*line == c)
+				flag++;
+			line++;
+		}
+		if (flag == single_num)
+			return ;
+		else if (flag % 2 != 0)
+			print_error_quote(c);
+		i++;	
+	}
+}
+
+static void	compare_where(char **where_double, char **where_single, char *line)
+{
+	size_t	single_num;
+	size_t	double_num;
+
+	single_num = 0;
+	while (where_single[single_num])
+		single_num++;
+	double_num = 0;
+	while (where_double[double_num])
+		double_num++;
+	if (where_double[0] < where_single[0])
+		compare_exec(where_double, where_single, line, '\'', single_num);
+	else
+		compare_exec(where_single, where_double, line, '\"', double_num);
+}
+
+/*
+static void	compare_where(char *line)
+{
+	size_t	i;
+	int		flag_single;
+	int		flag_double;
+
+	i = 0;
+	flag_single = 0;
+	flag_double = 0;
+	while (line[i])
+	{
+		if (line == '\'' || line == '\"')
+		{
+			if (line == '\'')
+			{
+				if (!flag_single)
+					flag_single = 1;
+				else if (flag_single)
+				{
+					if (flag_double)
+						
+				}
+				
+			}
+				
+		}
+	}
+}*/
+
 char	**preprocess(char *line)
 {	
 	char	**ret;
@@ -113,10 +185,12 @@ char	**preprocess(char *line)
 		return (NULL);
 	if (quote(line, '\'', &where_single))
 		return (NULL);
+	if (where_double && where_single)
+		compare_where(where_double, where_single, line);
 	// hay que meter funcion para comparar si hay una doble dentro de dos simples y al reves
-	ret = ft_split_preprocess(line, ' '); // hay que liberar
-	if (ret == NULL)
-		return (NULL);
+	//ret = ft_split_preprocess(line, ' '); // hay que liberar
+	//if (ret == NULL)
+	//	return (NULL);
 	return (ret);
 }
 

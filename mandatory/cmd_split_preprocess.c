@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:11:47 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/18 12:52:53 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:57:09 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,9 @@ static void	count_end_word(char const *s, char c, t_preprocess *d)
 		if (s[d->final] == '\"' || s[d->final] == '\'')
 		{
 			if (s[d->final] == '\"')
-			{
-				if (d->flag_double)
-					d->flag_double = 0;
-				else
-					d->flag_double = 1;;
-			}
+				d->flag_double = 0;
 			else if (s[d->final] == '\'')
-			{
-				if (d->flag_single)
-					d->flag_single = 0;
-				else
-					d->flag_single = 1;
-			}
+				d->flag_single = 0;
 		}
 		d->final++;
 	}
@@ -62,6 +52,7 @@ static void	count_start_word(char const *s, char c, t_preprocess *d)
 		d->init++;
 	}
 }
+
 static void		d_init(t_preprocess *d)
 {
 	d->final = 0;
@@ -92,7 +83,7 @@ int	main(void)
 	char	*line;
 	size_t	count;
 
-	line = "ls -l | grep hola que tal aqui \'\"estoy adios   pepe\' adios\" \'hola que tal\'";
+	line = "ls -l | grep hola que tal aqui \'\"estoy adios   pepe\' \" \"  adios\" \'hola que tal\'";
 	count = count_word_preprocess(line, ' ');
 	printf("%zu\n", count);
 	return (0);
