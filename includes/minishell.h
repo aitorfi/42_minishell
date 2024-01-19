@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/15 18:59:32 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:37:38 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_ast
 typedef struct s_mshell
 {
 	char	**env_custom;
+	int		stdout_fd;
 }			t_mshell;
 
 // sig_handler:
@@ -58,17 +59,18 @@ void		set_signal_handlers(void);
 char		**preprocess(char *line);
 
 // ast_builder:
-t_ast		**build_ast(char **args);
+t_ast	**build_ast(char **args, t_mshell *mshell);
 
 // heredoc:
 char		*create_heredoc(char *limit);
 
 // ast_processor:
-void		process_ast(t_ast **ast);
+void		process_ast(t_ast **ast, t_mshell *mshell);
 
 // utils:
 t_operation	which_operator(char *operator);
 char		*which_operator_str(t_operation operator);
+char		*append_path_to_cmd(char **envp, char *cmd);
 
 // error_utils:
 void		*free_massive(void *ptr, ...);
@@ -81,12 +83,17 @@ void		*notify_error_ptr(char *msg);
 char		*create_file(char *path, char *content);
 char		*get_file_content_fd(int fd);
 char		*get_file_content(char *path);
+int			close_massive(int fd, ...);
 
 // ast_utils:
 void		*free_ast(t_ast **ast);
 void		*free_ast_node(t_ast *node);
 void		print_ast(t_ast *node, int depth);
 t_ast		*new_node(t_operation op, char *path, char **args, char *limit);
+
+// builtin_utils:
+int			is_builtin(char *cmd);
+int			execute_builtin(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell);
 
 // builtin_pwd:
 int			do_pwd(void);

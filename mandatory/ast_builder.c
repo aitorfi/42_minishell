@@ -6,18 +6,18 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/14 11:09:21 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:11:41 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static t_ast	*create_op_node(t_ast **ast, char **args, int index);
-static t_ast	*get_left_node(char **args, int index);
-static t_ast	*get_right_node_command(char **args, int index);
+static t_ast	*create_op_node(t_ast **ast, char **args, int index, t_mshell *mshell);
+static t_ast	*get_left_node(char **args, int index, t_mshell *mshell);
+static t_ast	*get_right_node_command(char **args, int index, t_mshell *mshell);
 static t_ast	*get_right_node_heredoc(char **args, int index);
 
-t_ast	**build_ast(char **args)
+t_ast	**build_ast(char **args, t_mshell *mshell)
 {
 	t_ast	**ast;
 	t_ast	*node;
@@ -31,17 +31,23 @@ t_ast	**build_ast(char **args)
 	{
 		if (which_operator(args[i]))
 		{
-			node = create_op_node(ast, args, i);
+			node = create_op_node(ast, args, i, mshell);
 			if (node == NULL)
 				return (free_ast(ast));
 			ast[0] = node;
 		}
 		i++;
 	}
+	if (!ast[0])
+	{
+		ast[0] = get_right_node_command(args, 0, mshell);
+		if (ast[0] == NULL)
+			return (free_ast(ast));
+	}
 	return (ast);
 }
 
-static t_ast	*create_op_node(t_ast **ast, char **args, int index)
+static t_ast	*create_op_node(t_ast **ast, char **args, int index, t_mshell *mshell)
 {
 	t_ast	*node;
 
@@ -52,12 +58,12 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 		node->left = ast[0];
 	if (!node->left)
 	{
-		node->left = get_left_node(args, index - 1);
+		node->left = get_left_node(args, index - 1, mshell);
 		if (node->left == NULL)
 			return (free_massive(node));
 	}
 	if (node->operation == PIPE_OP)
-		node->right = get_right_node_command(args, index + 1);
+		node->right = get_right_node_command(args, index + 1, mshell);
 	else if (node->operation == IN_REDIR_APPEND_OP)
 		node->right = get_right_node_heredoc(args, index + 1);
 	else
@@ -70,12 +76,13 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index)
 	return (node);
 }
 
-static t_ast	*get_left_node(char **args, int index)
+static t_ast	*get_left_node(char **args, int index, t_mshell *mshell)
 {
 	t_ast	*node;
 	int		i;
 	char	**node_args;
 	int		node_args_len;
+	char	*cmd_path;
 
 	i = index;
 	while (i >= 0 && !which_operator(args[i]))
@@ -90,18 +97,25 @@ static t_ast	*get_left_node(char **args, int index)
 		node_args[i] = ft_strdup(args[index - node_args_len + i + 1]);
 		i++;
 	}
-	node = new_node(COMMAND_OP, node_args[0], node_args, NULL);
+	cmd_path = append_path_to_cmd(mshell->env_custom, node_args[0]);
+	if (cmd_path == NULL)
+		return (free_split(node_args));
+	node = new_node(COMMAND_OP, cmd_path, node_args, NULL);
 	if (node == NULL)
-		return (free_massive(node_args));
+	{
+		free_split(node_args);
+		return (free_massive(cmd_path));
+	}
 	return (node);
 }
 
-static t_ast	*get_right_node_command(char **args, int index)
+static t_ast	*get_right_node_command(char **args, int index, t_mshell *mshell)
 {
 	t_ast	*node;
 	int		i;
 	char	**node_args;
 	int		node_args_len;
+	char	*cmd_path;
 
 	i = index;
 	while (args[i] && !which_operator(args[i]))
@@ -116,9 +130,15 @@ static t_ast	*get_right_node_command(char **args, int index)
 		node_args[i] = ft_strdup(args[index + i]);
 		i++;
 	}
-	node = new_node(COMMAND_OP, node_args[0], node_args, NULL);
+	cmd_path = append_path_to_cmd(mshell->env_custom, node_args[0]);
+	if (cmd_path == NULL)
+		return (free_split(node_args));
+	node = new_node(COMMAND_OP, cmd_path, node_args, NULL);
 	if (node == NULL)
-		return (free_massive(node));
+	{
+		free_massive(node);
+		return (free_massive(cmd_path));
+	}
 	return (node);
 }
 
