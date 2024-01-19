@@ -6,15 +6,75 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:20:53 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/07 11:27:28 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:40:36 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// TODO: Esta función tiene que leer el ast y llamar a las funciones 
-// TODO: que haga falta en función del tipo de nodo que esté leyendo
-void	process_ast(t_ast **ast)
+static int	read_ast_node_recursive(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell);
+static int	read_ast_node_pipe(t_ast *node, int *wfd, t_mshell *mshell);
+static int	read_ast_node_command(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell);
+
+void	process_ast(t_ast **ast, t_mshell *mshell)
 {
-	(void) ast; // Esto es para que no de error de parámetro sin usar.
+	(void) mshell;
+	read_ast_node_recursive(ast[0], ROOT, NULL, NULL, mshell);
+}
+
+static int	read_ast_node_recursive(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell)
+{
+	if (!node)
+		return (EXIT_SUCCESS);
+	if (node->operation == PIPE_OP)
+	{
+		return (read_ast_node_pipe(node, wfd, mshell));
+	}
+	else if (node->operation == COMMAND_OP)
+	{
+		return (read_ast_node_command(node, type, rfd, wfd, mshell));
+	}
+	else
+	{
+		read_ast_node_recursive(node->left, LEFT, NULL, NULL, mshell);
+		read_ast_node_recursive(node->right, RIGHT, NULL, NULL, mshell);
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	read_ast_node_pipe(t_ast *node, int *wfd, t_mshell *mshell)
+{
+	int	pipe_fds[2];
+
+	if (pipe(pipe_fds) == -1)
+		return (notify_error("Error"));
+	if (read_ast_node_recursive(node->left, LEFT, NULL, &pipe_fds[1], mshell) == EXIT_FAILURE)
+		return (close_massive(pipe_fds[0], pipe_fds[1]));
+	if (read_ast_node_recursive(node->right, RIGHT, &pipe_fds[0], wfd, mshell) == EXIT_FAILURE)
+		return (close_massive(pipe_fds[0], pipe_fds[1]));
+	close(pipe_fds[0]);
+	close(pipe_fds[1]);
+	return (EXIT_SUCCESS);
+}
+
+static int	read_ast_node_command(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell)
+{
+	int	pid;
+
+	(void) rfd;
+	(void) wfd;
+	if (is_builtin(node->args[0]))
+		return (execute_builtin(node, type, rfd, wfd, mshell));
+	pid = fork();
+	if (pid)
+	{
+		waitpid(pid, NULL, 0);
+	}
+	else
+	{
+		execve(node->path, node->args, NULL);
+		perror("Error");
+		exit(EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

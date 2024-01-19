@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:58:14 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/14 11:28:56 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:14:32 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,20 @@ char	*get_file_content_fd(int fd)
 			return (free_massive(content));
 	}
 	return (content);
+}
+
+int	close_massive(int fd, ...)
+{
+	va_list	args;
+
+	va_start(args, fd);
+	close(fd);
+	fd = va_arg(args, int);
+	while (fd)
+	{
+		close(fd);
+		fd = va_arg(args, int);
+	}
+	va_end(args);
+	return (EXIT_FAILURE);
 }
