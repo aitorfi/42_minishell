@@ -6,7 +6,7 @@
 #    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 10:08:04 by alvicina          #+#    #+#              #
-#    Updated: 2023/11/24 11:27:58 by alvicina         ###   ########.fr        #
+#    Updated: 2024/01/15 19:18:20 by alvicina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ BONUS_OBJS = $(BONUS:.c=.o)
 
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -I.
+CFLAGS = -Wall -Wextra -Werror -I. -g3
 
 NAME = libft.a
 

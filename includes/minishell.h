@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/19 17:37:38 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:04:41 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+
+int	g_result;
 
 typedef enum e_ast_node_type
 {
@@ -52,11 +54,31 @@ typedef struct s_mshell
 	int		stdout_fd;
 }			t_mshell;
 
+typedef struct s_preprocess
+{
+	size_t	init;
+	size_t	count;
+	size_t	final;
+	size_t	limit;
+	int		flag;
+	char	quote;
+	size_t	start;
+	size_t	end;
+}			t_preprocess;
+
 // sig_handler:
 void		set_signal_handlers(void);
 
 // cmd_preprocessor:
 char		**preprocess(char *line);
+
+// cmd_split_preprocess
+char	**ft_split_preprocess(char const *s, char c);
+
+// cmd_split_preprocess_utils
+void	d_init(t_preprocess *d);
+char	**ft_free_split_preprocess(char **split, size_t limit);
+void 	print_error_quote(int c);
 
 // ast_builder:
 t_ast	**build_ast(char **args, t_mshell *mshell);
@@ -121,6 +143,15 @@ void		print_export(char **env_to_export);
 void		print_error_export(char *arguments);
 int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
+
+// builtin_exit
+int		do_exit(char **arguments);
+
+// builtin_exit_utils
+void	check_exit_args(char **arguments, int *flag);
+int		ft_atoi_exit(char *str);
+int		is_number(char *arguments);
+void	do_exit_atoi(char *arguments);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
