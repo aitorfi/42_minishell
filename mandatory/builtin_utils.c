@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 19:12:47 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 18:38:55 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:10:32 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ int	execute_builtin(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_msh
 		return (do_pwd());
 	if (!ft_strncmp(node->path, "unset", len))
 		return (do_unset(mshell, node->args));
+	if (!ft_strncmp(node->path, "exit", len))
+		return (do_exit(node->args));
 	return (EXIT_FAILURE);
 }
