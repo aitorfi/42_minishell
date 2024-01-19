@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:11:47 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/18 18:57:09 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:58:20 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,19 @@ static void	count_end_word(char const *s, char c, t_preprocess *d)
 	{
 		if (s[d->final] == '\"' || s[d->final] == '\'')
 		{
-			if (s[d->final] == '\"')
-				d->flag_double = 0;
-			else if (s[d->final] == '\'')
-				d->flag_single = 0;
+			d->flag = 1;
+			d->quote = s[d->final++];
+			while (s[d->final] && s[d->final] != d->quote)
+				d->final++;
+		
+			if (s[d->final])
+			{
+				d->flag = 0;
+				d->final++;
+			}
 		}
-		d->final++;
+		else 
+			d->final++;
 	}
 }
 
@@ -31,25 +38,23 @@ static void	count_start_word(char const *s, char c, t_preprocess *d)
 {
 	while (s[d->init] == c && s[d->init] != 0)
 		d->init++;
-	if (s[d->init] != c && s[d->init] != 0 && d->flag_double == 0 && d->flag_single == 0)
+	if (s[d->init] != c && s[d->init] != 0 && d->flag == 0)
+	{
+		printf("%c\n", s[d->init]);
 		d->count++;
+	}
 	if (s[d->init] == '\"' || s[d->init] == '\'')
 	{
-		if (s[d->init] == '\"')
+		d->flag = 1;
+		d->quote = s[d->init++];
+		while (s[d->init] && s[d->init] != d->quote)
+			d->init++;
+		printf("*******%c\n", s[d->init]);
+		if (s[d->init])
 		{
-			if (d->flag_double)
-				d->flag_double = 0;
-			else
-				d->flag_double = 1;
+			d->flag = 0;
+			d->init++;
 		}
-		else if (s[d->init] == '\'')
-		{
-			if (d->flag_single)
-				d->flag_single = 0;
-			else
-				d->flag_single = 1;
-		}
-		d->init++;
 	}
 }
 
@@ -58,8 +63,7 @@ static void		d_init(t_preprocess *d)
 	d->final = 0;
 	d->count = 0;
 	d->init = 0;
-	d->flag_single = 0;
-	d->flag_double = 0;
+	d->flag = 0;
 }
 
 static size_t	count_word_preprocess(char const *s, char c)
@@ -75,6 +79,8 @@ static size_t	count_word_preprocess(char const *s, char c)
 		count_end_word(s, c, &d);
 		d.init = d.final;
 	}
+	if (d.flag)
+		print_error_quote(d.quote);
 	return (d.count);
 }
 
@@ -83,7 +89,7 @@ int	main(void)
 	char	*line;
 	size_t	count;
 
-	line = "ls -l | grep hola que tal aqui \'\"estoy adios   pepe\' \" \"  adios\" \'hola que tal\'";
+	line = "ls -l | grep hola que tal aqui \'estoy 1adios \"   pepe    adios\' 2\'hola que tal";
 	count = count_word_preprocess(line, ' ');
 	printf("%zu\n", count);
 	return (0);

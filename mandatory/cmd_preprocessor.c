@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/18 17:51:06 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:57:22 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int get_quote(char *line, size_t d_quote, char c, char ***where_quote)
 	return (0);
 }
 
-static void print_error_quote(int c)
+void print_error_quote(int c)
 {	
 	g_result = 1;
 	if (c == '\"')
@@ -193,7 +193,7 @@ char	**preprocess(char *line)
 	//	return (NULL);
 	return (ret);
 }
-
+/*
 int	main(void)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -206,13 +206,13 @@ int	main(void)
 		line = readline("minishell> ");
 		preprocess(line);
 		i = 0;
-		/*while (line_process[i])
+		/while (line_process[i])
 		{
 			printf("%s\n", line_process[i]);
 			i++;
-		}*/
+		}
 		//ft_free_env(line_process);
 		//free(line);
 	//}
 	return (0);
-}
+}*/
