@@ -3,44 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_preprocessor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/08 19:45:44 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:21:44 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	*replace_chars(char *str, char find, char replace);
-
-// TODO: Esta función deberia devolver la linea recibida por parámetro lista para ser parseada al AST,
-// TODO: podria devolver un puntero null en caso de que el comando no sea valido.
-char	**preprocess(char *line)
+static size_t	check_quote(char *line, char c)
 {
-	// TODO: Sustituir variables de entorno por su valor.
+	size_t	i;
+	size_t	d_quote;
 
-	// TODO: No interpretar caracteres especiales on especificados en el subject.
-	// TODO: No estoy seguro de si deberiamos eliminar estos caracteres 
-	// TODO: y continuar con la ejecución o devolver un error en caso de encontrar alguno.
-	
-	char	**ret;
-
-	line = replace_chars(line, '\t', ' ');
-	ret = ft_split(line, ' ');
-	return (ret);
+	i = 0;
+	d_quote = 0;
+	while (line[i])
+	{
+		if (line[i] == c)
+			d_quote++;
+		i++;
+	}
+	return (d_quote);
 }
 
-static char	*replace_chars(char *str, char find, char replace)
+static char	*replace_chars(char *str, char *to_find, char replace)
 {
-	int	i;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == find)
-			str[i] = replace;
+		j = 0;
+		while (to_find[j])
+		{
+			if (str[i] == to_find[j])
+				str[i] = replace;
+			j++;
+		}
 		i++;
 	}
 	return (str);
 }
+
+char	**preprocess(char *line)
+{
+	char	**ret;
+	size_t	single_quote;
+	size_t	double_quote;
+
+	ret = NULL;
+	line = replace_chars(line, "\t\n\v\f\r", ' ');
+	single_quote = check_quote(line, '\'');
+	double_quote = check_quote(line, '\"');
+	ret = ft_split_preprocess(line, ' ');
+	if (ret == NULL)
+		return (NULL);
+	return (ret);
+}
+/*
+int	main(void)
+{
+	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
+	char	*line;
+	char	**line_ast;
+	size_t	i;
+
+	
+	i = 0;
+	line = readline("minishell> ");
+	line_ast = preprocess(line);
+	while (line_ast[i])
+	{
+		printf("%s\n", line_ast[i]);
+		i++;
+	}
+	ft_free_env(line_ast);
+	free(line);
+	return (0);
+}
+*/
