@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/19 12:56:27 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:38:23 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ typedef struct s_preprocess
 	size_t	init;
 	size_t	count;
 	size_t	final;
+	size_t	limit;
 	int		flag;
 	char	quote;
+	size_t	start;
+	size_t	end;
 }			t_preprocess;
 
 // sig_handler:
@@ -60,8 +63,14 @@ void		set_signal_handlers(void);
 
 // cmd_preprocessor:
 char		**preprocess(char *line);
-void 		print_error_quote(int c);
 
+// cmd_split_preprocess
+char	**ft_split_preprocess(char const *s, char c);
+
+// cmd_split_preprocess_utils
+void	d_init(t_preprocess *d);
+char	**ft_free_split_preprocess(char **split, size_t limit);
+void 	print_error_quote(int c);
 
 // ast_builder:
 t_ast		**build_ast(char **args);
