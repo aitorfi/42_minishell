@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/19 19:04:41 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:09:51 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,13 +145,13 @@ int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
 
 // builtin_exit
-int		do_exit(char **arguments);
+int			do_exit(char **arguments);
 
 // builtin_exit_utils
-void	check_exit_args(char **arguments, int *flag);
-int		ft_atoi_exit(char *str);
-int		is_number(char *arguments);
-void	do_exit_atoi(char *arguments);
+void		check_exit_args(char **arguments, int *flag);
+int			ft_atoi_exit(char *str);
+int			is_number(char *arguments);
+void		do_exit_atoi(char *arguments);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
