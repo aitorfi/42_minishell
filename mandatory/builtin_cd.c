@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:12:45 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/15 19:42:01 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/20 13:21:00 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ int	do_cd(t_mshell *mini_data, char **arguments)
 	size_t	i;
 	char	*cwd;
 	int		free_b;
+	char	*new_path;
 
+	new_path = NULL;
 	i = 1;
 	free_b = 0;
 	if (!ft_strncmp(arguments[i], ".", ft_strlen(arguments[i])))
@@ -123,12 +125,12 @@ int	do_cd(t_mshell *mini_data, char **arguments)
 	if (!ft_strncmp(arguments[i], "..", ft_strlen(arguments[i]))
 		|| !ft_strncmp(arguments[i], "-", ft_strlen(arguments[i])))
 	{
-		arguments[i] = set_cd_special_case(cwd, arguments[i], mini_data);
-		if (arguments[i] == NULL)
+		new_path = set_cd_special_case(cwd, arguments[i], mini_data);
+		if (new_path == NULL)
 			return (ft_putstr_fd("cd: could not set especial case", 2), 1);
 		free_b = 1;
 	}
-	if (do_cd_exec(cwd, mini_data, arguments[i], free_b))
+	if (do_cd_exec(cwd, mini_data, new_path, free_b))
 		return (free(cwd), 1);
 	return (free(cwd), 0);
 }

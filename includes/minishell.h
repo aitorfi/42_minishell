@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/19 19:09:51 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:04:02 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@
 # include "../libft/libft.h"
 
 int	g_result;
-
-typedef enum e_ast_node_type
-{
-	ROOT = 0,
-	LEFT,
-	RIGHT	
-}	t_ast_node_type;
 
 typedef enum e_operation
 {
@@ -52,6 +45,7 @@ typedef struct s_mshell
 {
 	char	**env_custom;
 	int		stdout_fd;
+	int		stdin_fd;
 }			t_mshell;
 
 typedef struct s_preprocess
@@ -115,7 +109,7 @@ t_ast		*new_node(t_operation op, char *path, char **args, char *limit);
 
 // builtin_utils:
 int			is_builtin(char *cmd);
-int			execute_builtin(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell);
+int			execute_builtin(t_ast *node, t_mshell *mshell);
 
 // builtin_pwd:
 int			do_pwd(void);
