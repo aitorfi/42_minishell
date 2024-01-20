@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/19 19:09:51 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:25:47 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,11 @@ void		do_exit_atoi(char *arguments);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
+
+// // builtin_unset_utils:
+void	print_error_unset(char *arguments);
+int		check_unset_args(char *arguments);
+
 
 // init_environment:
 // Modulo auxiliar para inicializar y guardar las variables de entorno
