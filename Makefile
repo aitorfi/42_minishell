@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
+#    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/19 19:12:02 by afidalgo         ###   ########.fr        #
+#    Updated: 2024/01/20 14:47:59 by alvicina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,9 @@ MPATH_SRCS  = \
 	error_utils.c file_utils.c init_environment.c builtin_cd.c environment_utils.c \
 	builtin_echo.c builtin_export.c builtin_export_utils.c builtin_export_sort.c \
 	cmd_split_preprocess_utils.c cmd_split_preprocess.c builtin_utils.c \
-	builtin_unset.c cmd_utils.c builtin_exit.c builtin_exit_utils.c
+	builtin_unset.c cmd_utils.c builtin_exit.c builtin_exit_utils.c \
+	builtin_unset_utils.c
+	
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:00:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/14 12:32:36 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/20 11:32:52 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int	change_export_env(t_mshell *mini_data, char *arguments, size_t pos)
 	free(mini_data->env_custom[pos]);
 	mini_data->env_custom[pos] = ft_strdup(arguments);
 	if (mini_data->env_custom[pos] == NULL)
+	{
+		perror("malloc error in export");
 		return (1);
+	}
 	else
 		return (0);
 }
@@ -51,6 +54,7 @@ int	add_export_env(t_mshell *mini_data, char *arguments)
 
 void	print_error_export(char *arguments)
 {
+	g_result = 1;
 	ft_putstr_fd("minishell> export `", 2);
 	ft_putstr_fd(arguments, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);

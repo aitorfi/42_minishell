@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:01:50 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/11 11:15:10 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/20 11:22:43 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ char	*ft_get_env(char *env_to_get, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(env_to_get, envp[i], ft_strlen(env_to_get) - 1) == 0)
+		if (ft_strncmp(env_to_get, envp[i], ft_strlen(env_to_get)) == 0
+			&& (envp[i][ft_strlen(env_to_get)] == '='
+			|| envp[i][ft_strlen(env_to_get)] == 0))
 			break ;
 		i++;
 	}

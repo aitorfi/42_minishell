@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 16:39:36 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/15 13:32:09 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/20 13:56:51 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,16 @@ static int	do_export_args(t_mshell *mini_data, char **arguments)
 {
 	size_t	i;
 
-	(void) mini_data;
 	i = 1;
 	while (arguments[i])
 	{
 		if (check_export_args(arguments[i]))
-		{
 			print_error_export(arguments[i]);
-			i++;
+		else
+		{
+			if (exec_export_env(mini_data, arguments[i]))
+				return (1);
 		}
-		if (exec_export_env(mini_data, arguments[i]))
-			return (1);
 		i++;
 	}
 	return (0);
@@ -141,12 +140,12 @@ int	main(int argc, char **argv, char **envp)
 	//}
 	(void) argv;
 	arguments[0] = "export";
-	arguments[1] = "HOME=Alejandro";
-	arguments[2] = "_2=((()))";
-	arguments[3] = "1";
-	arguments[4] = "Zeta1=Hola";
-	arguments[5] = "Zeta2";
-	arguments[6] = "Zeta2=pepe";
+	arguments[1] = "1";
+	arguments[2] = "2";
+	arguments[3] = "3";
+	arguments[4] = "4";
+	arguments[5] = "5";
+	arguments[6] = "6";
 	arguments[7] = NULL;
 	mini_data.env_custom = do_env_init(envp, 0);
 	i = 0;
