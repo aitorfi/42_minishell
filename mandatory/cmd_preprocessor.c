@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 18:21:44 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:53:59 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ char	**preprocess(char *line)
 	ret = ft_split_preprocess(line, ' ');
 	if (ret == NULL)
 		return (NULL);
+	do_expand(ret);
 	return (ret);
 }
-/*
+
 int	main(void)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -84,4 +85,4 @@ int	main(void)
 	free(line);
 	return (0);
 }
-*/
+

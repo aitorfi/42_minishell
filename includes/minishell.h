@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/20 14:25:47 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:54:12 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ char	**ft_split_preprocess(char const *s, char c);
 void	d_init(t_preprocess *d);
 char	**ft_free_split_preprocess(char **split, size_t limit);
 void 	print_error_quote(int c);
+
+// cmd_expand
+int	do_expand(char **ret);
 
 // ast_builder:
 t_ast	**build_ast(char **args, t_mshell *mshell);
