@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:12:45 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/20 11:22:02 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:14:52 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char *arguments, int free_b)
 
 	if (chdir(arguments))
 	{
-		free(arguments);
+		if (free_b)
+			free(arguments);
 		return (perror("cd: could not change to directory"), 4);
 	}
 	if (ft_update_env(cwd_be, mini_data, "OLDPWD") == -1)
@@ -35,49 +36,31 @@ char *arguments, int free_b)
 	return (0);
 }
 
-static char	*set_cd_one_up(char *cwd)
+static int	do_cd_special_case(char *arguments, char *cwd,
+t_mshell *mini_data, int free_b )
 {
-	size_t	i;
-	char	*dir_one_up;
+	char	*new_path;
 
-	i = 0;
-	while (cwd[i])
-		i++;
-	i = i - 1;
-	while (cwd[i] != '/' && cwd[i])
-		i--;
-	dir_one_up = ft_substr(cwd, 0, ft_strlen(cwd) - ft_strlen(&cwd[i]));
-	if (dir_one_up == NULL)
-		return (NULL);
-	return (dir_one_up);
-}
-
-static char	*set_cd_special_case(char *cwd, char *arguments,
-t_mshell *mini_data)
-{
-	char	*dir_to_go;
-
-	if (!ft_strncmp(arguments, "..", ft_strlen(arguments)))
+	new_path = NULL;
+	if (!ft_strncmp(arguments, "..", ft_strlen(arguments))
+		|| !ft_strncmp(arguments, "-", ft_strlen(arguments)))
 	{
-		dir_to_go = set_cd_one_up(cwd);
-		if (dir_to_go == NULL)
-			return (NULL);
+		new_path = set_cd_special_case(cwd, arguments, mini_data);
+		if (new_path == NULL)
+			return (1);
+		free_b = 1;
 	}
-	if (!ft_strncmp(arguments, "-", ft_strlen(arguments)))
+	if (free_b)
 	{
-		dir_to_go = ft_get_env("OLDPWD", mini_data->env_custom);
-		if (dir_to_go == NULL)
-			return (ft_putstr_fd("cd: could not get OLDPWD\n", 2), NULL);
-		dir_to_go = ft_set_env(dir_to_go);
-		if (*dir_to_go == 0)
-			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), NULL);
-		dir_to_go = ft_strdup(dir_to_go);
-		if (dir_to_go == NULL)
-			return (ft_putstr_fd("cd: error getting OLPWD value\n", 2), NULL);
-		ft_putstr_fd(dir_to_go, 1);
-		write(1, "\n", 1);
+		if (do_cd_exec(cwd, mini_data, new_path, free_b))
+			return (free(cwd), 1);
 	}
-	return (dir_to_go);
+	else
+	{
+		if (do_cd_exec(cwd, mini_data, arguments, free_b))
+			return (free(cwd), 1);
+	}
+	return (free(cwd), 0);
 }
 
 static int	do_cd_home(t_mshell *mini_data)
@@ -120,17 +103,10 @@ int	do_cd(t_mshell *mini_data, char **arguments)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		return (perror("cd: could not update env"), 3);
-	if (!ft_strncmp(arguments[i], "..", ft_strlen(arguments[i]))
-		|| !ft_strncmp(arguments[i], "-", ft_strlen(arguments[i])))
-	{
-		arguments[i] = set_cd_special_case(cwd, arguments[i], mini_data);
-		if (arguments[i] == NULL)
-			return (1);
-		free_b = 1;
-	}
-	if (do_cd_exec(cwd, mini_data, arguments[i], free_b))
-		return (free(cwd), 1);
-	return (free(cwd), 0);
+	if (do_cd_special_case(arguments[i], cwd, mini_data, free_b))
+		return (1);
+	else
+		return (0);
 }
 /*
 int	main(int argc, char **argv, char **envp)
@@ -144,7 +120,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	arguments[0] = "cd";
-	arguments[1] = "..";
+	arguments[1] = "/Users/alvicina/cursus/";
 	arguments[2] = NULL;
 	mini_data.env_custom = do_env_init(envp, 1);
 	//while (mini_data.env_custom[i])
@@ -156,11 +132,11 @@ int	main(int argc, char **argv, char **envp)
 	printf("****************DESPUES DEL CD********************\n");
 	do_cd(&mini_data, arguments);
 	printf("********************************************************\n");
-	//while (mini_data.env_custom[i])
-	//{
-	//	printf("%s\n", mini_data.env_custom[i]);
-	//	i++;
-	//}
+	while (mini_data.env_custom[i])
+	{
+		printf("%s\n", mini_data.env_custom[i]);
+		i++;
+	}
 	cwd = getcwd(NULL, 0);
 	printf("********************************************************\n");
 	printf("cwd: %s\n", cwd);

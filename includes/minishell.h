@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/20 14:25:47 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:08:24 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,11 @@ int			do_pwd(void);
 
 // builtin_cd:
 int			do_cd(t_mshell *mini_data, char **arguments);
+
+// builtin_cd_utils:
+char	*set_cd_special_case(char *cwd, char *arguments,
+			t_mshell *mini_data);
+char	*set_cd_one_up(char *cwd);
 
 // builtin_echo:
 int			do_echo(char **arguments);

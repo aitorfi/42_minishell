@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 19:12:47 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 19:10:32 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:15:35 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	is_builtin(char *cmd)
 	);
 }
 
-int	execute_builtin(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell)
+int	execute_builtin(t_ast *node, t_ast_node_type type,
+int *rfd, int *wfd, t_mshell *mshell)
 {
 	int	len;
 
