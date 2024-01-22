@@ -6,11 +6,13 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/20 14:22:52 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:08:45 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_result;
 
 static t_mshell	*init(char **envp);
 static int		readline_loop(char *prompt, t_mshell *mshell);
@@ -19,6 +21,7 @@ static int		is_terminating_cmd(t_ast **ast);
 int	main(int argc, char **argv, char **envp)
 {
 	t_mshell	*mshell;
+	int			exit_status;
 
 	(void) argc; // Esto es para que no de error de parámetro sin usar.
 	(void) argv; // Esto es para que no de error de parámetro sin usar.
@@ -26,15 +29,10 @@ int	main(int argc, char **argv, char **envp)
 	mshell = init(envp);
 	if (mshell == NULL)
 		exit(EXIT_FAILURE);
-	if (readline_loop("minishell> ", mshell) == EXIT_FAILURE)
-	{
-		free_split(mshell->env_custom);
-		free(mshell);
-		exit(EXIT_FAILURE);
-	}
+	exit_status = readline_loop("minishell> ", mshell);
 	free_split(mshell->env_custom);
 	free(mshell);
-	return (0);
+	return (exit_status);
 }
 
 static t_mshell	*init(char **envp)
@@ -72,18 +70,27 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		free_split(line_split);
 		if (ast == NULL)
 			return (EXIT_FAILURE);
-		read_next_line = !is_terminating_cmd(ast);
 		process_ast(ast, mshell);
 		// TODO: Proteger errores en process_ast
+		read_next_line = !is_terminating_cmd(ast);
 		free_ast(ast);
 	}
-	printf("read_next_line = %d\n", read_next_line);
 	rl_clear_history();
 	return (g_result);
 }
 
 static int	is_terminating_cmd(t_ast **ast)
 {
-	return (!ast[0]->left && !ast[0]->right
-		&& !ft_strncmp(ast[0]->path, "exit", ft_strlen(ast[0]->path)));
+	int path_len;
+
+	if (!ast[0]->left && !ast[0]->right && ast[0]->operation == COMMAND_OP)
+	{
+		path_len = ft_strlen(ast[0]->path);
+		if (!ft_strncmp(ast[0]->path, "exit", path_len) 
+			&& can_do_exit(ast[0]->args))
+		{
+			return (1);	
+		}
+	}
+	return (0);
 }

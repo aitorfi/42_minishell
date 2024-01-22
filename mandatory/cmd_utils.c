@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:48:07 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/20 14:03:36 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:16:33 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	is_builtin(char *cmd)
 	);
 }
 
-int	execute_builtin(t_ast *node, t_mshell *mshell)
+int	execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process)
 {
 	int	len;
 
@@ -97,6 +97,6 @@ int	execute_builtin(t_ast *node, t_mshell *mshell)
 	if (!ft_strncmp(node->path, "unset", len))
 		return (do_unset(mshell, node->args));
 	if (!ft_strncmp(node->path, "exit", len))
-		return (do_exit(node->args));
+		return (do_exit(node->args, is_main_process));
 	return (EXIT_FAILURE);
 }

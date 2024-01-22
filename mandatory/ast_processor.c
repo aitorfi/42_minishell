@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:20:53 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/20 14:24:33 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:07:06 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,26 @@ static int	read_ast_node_command(t_ast *node, int rfd, int wfd, t_mshell *mshell
 		dup2(rfd, STDIN_FILENO);
 	if (wfd >= 0)
 		dup2(wfd, STDOUT_FILENO);
-	pid = fork();
-	if (pid)
+	if (is_builtin(node->args[0]) && (!node->parent || node->parent->operation == PIPE_OP))
 	{
-		waitpid(pid, NULL, 0);
+		g_result = execute_builtin(node, mshell, 1);
 	}
 	else
 	{
-		if (is_builtin(node->args[0]))
-			exit(execute_builtin(node, mshell));
-		execve(node->path, node->args, NULL);
-		perror("Error");
-		exit(EXIT_FAILURE);
+		pid = fork();
+		if (pid)
+		{
+			waitpid(pid, &g_result, 0);
+		}
+		else
+		{
+			if (is_builtin(node->args[0]))
+				exit(execute_builtin(node, mshell, 0));
+			execve(node->path, node->args, NULL);
+			perror("Error");
+			exit(EXIT_FAILURE);
+		}
 	}
-	write(mshell->stdout_fd, "comando ejecutado\n", strlen("comando ejecutado\n"));
 	if (rfd >= 0)
 	{
 		dup2(mshell->stdin_fd, STDIN_FILENO);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:48:08 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/15 16:23:16 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:32:10 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int	make_change_unset(t_mshell *mini_data, size_t pos, char **new_env)
 static int	change_unset_env(t_mshell *mini_data, size_t pos)
 {
 	size_t	i;
-	size_t	j;
 	char	**new_env;
 
 	i = 0;
@@ -51,7 +50,6 @@ static int	change_unset_env(t_mshell *mini_data, size_t pos)
 	if (new_env == NULL)
 		return (ft_putstr_fd("could not update env", 2), 1);
 	i = 0;
-	j = 0;
 	if (make_change_unset(mini_data, pos, new_env))
 		return (1);
 	return (0);
