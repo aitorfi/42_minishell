@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/23 11:48:30 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:40:44 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ static char	*search_expand(char *to_expand, t_mshell *mini_data)
 		if (temp == NULL)
 			return (perror("malloc error while expanding $"), NULL);
 	}
-	printf("TEMP:-------->  %s\n", temp);
 	return (temp);
 }
 
-static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, size_t pos)
+static char	*exec_expand_comp(char **ast, t_mshell *mini_data, size_t pos)
 {
 	size_t	i;
 	size_t	j;
@@ -44,14 +43,13 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 	char	*to_expand;
 	char	*search;
 	char	*keep;
+	char	*temp;
 	
 	j = 0;
 	c = 0;
 	i = 0;
 	keep = NULL;
-	(void) dolar;
-	(void) mini_data;
-	while (ast[pos][i])
+	while (1)
 	{	
 		i = j;
 		if (keep == NULL)
@@ -61,12 +59,10 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 			first = ft_substr(ast[pos], 0, i);
 			if (first == NULL)
 				return (perror("malloc error while expanding $"), NULL);
-			printf("first: %s\n", first);
 			j = i;
 			while (ast[pos][j] && ast[pos][j] != ' ' && ast[pos][j] != '\"' && ast[pos][j] != '\'')
 				j++;
 			to_expand = ft_substr(ast[pos], i + 1, j - i - 1);
-			printf("to expand: %s\n", to_expand);
 			if (to_expand == NULL)
 				return (perror("malloc error while expanding $"), NULL);
 			else
@@ -80,20 +76,16 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 					return (perror("malloc error while expanding $"), NULL);
 				free(first);
 				free(search);
-				printf("STRJOIN: %s\n", keep);
 			}
 			second = ft_substr(ast[pos], j, ft_strlen(ast[pos]) - j);
 			if (second == NULL)
 				return (perror("malloc error while expanding $"), NULL);
-			printf("second %s\n", second);
 			first = keep;
 			keep = ft_strjoin(keep, second);
 			if (keep == NULL)
 				return (perror("malloc error while expanding $"), NULL);
 			free(first);
 			free(second);
-			printf("FT_STRJOIN2 %s\n", keep);
-			
 		}
 		else
 		{
@@ -101,19 +93,18 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 			i = j;
 			while (keep[i] && keep[i] != '$')
 				i++;
+			if (!keep[i])
+				break;
 			first = ft_substr(keep, 0, i);
 			if (first == NULL)
 				return (perror("malloc error while expanding $"), NULL);
 			j = i;
-			printf("---->first2: %s\n", first);
 			while (keep[j] && keep[j] != ' ' && keep[j] != '\"' && keep[j] != '\'')
 				j++;
-			second = ft_substr(keep, j, ft_strlen(ast[pos]) - j);
+			second = ft_substr(keep, j, ft_strlen(keep) - j);
 			if (second == NULL)
 				return (perror("malloc error while expanding $"), NULL);
-			printf("------>second2: %s\n", second);
 			to_expand = ft_substr(keep, i + 1, j - i - 1);
-			printf("------->to expand2: %s\n", to_expand);
 			if (to_expand == NULL)
 				return (perror("malloc error while expanding $"), NULL);
 			else
@@ -122,12 +113,13 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 				free(to_expand);
 				if (search == NULL)
 					return (NULL);
+				temp = keep;
 				keep = ft_strjoin(first, search);
 				if (keep == NULL)
 					return (perror("malloc error while expanding $"), NULL);
+				free(temp);
 				free(first);
 				free(search);
-				printf("----->FT_STRJOIN2 (first, search): %s\n", keep);
 			}
 			first = keep;
 			keep = ft_strjoin(keep, second);
@@ -135,12 +127,9 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 				return (perror("malloc error while expanding $"), NULL);
 			free(first);
 			free(second);
-			printf("-------->FT_STRJOIN2 (keep, second) %s\n", keep);
 		}
-		//i = j;
 	}
-	free(keep);
-	return (NULL);
+	return (keep);
 }
 
 /*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD"*/
@@ -170,10 +159,18 @@ static char	**exec_expand_simple(char *dolar, char **ast, t_mshell *mini_data, s
 
 static char **exec_expand(char *dolar, char **ast, t_mshell *mini_data, size_t pos)
 {
+	char	*new; 
+	
 	if (!ft_strncmp(dolar, ast[pos] + 1, ft_strlen(dolar)))
 		return (exec_expand_simple(dolar, ast, mini_data, pos));
 	else
-		return (exec_expand_comp(dolar, ast, mini_data, pos));
+	{
+		new = exec_expand_comp(ast, mini_data, pos);
+		if (new == NULL)
+			return (NULL);
+		free(ast[pos]);
+		ast[pos] = new;
+	}
 	return (0);
 }
 
@@ -234,4 +231,4 @@ int	do_expand(char **ret, t_mshell *mini_data)
 }
 
 
-/*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   hola   $PWD  hola"*/
+/*ls -l | grep 'hola $que tal'  adios$HOMENO  hola$HOME $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   hola   $PWD  hola"*/
