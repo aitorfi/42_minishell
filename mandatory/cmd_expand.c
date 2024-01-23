@@ -6,11 +6,33 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/22 19:53:46 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:48:30 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static char	*search_expand(char *to_expand, t_mshell *mini_data)
+{
+	char	*temp;
+
+	temp = ft_get_env(to_expand, mini_data->env_custom);
+	if (temp == NULL)
+	{
+		temp = ft_strdup("");
+		if (temp == NULL)
+			return (perror("malloc error while expanding $"), NULL);
+	}
+	else
+	{
+		temp = ft_set_env(temp);
+		temp = ft_strdup(temp);
+		if (temp == NULL)
+			return (perror("malloc error while expanding $"), NULL);
+	}
+	printf("TEMP:-------->  %s\n", temp);
+	return (temp);
+}
 
 static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, size_t pos)
 {
@@ -18,37 +40,110 @@ static char	**exec_expand_comp(char *dolar, char **ast, t_mshell *mini_data, siz
 	size_t	j;
 	size_t	c;
 	char	*first;
+	char	*second;
 	char	*to_expand;
-	//char	third;
+	char	*search;
+	char	*keep;
 	
-	i = 0;
 	j = 0;
 	c = 0;
+	i = 0;
+	keep = NULL;
 	(void) dolar;
 	(void) mini_data;
 	while (ast[pos][i])
-	{	i = j;
-		while (ast[pos][i] && ast[pos][i] != '$')
-			i++;
-		first = ft_substr(ast[pos], 0, i);
-		if (first == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-		printf("first: %s\n", first);
-		j = i;
-		while (ast[pos][j] && ast[pos][j] != ' ')
-			j++;
-		to_expand = ft_substr(ast[pos], i + 1, j);
-		if (to_expand == NULL)
-			return (perror("malloc error while expanding $"), NULL);
+	{	
+		i = j;
+		if (keep == NULL)
+		{
+			while (ast[pos][i] && ast[pos][i] != '$')
+				i++;
+			first = ft_substr(ast[pos], 0, i);
+			if (first == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			printf("first: %s\n", first);
+			j = i;
+			while (ast[pos][j] && ast[pos][j] != ' ' && ast[pos][j] != '\"' && ast[pos][j] != '\'')
+				j++;
+			to_expand = ft_substr(ast[pos], i + 1, j - i - 1);
+			printf("to expand: %s\n", to_expand);
+			if (to_expand == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			else
+			{
+				search = search_expand(to_expand, mini_data);
+				free(to_expand);
+				if (search == NULL)
+					return (NULL);
+				keep = ft_strjoin(first, search);
+				if (keep == NULL)
+					return (perror("malloc error while expanding $"), NULL);
+				free(first);
+				free(search);
+				printf("STRJOIN: %s\n", keep);
+			}
+			second = ft_substr(ast[pos], j, ft_strlen(ast[pos]) - j);
+			if (second == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			printf("second %s\n", second);
+			first = keep;
+			keep = ft_strjoin(keep, second);
+			if (keep == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			free(first);
+			free(second);
+			printf("FT_STRJOIN2 %s\n", keep);
+			
+		}
 		else
 		{
-			//////tengo que buscar variable y la hay, expandir, y luego strjoin/////////
+			i = 0;
+			i = j;
+			while (keep[i] && keep[i] != '$')
+				i++;
+			first = ft_substr(keep, 0, i);
+			if (first == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			j = i;
+			printf("---->first2: %s\n", first);
+			while (keep[j] && keep[j] != ' ' && keep[j] != '\"' && keep[j] != '\'')
+				j++;
+			second = ft_substr(keep, j, ft_strlen(ast[pos]) - j);
+			if (second == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			printf("------>second2: %s\n", second);
+			to_expand = ft_substr(keep, i + 1, j - i - 1);
+			printf("------->to expand2: %s\n", to_expand);
+			if (to_expand == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			else
+			{
+				search = search_expand(to_expand, mini_data);
+				free(to_expand);
+				if (search == NULL)
+					return (NULL);
+				keep = ft_strjoin(first, search);
+				if (keep == NULL)
+					return (perror("malloc error while expanding $"), NULL);
+				free(first);
+				free(search);
+				printf("----->FT_STRJOIN2 (first, search): %s\n", keep);
+			}
+			first = keep;
+			keep = ft_strjoin(keep, second);
+			if (keep == NULL)
+				return (perror("malloc error while expanding $"), NULL);
+			free(first);
+			free(second);
+			printf("-------->FT_STRJOIN2 (keep, second) %s\n", keep);
 		}
-		i = j;
-		printf("second: %s\n", second);
+		//i = j;
 	}
+	free(keep);
 	return (NULL);
 }
+
+/*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD"*/
 
 static char	**exec_expand_simple(char *dolar, char **ast, t_mshell *mini_data, size_t pos)
 {
@@ -139,4 +234,4 @@ int	do_expand(char **ret, t_mshell *mini_data)
 }
 
 
-/*ls -l | grep \'hola $que tal\' $PATH \'estoy 1adios \"   pepe \"   adios\' 2\'ho\'la \"que $tal\"*/
+/*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   hola   $PWD  hola"*/
