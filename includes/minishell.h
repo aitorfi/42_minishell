@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/22 16:01:37 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:44:18 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,44 @@ typedef struct s_preprocess
 	size_t	end;
 }			t_preprocess;
 
+typedef struct s_expand
+{
+	size_t	i;
+	size_t	j;
+	size_t	result;
+	size_t	flag;
+	char	*first;
+	char	*second;
+	char	*to_expand;
+	char	*search;
+	char	*keep;
+	char	*temp;
+}	t_expand;
+
 // sig_handler:
 void		set_signal_handlers(void);
 
 // cmd_preprocessor:
 char		**preprocess(char *line, t_mshell *mini_data);
 
-// cmd_split_preprocess
+// cmd_split_preprocess:
 char	**ft_split_preprocess(char const *s, char c);
 
-// cmd_split_preprocess_utils
+// cmd_split_preprocess_utils:
 void	d_init(t_preprocess *d);
 char	**ft_free_split_preprocess(char **split, size_t limit);
 void 	print_error_quote(int c);
 
-// cmd_expand
+// cmd_expand:
 int	do_expand(char **ret, t_mshell *mini_data);
+
+// cmd_expand utils:
+int		check_expand(char *ret);
+char	*check_dollar(char *ret);
+void	d_expand_init(t_expand *d);
+char	*search_expand(char *to_expand, t_mshell *mini_data);
+char	**exec_expand_simple(char *dolar, char **ast,
+			t_mshell *mini_data, size_t pos);
 
 // ast_builder:
 t_ast	**build_ast(char **args, t_mshell *mshell);

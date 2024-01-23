@@ -6,161 +6,84 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/23 15:40:44 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:48:05 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	*search_expand(char *to_expand, t_mshell *mini_data)
+static char	*get_new_string_expanded(t_expand *d)
 {
-	char	*temp;
+	d->temp = d->keep;
+	d->keep = ft_strjoin(d->first, d->search);
+	if (d->keep == NULL)
+		return (perror("malloc error while expanding $"), NULL);
+	if (d->flag)
+		free(d->temp);
+	free(d->first);
+	free(d->search);
+	d->flag = 1;
+	d->first = d->keep;
+	d->keep = ft_strjoin(d->keep, d->second);
+	if (d->keep == NULL)
+		return (perror("malloc error while expanding $"), NULL);
+	free(d->first);
+	free(d->second);
+	return (d->keep);
+}
 
-	temp = ft_get_env(to_expand, mini_data->env_custom);
-	if (temp == NULL)
-	{
-		temp = ft_strdup("");
-		if (temp == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-	}
-	else
-	{
-		temp = ft_set_env(temp);
-		temp = ft_strdup(temp);
-		if (temp == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-	}
-	return (temp);
+static int	get_substrings_expand(t_expand *d, size_t pos, char **ast)
+{
+	if (d->keep == NULL)
+		d->keep = ast[pos];
+	d->i = d->j;
+	while (d->keep[d->i] && d->keep[d->i] != '$')
+		d->i++;
+	if (!d->keep[d->i])
+		return (1);
+	d->first = ft_substr(d->keep, 0, d->i);
+	if (d->first == NULL)
+		return (perror("malloc error while expanding $"), 2);
+	d->j = d->i;
+	while (d->keep[d->j] && d->keep[d->j] != ' ' && d->keep[d->j] != '\"'
+		&& d->keep[d->j] != '\'')
+		d->j++;
+	d->second = ft_substr(d->keep, d->j, ft_strlen(d->keep) - d->j);
+	if (d->second == NULL)
+		return (perror("malloc error while expanding $"), 2);
+	d->to_expand = ft_substr(d->keep, d->i + 1, d->j - d->i - 1);
+	if (d->to_expand == NULL)
+		return (perror("malloc error while expanding $"), 2);
+	return (0);
 }
 
 static char	*exec_expand_comp(char **ast, t_mshell *mini_data, size_t pos)
 {
-	size_t	i;
-	size_t	j;
-	size_t	c;
-	char	*first;
-	char	*second;
-	char	*to_expand;
-	char	*search;
-	char	*keep;
-	char	*temp;
-	
-	j = 0;
-	c = 0;
-	i = 0;
-	keep = NULL;
+	t_expand	d;
+
+	d_expand_init(&d);
 	while (1)
-	{	
-		i = j;
-		if (keep == NULL)
-		{
-			while (ast[pos][i] && ast[pos][i] != '$')
-				i++;
-			first = ft_substr(ast[pos], 0, i);
-			if (first == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			j = i;
-			while (ast[pos][j] && ast[pos][j] != ' ' && ast[pos][j] != '\"' && ast[pos][j] != '\'')
-				j++;
-			to_expand = ft_substr(ast[pos], i + 1, j - i - 1);
-			if (to_expand == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			else
-			{
-				search = search_expand(to_expand, mini_data);
-				free(to_expand);
-				if (search == NULL)
-					return (NULL);
-				keep = ft_strjoin(first, search);
-				if (keep == NULL)
-					return (perror("malloc error while expanding $"), NULL);
-				free(first);
-				free(search);
-			}
-			second = ft_substr(ast[pos], j, ft_strlen(ast[pos]) - j);
-			if (second == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			first = keep;
-			keep = ft_strjoin(keep, second);
-			if (keep == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			free(first);
-			free(second);
-		}
-		else
-		{
-			i = 0;
-			i = j;
-			while (keep[i] && keep[i] != '$')
-				i++;
-			if (!keep[i])
-				break;
-			first = ft_substr(keep, 0, i);
-			if (first == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			j = i;
-			while (keep[j] && keep[j] != ' ' && keep[j] != '\"' && keep[j] != '\'')
-				j++;
-			second = ft_substr(keep, j, ft_strlen(keep) - j);
-			if (second == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			to_expand = ft_substr(keep, i + 1, j - i - 1);
-			if (to_expand == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			else
-			{
-				search = search_expand(to_expand, mini_data);
-				free(to_expand);
-				if (search == NULL)
-					return (NULL);
-				temp = keep;
-				keep = ft_strjoin(first, search);
-				if (keep == NULL)
-					return (perror("malloc error while expanding $"), NULL);
-				free(temp);
-				free(first);
-				free(search);
-			}
-			first = keep;
-			keep = ft_strjoin(keep, second);
-			if (keep == NULL)
-				return (perror("malloc error while expanding $"), NULL);
-			free(first);
-			free(second);
-		}
+	{
+		d.result = get_substrings_expand(&d, pos, ast);
+		if (d.result == 2)
+			return (NULL);
+		else if (d.result == 1)
+			break ;
+		d.search = search_expand(d.to_expand, mini_data);
+		free(d.to_expand);
+		if (d.search == NULL)
+			return (NULL);
+		if (!get_new_string_expanded(&d))
+			return (NULL);
 	}
-	return (keep);
+	return (d.keep);
 }
 
-/*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD"*/
-
-static char	**exec_expand_simple(char *dolar, char **ast, t_mshell *mini_data, size_t pos)
+static char	**exec_expand(char *dolar, char **ast,
+t_mshell *mini_data, size_t pos)
 {
-	char	*temp;
-	
-	temp = ft_get_env(dolar, mini_data->env_custom);
-	if (temp == NULL)
-	{
-		temp = ft_strdup("");
-		if (temp == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-	}
-	else
-	{
-		temp = ft_set_env(temp);
-		temp = ft_strdup(temp);
-		if (temp == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-	}
-	free(ast[pos]);
-	ast[pos] = temp;
-	return (ast);
-}
+	char	*new;
 
-static char **exec_expand(char *dolar, char **ast, t_mshell *mini_data, size_t pos)
-{
-	char	*new; 
-	
 	if (!ft_strncmp(dolar, ast[pos] + 1, ft_strlen(dolar)))
 		return (exec_expand_simple(dolar, ast, mini_data, pos));
 	else
@@ -171,64 +94,30 @@ static char **exec_expand(char *dolar, char **ast, t_mshell *mini_data, size_t p
 		free(ast[pos]);
 		ast[pos] = new;
 	}
-	return (0);
-}
-
-static char	*check_dollar(char *ret)
-{
-	size_t	i;
-
-	i = 0;
-	while(ret[i])
-	{
-		if (ret[i] == '$')
-		{
-			i++;
-			return (&ret[i]);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-static int	check_expand(char *ret)
-{
-	size_t	i;
-
-	i = 0;
-	while (ret[i])
-	{
-		if (ret[i] == '\'')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (ast);
 }
 
 int	do_expand(char **ret, t_mshell *mini_data)
 {
 	size_t	i;
-	char	*where_$;
-	
+	char	*where_dollar;
+
 	i = 0;
 	while (ret[i])
 	{
 		if (check_expand(ret[i]))
 		{
-			where_$ = check_dollar(ret[i]);
-			if(where_$)
-				exec_expand(where_$, ret, mini_data, i);
+			where_dollar = check_dollar(ret[i]);
+			if (where_dollar)
+			{
+				if (!exec_expand(where_dollar, ret, mini_data, i))
+					return (1);
+			}
 		}
-		i++;	
-	}
-	i = 0;
-	while (ret[i])
-	{
-		printf("cambiados: %s\n", ret[i]);
 		i++;
 	}
 	return (0);
 }
 
-
-/*ls -l | grep 'hola $que tal'  adios$HOMENO  hola$HOME $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   hola   $PWD  hola"*/
+/*ls -l | grep 'hola $que tal'  adios$HOMENO   $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   hola   $PWD  hola"*/
+/*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD hola"*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 17:30:26 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:52:06 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (line == NULL)
 			return (EXIT_FAILURE);
 		add_history(line);
-		line_split = preprocess(line);
+		line_split = preprocess(line, mshell);
 		ast = build_ast(line_split, mshell);
 		if (ast == NULL)
 		{
