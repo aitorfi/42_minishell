@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/22 10:08:24 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:49:46 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-int	g_result;
-
-typedef enum e_ast_node_type
-{
-	ROOT = 0,
-	LEFT,
-	RIGHT	
-}	t_ast_node_type;
+extern int	g_result;
 
 typedef enum e_operation
 {
@@ -46,12 +39,14 @@ typedef struct s_ast
 	char			*limit;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	struct s_ast	*parent;
 }					t_ast;
 
 typedef struct s_mshell
 {
 	char	**env_custom;
 	int		stdout_fd;
+	int		stdin_fd;
 }			t_mshell;
 
 typedef struct s_preprocess
@@ -73,15 +68,15 @@ void		set_signal_handlers(void);
 char		**preprocess(char *line);
 
 // cmd_split_preprocess
-char	**ft_split_preprocess(char const *s, char c);
+char		**ft_split_preprocess(char const *s, char c);
 
 // cmd_split_preprocess_utils
-void	d_init(t_preprocess *d);
-char	**ft_free_split_preprocess(char **split, size_t limit);
-void 	print_error_quote(int c);
+void		d_init(t_preprocess *d);
+char		**ft_free_split_preprocess(char **split, size_t limit);
+void 		print_error_quote(int c);
 
 // ast_builder:
-t_ast	**build_ast(char **args, t_mshell *mshell);
+t_ast		**build_ast(char **args, t_mshell *mshell);
 
 // heredoc:
 char		*create_heredoc(char *limit);
@@ -115,7 +110,7 @@ t_ast		*new_node(t_operation op, char *path, char **args, char *limit);
 
 // builtin_utils:
 int			is_builtin(char *cmd);
-int			execute_builtin(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell);
+int			execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process);
 
 // builtin_pwd:
 int			do_pwd(void);
@@ -150,7 +145,8 @@ int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
 
 // builtin_exit
-int			do_exit(char **arguments);
+int			do_exit(char **arguments, int is_main_process);
+int			can_do_exit(char **arguments);
 
 // builtin_exit_utils
 void		check_exit_args(char **arguments, int *flag);

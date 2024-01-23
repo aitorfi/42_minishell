@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
+#    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/22 10:17:13 by alvicina         ###   ########.fr        #
+#    Updated: 2024/01/23 18:52:12 by afidalgo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ MPATH_SRCS  = \
 	builtin_env.c builtin_pwd.c utils.c ast_utils.c heredoc.c \
 	error_utils.c file_utils.c init_environment.c builtin_cd.c environment_utils.c \
 	builtin_echo.c builtin_export.c builtin_export_utils.c builtin_export_sort.c \
-	cmd_split_preprocess_utils.c cmd_split_preprocess.c builtin_utils.c \
+	cmd_split_preprocess_utils.c cmd_split_preprocess.c \
 	builtin_unset.c cmd_utils.c builtin_exit.c builtin_exit_utils.c \
 	builtin_unset_utils.c builtin_cd_utils.c \
 	

@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 17:11:41 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:28:05 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index, t_mshell *mshe
 	if (node == NULL)
 		return (NULL);
 	if (ast[0])
+	{
 		node->left = ast[0];
-	if (!node->left)
+		ast[0]->parent = node;
+	}
+	else
 	{
 		node->left = get_left_node(args, index - 1, mshell);
 		if (node->left == NULL)
@@ -73,6 +76,8 @@ static t_ast	*create_op_node(t_ast **ast, char **args, int index, t_mshell *mshe
 		free_ast_node(node->left);
 		return (free_massive(node));
 	}
+	node->left->parent = node;
+	node->right->parent = node;
 	return (node);
 }
 

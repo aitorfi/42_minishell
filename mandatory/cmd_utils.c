@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:48:07 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 18:48:53 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:16:33 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,41 @@ static char	*get_full_cmd_from_path(char **cmd_paths, char *cmd)
 		i++;
 	}
 	return (ft_strdup(cmd));
+}
+
+int	is_builtin(char *cmd)
+{
+	int	len;
+
+	len = ft_strlen(cmd);
+	return (!ft_strncmp(cmd, "cd", len)
+		|| !ft_strncmp(cmd, "echo", len)
+		|| !ft_strncmp(cmd, "env", len)
+		|| !ft_strncmp(cmd, "export", len)
+		|| !ft_strncmp(cmd, "pwd", len)
+		|| !ft_strncmp(cmd, "unset", len)
+		|| !ft_strncmp(cmd, "exit", len)
+	);
+}
+
+int	execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process)
+{
+	int	len;
+
+	len = ft_strlen(node->path);
+	if (!ft_strncmp(node->path, "cd", len))
+		return (do_cd(mshell, node->args));
+	if (!ft_strncmp(node->path, "echo", len))
+		return (do_echo(node->args));
+	if (!ft_strncmp(node->path, "env", len))
+		return (execute_env(mshell->env_custom));
+	if (!ft_strncmp(node->path, "export", len))
+		return (do_export(mshell, node->args));
+	if (!ft_strncmp(node->path, "pwd", len))
+		return (do_pwd());
+	if (!ft_strncmp(node->path, "unset", len))
+		return (do_unset(mshell, node->args));
+	if (!ft_strncmp(node->path, "exit", len))
+		return (do_exit(node->args, is_main_process));
+	return (EXIT_FAILURE);
 }
