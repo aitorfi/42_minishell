@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/23 18:49:46 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:04:13 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+
+# define DEFAULT_FD -2
 
 extern int	g_result;
 
@@ -83,6 +85,9 @@ char		*create_heredoc(char *limit);
 
 // ast_processor:
 void		process_ast(t_ast **ast, t_mshell *mshell);
+
+// ast_processor_cmd:
+int			read_ast_node_command(t_ast *node, int rfd, int wfd, t_mshell *mshell);
 
 // utils:
 t_operation	which_operator(char *operator);
