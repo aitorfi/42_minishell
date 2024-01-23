@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:48:08 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/22 18:32:10 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:51:16 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,6 @@ static int	exec_unset_env(t_mshell *mini_data, char *arguments)
 	return (0);
 }
 
-static void	print_error_unset(char *arguments)
-{
-	ft_putstr_fd("minishell> unset `", 2);
-	ft_putstr_fd(arguments, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-}
-
 int	do_unset(t_mshell *mini_data, char **arguments)
 {
 	size_t	i;
@@ -96,13 +89,13 @@ int	do_unset(t_mshell *mini_data, char **arguments)
 		return (0);
 	while (arguments[i])
 	{
-		if (check_export_args(arguments[i]))
-		{
+		if (check_unset_args(arguments[i]))
 			print_error_unset(arguments[i]);
-			i++;
+		else
+		{
+			if (exec_unset_env(mini_data, arguments[i]))
+				return (1);
 		}
-		if (exec_unset_env(mini_data, arguments[i]))
-			return (1);
 		i++;
 	}
 	return (0);
@@ -157,9 +150,9 @@ int	main(int argc, char **argv, char **envp)
 	printf("********************************************\n");
 	//execute_env(mini_data.env_custom);
 	arguments3[0] = "unset";
-	arguments3[1] = "pepon";
-	arguments3[2] = "Zeta1";
-	arguments3[3] = "Zeta2";
+	arguments3[1] = "2";
+	arguments3[2] = "Zeta1=holaa";
+	arguments3[3] = "_2";
 	arguments3[4] = NULL;
 	if (do_unset(&mini_data, arguments3))
 		return (1);
@@ -168,4 +161,5 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env(mini_data.env_custom);
 	//system("leaks a.out");
 	return (0);
-}*/
+}
+*/

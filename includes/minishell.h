@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/22 19:24:33 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:49:46 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,11 @@ int			do_pwd(void);
 // builtin_cd:
 int			do_cd(t_mshell *mini_data, char **arguments);
 
+// builtin_cd_utils:
+char	*set_cd_special_case(char *cwd, char *arguments,
+			t_mshell *mini_data);
+char	*set_cd_one_up(char *cwd);
+
 // builtin_echo:
 int			do_echo(char **arguments);
 
@@ -151,6 +156,11 @@ void		do_exit_atoi(char *arguments);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
+
+// // builtin_unset_utils:
+void	print_error_unset(char *arguments);
+int		check_unset_args(char *arguments);
+
 
 // init_environment:
 // Modulo auxiliar para inicializar y guardar las variables de entorno
