@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:11:42 by alvicina          #+#    #+#             */
-/*   Updated: 2019/10/01 02:00:18 by alvicina         ###   ########.fr       */
+/*   Updated: 2019/10/01 02:08:18 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char	**exec_trim(char *arg, char **ret, size_t pos)
 
 	temp = ft_strtrim(arg, "\"\'");
 	if (temp == NULL)
-		return(perror("malloc error  while trim"), NULL);
+		return (perror("malloc error  while trim"), NULL);
 	free(ret[pos]);
-		
+	ret[pos] = temp;
+	return (ret);
 }

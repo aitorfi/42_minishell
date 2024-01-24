@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/24 12:33:24 by alvicina         ###   ########.fr       */
+/*   Updated: 2019/10/01 02:04:27 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,9 @@ char	*check_dollar(char *ret);
 void	d_expand_init(t_expand *d);
 char	*search_expand(char *to_expand, t_mshell *mini_data);
 char	*get_dollar_question(void);
+
+//cmd_expand_trim:
+char	**exec_trim(char *arg, char **ret, size_t pos);
 
 // ast_builder:
 t_ast	**build_ast(char **args, t_mshell *mshell);
