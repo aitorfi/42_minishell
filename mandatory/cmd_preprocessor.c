@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/23 18:50:25 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:32:02 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,3 @@ int	main(int argc, char **argv, char **envp)
 	free(line);
 	return (0);
 }*/
-

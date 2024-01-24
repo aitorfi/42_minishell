@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/23 18:48:05 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:29:55 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	get_substrings_expand(t_expand *d, size_t pos, char **ast)
 {
 	if (d->keep == NULL)
 		d->keep = ast[pos];
-	d->i = d->j;
+	d->i = 0;
 	while (d->keep[d->i] && d->keep[d->i] != '$')
 		d->i++;
 	if (!d->keep[d->i])
@@ -79,21 +79,16 @@ static char	*exec_expand_comp(char **ast, t_mshell *mini_data, size_t pos)
 	return (d.keep);
 }
 
-static char	**exec_expand(char *dolar, char **ast,
+static char	**exec_expand(char **ast,
 t_mshell *mini_data, size_t pos)
 {
 	char	*new;
 
-	if (!ft_strncmp(dolar, ast[pos] + 1, ft_strlen(dolar)))
-		return (exec_expand_simple(dolar, ast, mini_data, pos));
-	else
-	{
-		new = exec_expand_comp(ast, mini_data, pos);
-		if (new == NULL)
-			return (NULL);
-		free(ast[pos]);
-		ast[pos] = new;
-	}
+	new = exec_expand_comp(ast, mini_data, pos);
+	if (new == NULL)
+		return (NULL);
+	free(ast[pos]);
+	ast[pos] = new;
 	return (ast);
 }
 
@@ -110,7 +105,7 @@ int	do_expand(char **ret, t_mshell *mini_data)
 			where_dollar = check_dollar(ret[i]);
 			if (where_dollar)
 			{
-				if (!exec_expand(where_dollar, ret, mini_data, i))
+				if (!exec_expand(ret, mini_data, i))
 					return (1);
 			}
 		}

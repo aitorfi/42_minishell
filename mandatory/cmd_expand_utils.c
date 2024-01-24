@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:36:22 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/23 17:41:55 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:16:42 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,7 @@ char	*check_dollar(char *ret)
 
 int	check_expand(char *ret)
 {
-	size_t	i;
-
-	i = 0;
-	while (ret[i])
-	{
-		if (ret[i] == '\'')
-			return (0);
-		i++;
-	}
+	if (ret[0] == '\'')
+		return (0);
 	return (1);
 }
