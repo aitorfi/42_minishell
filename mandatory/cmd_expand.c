@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/24 11:29:55 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:42:57 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ static int	get_substrings_expand(t_expand *d, size_t pos, char **ast)
 	d->first = ft_substr(d->keep, 0, d->i);
 	if (d->first == NULL)
 		return (perror("malloc error while expanding $"), 2);
-	d->j = d->i;
+	d->j = ++d->i;
 	while (d->keep[d->j] && d->keep[d->j] != ' ' && d->keep[d->j] != '\"'
-		&& d->keep[d->j] != '\'')
+		&& d->keep[d->j] != '\'' && d->keep[d->j] != '$')
 		d->j++;
 	d->second = ft_substr(d->keep, d->j, ft_strlen(d->keep) - d->j);
 	if (d->second == NULL)
 		return (perror("malloc error while expanding $"), 2);
-	d->to_expand = ft_substr(d->keep, d->i + 1, d->j - d->i - 1);
+	d->to_expand = ft_substr(d->keep, d->i, d->j - d->i);
 	if (d->to_expand == NULL)
 		return (perror("malloc error while expanding $"), 2);
 	return (0);
@@ -114,5 +114,5 @@ int	do_expand(char **ret, t_mshell *mini_data)
 	return (0);
 }
 
-/*ls -l | grep 'hola $que tal'  adios$HOMENO   $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   hola   $PWD  hola"*/
+/*ls -l | grep 'hola $que tal'  adios$HOMENO   $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   $HOME$HOME$HOME hola   $PWD  hola"*/
 /*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD hola"*/
