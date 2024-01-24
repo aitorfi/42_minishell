@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/23 20:04:13 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:20:08 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_ast		**build_ast(char **args, t_mshell *mshell);
 char		*create_heredoc(char *limit);
 
 // ast_processor:
-void		process_ast(t_ast **ast, t_mshell *mshell);
+int			process_ast(t_ast **ast, t_mshell *mshell);
 
 // ast_processor_cmd:
 int			read_ast_node_command(t_ast *node, int rfd, int wfd, t_mshell *mshell);

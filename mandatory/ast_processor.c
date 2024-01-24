@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:20:53 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/23 19:47:44 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:48:19 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static int	read_ast_node_recursive(t_ast *node, int rfd, int wfd, t_mshell *mshell);
 static int	read_ast_node_pipe(t_ast *node, int wfd, t_mshell *mshell);
-static int	read_ast_node_out_redir(t_ast *node, t_mshell *mshell);
-static int	read_ast_node_in_redir(t_ast *node, t_mshell *mshell);
+static int	read_ast_node_out_redir(t_ast *node, int rfd, t_mshell *mshell);
+static int	read_ast_node_in_redir(t_ast *node, int wfd, t_mshell *mshell);
 
-void	process_ast(t_ast **ast, t_mshell *mshell)
+int	process_ast(t_ast **ast, t_mshell *mshell)
 {
-	read_ast_node_recursive(ast[0], DEFAULT_FD, DEFAULT_FD, mshell);
+	return (read_ast_node_recursive(ast[0], DEFAULT_FD, DEFAULT_FD, mshell));
 }
 
 static int	read_ast_node_recursive(t_ast *node, int rfd, int wfd, t_mshell *mshell)
@@ -31,9 +31,9 @@ static int	read_ast_node_recursive(t_ast *node, int rfd, int wfd, t_mshell *mshe
 	else if (node->operation == COMMAND_OP)
 		return (read_ast_node_command(node, rfd, wfd, mshell));
 	else if (node->operation == OUT_REDIR_OP || node->operation == OUT_REDIR_APPEND_OP)
-		return (read_ast_node_out_redir(node, mshell));
+		return (read_ast_node_out_redir(node, rfd, mshell));
 	else if (node->operation == IN_REDIR_OP || node->operation == IN_REDIR_APPEND_OP)
-		return (read_ast_node_in_redir(node, mshell));
+		return (read_ast_node_in_redir(node, wfd, mshell));
 	read_ast_node_recursive(node->left, DEFAULT_FD, DEFAULT_FD, mshell);
 	read_ast_node_recursive(node->right, DEFAULT_FD, DEFAULT_FD, mshell);
 	return (EXIT_SUCCESS);
@@ -54,23 +54,23 @@ static int	read_ast_node_pipe(t_ast *node, int wfd, t_mshell *mshell)
 	return (EXIT_SUCCESS);
 }
 
-static int	read_ast_node_out_redir(t_ast *node, t_mshell *mshell)
+static int	read_ast_node_out_redir(t_ast *node, int rfd, t_mshell *mshell)
 {
 	int	fd;
 	int	exit_code;
 
 	if (node->operation == OUT_REDIR_OP)
-		fd = open(node->right->path, O_WRONLY | O_CREAT | O_TRUNC);
+		fd = open(node->right->path, O_RDWR | O_CREAT | O_TRUNC, 00644);
 	else
-		fd = open(node->right->path, O_WRONLY | O_CREAT | O_APPEND);
+		fd = open(node->right->path, O_RDWR | O_CREAT | O_APPEND, 00644);
 	if (fd == -1)
 		return (notify_error("Error"));
-	exit_code = read_ast_node_recursive(node->left, DEFAULT_FD, fd, mshell);
+	exit_code = read_ast_node_recursive(node->left, rfd, fd, mshell);
 	close(fd);
 	return (exit_code);
 }
 
-static int	read_ast_node_in_redir(t_ast *node, t_mshell *mshell)
+static int	read_ast_node_in_redir(t_ast *node, int wfd, t_mshell *mshell)
 {
 	int	fd;
 	int	exit_code;
@@ -78,7 +78,7 @@ static int	read_ast_node_in_redir(t_ast *node, t_mshell *mshell)
 	fd = open(node->right->path, O_RDONLY);
 	if (fd == -1)
 		return (notify_error("Error"));
-	exit_code = read_ast_node_recursive(node->left, fd, DEFAULT_FD, mshell);
+	exit_code = read_ast_node_recursive(node->left, fd, wfd, mshell);
 	close(fd);
 	return (exit_code);
 }
