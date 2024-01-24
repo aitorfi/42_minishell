@@ -6,40 +6,26 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:36:22 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/24 11:16:42 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:34:28 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**exec_expand_simple(char *dolar, char **ast,
-t_mshell *mini_data, size_t pos)
+char	*get_dollar_question(void)
 {
-	char	*temp;
+	char	*dollar_question;
 
-	temp = ft_get_env(dolar, mini_data->env_custom);
-	if (temp == NULL)
-	{
-		temp = ft_strdup("");
-		if (temp == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-	}
-	else
-	{
-		temp = ft_set_env(temp);
-		temp = ft_strdup(temp);
-		if (temp == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-	}
-	free(ast[pos]);
-	ast[pos] = temp;
-	return (ast);
+	dollar_question = ft_itoa(g_result);
+	return (dollar_question);
 }
 
 char	*search_expand(char *to_expand, t_mshell *mini_data)
 {
 	char	*temp;
 
+	if (!ft_strncmp(to_expand, "?", ft_strlen(to_expand)))
+		return (get_dollar_question());
 	temp = ft_get_env(to_expand, mini_data->env_custom);
 	if (temp == NULL)
 	{

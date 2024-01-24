@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/24 11:42:57 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:37:38 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,5 @@ int	do_expand(char **ret, t_mshell *mini_data)
 	return (0);
 }
 
-/*ls -l | grep 'hola $que tal'  adios$HOMENO   $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER hola $USER   $HOME$HOME$HOME hola   $PWD  hola"*/
+/*ls -l | grep 'hola $que tal'  adios$HOMENO   $?hola $?$?$?$? $PATH 'estoy 1adios "   $? $USER pepe "   adios' 2'ho'la "que $USER hola $USER   $?USER $?$USER $HOME$HOME$HOME hola   $PWD  hola"*/
 /*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD hola"*/
