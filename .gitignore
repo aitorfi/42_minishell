@@ -5,6 +5,7 @@
 *.sh
 *.supp
 *.dSYM
+*.txt
 minishell
 flujo.txt
 heredoc
