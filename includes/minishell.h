@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2019/10/01 02:04:27 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:33:56 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	**ft_free_split_preprocess(char **split, size_t limit);
 void 	print_error_quote(int c);
 
 // cmd_expand:
-int	do_expand(char **ret, t_mshell *mini_data);
+char	**do_expand(char **ret, t_mshell *mini_data);
 
 // cmd_expand utils:
 int		check_expand(char *ret);
@@ -106,9 +106,12 @@ char	*get_dollar_question(void);
 
 //cmd_expand_trim:
 char	**exec_trim(char *arg, char **ret, size_t pos);
+int		check_no_quotes(char **ret);
+char	*increase_ret(char **ret);
+char	*copy_ret(char **ret, char *join);
 
 // ast_builder:
-t_ast	**build_ast(char **args, t_mshell *mshell);
+t_ast		**build_ast(char **args, t_mshell *mshell);
 
 // heredoc:
 char		*create_heredoc(char *limit);

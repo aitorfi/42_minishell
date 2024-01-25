@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/24 13:31:10 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:53:29 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ char	**preprocess(char *line, t_mshell *mini_data)
 	ret = ft_split_preprocess(line, ' ');
 	if (ret == NULL)
 		return (NULL);
-	do_expand(ret, mini_data);
+	ret = do_expand(ret, mini_data);
+	if (ret == NULL)
+		return (perror("malloc error while expanding $"), NULL);
 	return (ret);
 }
-/*
+
 int	main(int argc, char **argv, char **envp)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -72,11 +74,17 @@ int	main(int argc, char **argv, char **envp)
 	char		**line_ast;
 	size_t		i;
 	t_mshell	mini_data;
+	char		*arguments[4];
 
+	arguments[0] = "export";
+	arguments[1] = "ALE=hola que tal";
+	arguments[2] = NULL;
+	arguments[3] = NULL;
 	(void) argc;
 	(void) argv;
 	i = 0;
 	mini_data.env_custom = do_env_init(envp, 0);
+	do_export(&mini_data, arguments);
 	//while (mini_data.env_custom[i])
 	//{
 	//	printf("%s\n", mini_data.env_custom[i]);
@@ -93,5 +101,6 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env(line_ast);
 	ft_free_env(mini_data.env_custom);
 	free(line);
+	//system("leaks a.out");
 	return (0);
-}*/
+}

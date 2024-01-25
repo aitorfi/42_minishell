@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/24 13:32:29 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:33:43 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,29 +92,41 @@ t_mshell *mini_data, size_t pos)
 	return (ast);
 }
 
-int	do_expand(char **ret, t_mshell *mini_data)
+char	**do_expand(char **ret, t_mshell *mini_data)
 {
 	size_t	i;
-	char	*where_dollar;
+	char	**temp;
+	char	*join;
 
 	i = 0;
 	while (ret[i])
 	{
 		if (check_expand(ret[i]))
 		{
-			where_dollar = check_dollar(ret[i]);
-			if (where_dollar)
+			if (check_dollar(ret[i]))
 			{
 				if (!exec_expand(ret, mini_data, i))
-					return (1);
+					return (NULL);
 			}
 		}
-		if (!exec_trim(ret[i], ret, i))
-			return (1);
+		//if (!exec_trim(ret[i], ret, i))
+		//	return (1);
 		i++;
 	}
-	return (0);
+	if (check_no_quotes(ret))
+	{
+		temp = ret;
+		join = increase_ret(ret);
+		if (join == NULL)
+			return (perror("malloc error while expanding $"), NULL);
+		ft_free_env(temp);
+		ret = ft_split_preprocess(join, ' ');
+		if (ret == NULL)
+			return (perror("malloc error while expanding $"), NULL);
+		free(join);
+	}	
+	return (ret);
 }
 
-/*ls -l | grep 'hola $que tal'  adios$HOMENO   $?hola $?$?$?$? $PATH 'estoy 1adios "   $? $USER pepe "   adios' 2'ho'la "que $USER hola $USER   $?USER $?$USER $HOME$HOME$HOME hola   $PWD  hola"*/
+/*ls -l | grep 'hola $que tal'  adios$HOMENO   $ALE $?hola $?$?$?$? $PATH 'estoy 1adios "   $? $USER pepe "   adios' 2'ho'la "que $USER hola $USER   $?USER $?$USER $HOME$HOME$HOME hola   $PWD  hola"*/
 /*ls -l | grep 'hola $que tal' $PATH 'estoy 1adios "   pepe "   adios' 2'ho'la "que $USER $USER $PWD hola"*/
