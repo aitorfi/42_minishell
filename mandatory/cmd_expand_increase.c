@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:11:42 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/25 12:39:21 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:13:27 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*increase_ret(char **ret)
 	join = copy_ret(ret, join);
 	return (join);
 }
-
+/*
 int	check_no_quotes(char **ret)
 {
 	size_t	i;
@@ -88,14 +88,14 @@ int	check_no_quotes(char **ret)
 	}
 	return (0);
 }
-
+*/
 char	**increase_routine(char **ret)
 {
 	char	**temp;
 	char	*join;
 
-	if (check_no_quotes(ret))
-	{
+	//if (check_no_quotes(ret))
+	//{
 		temp = ret;
 		join = increase_ret(ret);
 		if (join == NULL)
@@ -105,6 +105,6 @@ char	**increase_routine(char **ret)
 		if (ret == NULL)
 			return (perror("malloc error while expanding $"), NULL);
 		free(join);
-	}
+	//}
 	return (ret);
 }
