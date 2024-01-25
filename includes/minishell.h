@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/24 19:20:08 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:50:43 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ void 		print_error_quote(int c);
 
 // ast_builder:
 t_ast		**build_ast(char **args, t_mshell *mshell);
+
+// ast_builder_nodes:
+t_ast		*get_left_node(char **args, int index, t_mshell *mshell);
+t_ast		*get_right_node_command(char **args, int index, t_mshell *mshell);
+t_ast		*get_right_node_heredoc(char **args, int index);
 
 // heredoc:
 char		*create_heredoc(char *limit);
