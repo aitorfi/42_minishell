@@ -6,26 +6,28 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/25 11:53:29 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:38:45 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static size_t	check_quote(char *line, char c)
+static char	**exec_trim(char **ret)
 {
 	size_t	i;
-	size_t	d_quote;
+	char	*temp;
 
 	i = 0;
-	d_quote = 0;
-	while (line[i])
+	while (ret[i])
 	{
-		if (line[i] == c)
-			d_quote++;
+		temp = ft_strtrim(ret[i], "\"\'");
+		if (temp == NULL)
+			return (perror("malloc error  while trim"), NULL);
+		free(ret[i]);
+		ret[i] = temp;
 		i++;
 	}
-	return (d_quote);
+	return (ret);
 }
 
 static char	*replace_chars(char *str, char *to_find, char replace)
@@ -51,22 +53,21 @@ static char	*replace_chars(char *str, char *to_find, char replace)
 char	**preprocess(char *line, t_mshell *mini_data)
 {
 	char		**ret;
-	size_t		single_quote;
-	size_t		double_quote;
 
 	ret = NULL;
 	line = replace_chars(line, "\t\n\v\f\r", ' ');
-	single_quote = check_quote(line, '\'');
-	double_quote = check_quote(line, '\"');
 	ret = ft_split_preprocess(line, ' ');
 	if (ret == NULL)
 		return (NULL);
 	ret = do_expand(ret, mini_data);
 	if (ret == NULL)
 		return (perror("malloc error while expanding $"), NULL);
+	ret = exec_trim(ret);
+	if (ret == NULL)
+		return (perror("malloc error while trim $"), NULL);
 	return (ret);
 }
-
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -103,4 +104,4 @@ int	main(int argc, char **argv, char **envp)
 	free(line);
 	//system("leaks a.out");
 	return (0);
-}
+}*/

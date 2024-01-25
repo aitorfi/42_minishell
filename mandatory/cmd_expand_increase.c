@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_expand_trim.c                                  :+:      :+:    :+:   */
+/*   cmd_expand_increase.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:11:42 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/25 11:46:37 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:39:21 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*copy_ret(char **ret, char *join)
 	size_t	i;
 	size_t	j;
 	size_t	c;
-	
+
 	i = 0;
 	c = 0;
 	while (ret[i])
@@ -30,13 +30,12 @@ char	*copy_ret(char **ret, char *join)
 			c++;
 		}
 		if (ret[i][j] == 0)
-		{	
+		{
 			join[c] = ' ';
 			c++;
 		}
 		i++;
 	}
-	printf("join: %s\n", join);
 	return (join);
 }
 
@@ -90,14 +89,22 @@ int	check_no_quotes(char **ret)
 	return (0);
 }
 
-char	**exec_trim(char *arg, char **ret, size_t pos)
+char	**increase_routine(char **ret)
 {
-	char	*temp;
+	char	**temp;
+	char	*join;
 
-	temp = ft_strtrim(arg, "\"\'");
-	if (temp == NULL)
-		return (perror("malloc error  while trim"), NULL);
-	free(ret[pos]);
-	ret[pos] = temp;
+	if (check_no_quotes(ret))
+	{
+		temp = ret;
+		join = increase_ret(ret);
+		if (join == NULL)
+			return (perror("malloc error while expanding $"), NULL);
+		ft_free_env(temp);
+		ret = ft_split_preprocess(join, ' ');
+		if (ret == NULL)
+			return (perror("malloc error while expanding $"), NULL);
+		free(join);
+	}
 	return (ret);
 }

@@ -6,7 +6,7 @@
 #    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2019/10/01 02:07:50 by alvicina         ###   ########.fr        #
+#    Updated: 2024/01/25 12:02:20 by alvicina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ MPATH_SRCS  = \
 	builtin_echo.c builtin_export.c builtin_export_utils.c builtin_export_sort.c \
 	cmd_split_preprocess_utils.c cmd_split_preprocess.c builtin_utils.c \
 	builtin_unset.c cmd_utils.c builtin_exit.c builtin_exit_utils.c \
-	builtin_unset_utils.c cmd_expand.c cmd_expand_utils.c cmd_expand_trim.c \
+	builtin_unset_utils.c cmd_expand.c cmd_expand_utils.c cmd_expand_increase.c \
 	
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
