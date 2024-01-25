@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/23 20:07:07 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:11:44 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 	{
 		if (is_builtin(node->args[0]))
 			exit(execute_builtin(node, mshell, 0));
-		execve(node->path, node->args, NULL);
+		execve(node->path, node->args, mshell->env_custom);
 		perror("Error");
 		exit(EXIT_FAILURE);
 	}
