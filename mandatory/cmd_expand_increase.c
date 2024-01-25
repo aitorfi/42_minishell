@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:11:42 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/25 13:13:27 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:21:50 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,45 +66,20 @@ char	*increase_ret(char **ret)
 	join = copy_ret(ret, join);
 	return (join);
 }
-/*
-int	check_no_quotes(char **ret)
-{
-	size_t	i;
-	size_t	j;
 
-	i = 0;
-	j = 0;
-	while (ret[i])
-	{
-		if (ret[i][0] != '\"' && ret[i][0] != '\'')
-		{
-			j = 0;
-			while (ret[i][j] && ret[i][j] != ' ')
-				j++;
-			if (ret[i][j] == ' ')
-				return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-*/
 char	**increase_routine(char **ret)
 {
 	char	**temp;
 	char	*join;
 
-	//if (check_no_quotes(ret))
-	//{
-		temp = ret;
-		join = increase_ret(ret);
-		if (join == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-		ft_free_env(temp);
-		ret = ft_split_preprocess(join, ' ');
-		if (ret == NULL)
-			return (perror("malloc error while expanding $"), NULL);
-		free(join);
-	//}
+	temp = ret;
+	join = increase_ret(ret);
+	if (join == NULL)
+		return (perror("malloc error while expanding $"), NULL);
+	ft_free_env(temp);
+	ret = ft_split_preprocess(join, ' ');
+	if (ret == NULL)
+		return (perror("malloc error while expanding $"), NULL);
+	free(join);
 	return (ret);
 }

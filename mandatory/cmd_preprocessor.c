@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/25 13:14:40 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:23:21 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static char	*replace_chars(char *str, char *to_find, char replace)
 
 char	**preprocess(char *line, t_mshell *mini_data)
 {
-	char		**ret; //
-	
+	char		**ret;
+
 	ret = NULL;
 	line = replace_chars(line, "\t\n\v\f\r", ' ');
 	ret = ft_split_preprocess(line, ' ');
