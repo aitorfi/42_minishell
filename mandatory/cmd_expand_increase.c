@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:11:42 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/25 13:21:50 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:51:57 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,18 @@ char	**increase_routine(char **ret)
 		return (perror("malloc error while expanding $"), NULL);
 	free(join);
 	return (ret);
+}
+
+void	find_dollar(t_expand *d)
+{
+	while (d->keep[d->i] && d->keep[d->i] != '$')
+	{
+		if (d->keep[d->i] == '\'')
+		{
+			d->i++;
+			while (d->keep[d->i] && d->keep[d->i] != '\'')
+				d->i++;
+		}
+		d->i++;
+	}
 }

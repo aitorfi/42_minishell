@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/26 09:59:54 by alejandro        ###   ########.fr       */
+/*   Updated: 2024/01/26 16:56:15 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static char	*get_new_string_expanded(t_expand *d)
 	d->keep = ft_strjoin(d->first, d->search);
 	if (d->keep == NULL)
 		return (perror("malloc error while expanding $"), NULL);
-	while(d->keep[d->j])
+	d->j = 0;
+	while (d->keep[d->j])
 		d->j++;
 	if (d->flag)
 		free(d->temp);
@@ -39,24 +40,16 @@ static int	get_substrings_expand(t_expand *d, size_t pos, char **ast)
 	if (d->keep == NULL)
 		d->keep = ast[pos];
 	d->i = d->j;
-	while (d->keep[d->i] && d->keep[d->i] != '$')
-	{
-		if (d->keep[d->i] == '\'')
-		{
-			d->i++;
-			while (d->keep[d->i] && d->keep[d->i] != '\'')
-				d->i++;
-		}
-		d->i++;
-	}
+	find_dollar(d);
 	if (!d->keep[d->i])
 		return (1);
 	d->first = ft_substr(d->keep, 0, d->i);
 	if (d->first == NULL)
 		return (perror("malloc error while expanding $"), 2);
 	d->j = ++d->i;
-	while (d->keep[d->j] && d->keep[d->j] != ' ' && d->keep[d->j] != '\"'
-		&& d->keep[d->j] != '\'' && d->keep[d->j] != '$')
+	while (d->keep[d->j] && (ft_isalnum(d->keep[d->j]) || d->keep[d->j] == '_'))
+		d->j++;
+	if (d->j == d->i && d->keep[d->j] == '?')
 		d->j++;
 	d->second = ft_substr(d->keep, d->j, ft_strlen(d->keep) - d->j);
 	if (d->second == NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_preprocessor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/26 10:06:12 by alejandro        ###   ########.fr       */
+/*   Updated: 2024/01/26 17:16:15 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env(line_ast);
 	ft_free_env(mini_data.env_custom);
 	free(line);
-	system("leaks a.out");
+	//system("leaks a.out");
 	return (0);
 }*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/26 10:02:51 by alejandro        ###   ########.fr       */
+/*   Updated: 2024/01/26 15:52:06 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ char	*get_dollar_question(void);
 char	*increase_ret(char **ret);
 char	*copy_ret(char **ret, char *join);
 char	**increase_routine(char **ret);
+void	find_dollar(t_expand *d);
 
 // ast_builder:
 t_ast		**build_ast(char **args, t_mshell *mshell);
