@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/22 20:08:45 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:09:13 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,15 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 
 static int	is_terminating_cmd(t_ast **ast)
 {
-	int path_len;
+	int	path_len;
 
 	if (!ast[0]->left && !ast[0]->right && ast[0]->operation == COMMAND_OP)
 	{
 		path_len = ft_strlen(ast[0]->path);
-		if (!ft_strncmp(ast[0]->path, "exit", path_len) 
+		if (!ft_strncmp(ast[0]->path, "exit", path_len)
 			&& can_do_exit(ast[0]->args))
 		{
-			return (1);	
+			return (1);
 		}
 	}
 	return (0);
