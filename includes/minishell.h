@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/25 19:50:43 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:12:27 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char		**ft_split_preprocess(char const *s, char c);
 // cmd_split_preprocess_utils
 void		d_init(t_preprocess *d);
 char		**ft_free_split_preprocess(char **split, size_t limit);
-void 		print_error_quote(int c);
+void		print_error_quote(int c);
 
 // ast_builder:
 t_ast		**build_ast(char **args, t_mshell *mshell);
@@ -92,7 +92,8 @@ char		*create_heredoc(char *limit);
 int			process_ast(t_ast **ast, t_mshell *mshell);
 
 // ast_processor_cmd:
-int			read_ast_node_command(t_ast *node, int rfd, int wfd, t_mshell *mshell);
+int			read_ast_node_command(
+				t_ast *node, int rfd, int wfd, t_mshell *mshell);
 
 // utils:
 t_operation	which_operator(char *operator);
@@ -129,9 +130,9 @@ int			do_pwd(void);
 int			do_cd(t_mshell *mini_data, char **arguments);
 
 // builtin_cd_utils:
-char	*set_cd_special_case(char *cwd, char *arguments,
-			t_mshell *mini_data);
-char	*set_cd_one_up(char *cwd);
+char		*set_cd_special_case(
+				char *cwd, char *arguments, t_mshell *mini_data);
+char		*set_cd_one_up(char *cwd);
 
 // builtin_echo:
 int			do_echo(char **arguments);
@@ -160,17 +161,16 @@ int			can_do_exit(char **arguments);
 
 // builtin_exit_utils
 void		check_exit_args(char **arguments, int *flag);
-int			ft_atoi_exit(char *str);
+int			ft_atoi_exit(char *str, int is_main_process);
 int			is_number(char *arguments);
-void		do_exit_atoi(char *arguments);
+int			do_exit_atoi(char *arguments, int is_main_process);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
 
-// // builtin_unset_utils:
-void	print_error_unset(char *arguments);
-int		check_unset_args(char *arguments);
-
+// builtin_unset_utils:
+void		print_error_unset(char *arguments);
+int			check_unset_args(char *arguments);
 
 // init_environment:
 // Modulo auxiliar para inicializar y guardar las variables de entorno

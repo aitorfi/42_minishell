@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:37:33 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/17 09:42:43 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:13:52 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	do_exit_atoi(char *arguments)
+int	do_exit_atoi(char *arguments, int is_main_process)
 {
 	g_result = 1;
-	ft_putstr_fd("exit\n", 2);
+	if (is_main_process)
+		ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arguments, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(g_result); // antes del exit hay que liberar todo;
+	return (EXIT_FAILURE);
 }
 
-int	ft_atoi_exit(char *str)
+int	ft_atoi_exit(char *str, int is_main_process)
 {
 	int					i;
 	int					neg;
@@ -42,7 +43,7 @@ int	ft_atoi_exit(char *str)
 	{
 		num_atoi = num_atoi * 10 + str[i] - 48;
 		if (num_atoi > 0x7fffffffffffffff)
-			do_exit_atoi(str);
+			return (do_exit_atoi(str, is_main_process));
 		i++;
 	}
 	return ((num_atoi * neg) % 256);
