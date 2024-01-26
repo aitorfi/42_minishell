@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/26 17:16:15 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:55:11 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,39 @@
 static char	**exec_trim(char **ret)
 {
 	size_t	i;
+	size_t	j;
+	size_t	c;
 	char	*temp;
 
 	i = 0;
+	j = 0;
+	c = 0;
+	temp = NULL;
 	while (ret[i])
 	{
-		temp = ft_strtrim(ret[i], "\"\'");
+		temp = malloc(sizeof(char) * ft_strlen(ret[i]) + 1);
 		if (temp == NULL)
 			return (perror("malloc error  while trim"), NULL);
-		free(ret[i]);
-		ret[i] = temp;
+		
+		j = 0;
+		c = 0;
+		while (ret[i][j] && ret[i][j + 1])
+		{
+			if (ret[i][j] == '\"' || ret[i][j] == '\'')
+			{
+				temp[c++] = ret[i][j++ + 1];
+				j++;
+			}
+			else
+				temp[c++] = ret[i][j++];	
+		}
+		temp[c] = 0;
+		if (ret[i][j] != '\'' && ret[i][j] != '\"')
+			temp[c] = ret[i][j];
+		//free(ret[i]);
+		//ret[i] = temp;
 		i++;
+		//printf("temp: %s\n", temp);
 	}
 	return (ret);
 }
@@ -67,7 +89,7 @@ char	**preprocess(char *line, t_mshell *mini_data)
 		return (perror("malloc error while trim $"), NULL);
 	return (ret);
 }
-/*
+
 int	main(int argc, char **argv, char **envp)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -104,4 +126,4 @@ int	main(int argc, char **argv, char **envp)
 	free(line);
 	//system("leaks a.out");
 	return (0);
-}*/
+}
