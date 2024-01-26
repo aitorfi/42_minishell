@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_preprocessor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/25 13:23:21 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 10:06:12 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	main(int argc, char **argv, char **envp)
 	char		*arguments[4];
 
 	arguments[0] = "export";
-	arguments[1] = "ALE=hola que tal";
+	arguments[1] = "ALE=1hola 2que 3tal";
 	arguments[2] = NULL;
 	arguments[3] = NULL;
 	(void) argc;
@@ -102,6 +102,6 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env(line_ast);
 	ft_free_env(mini_data.env_custom);
 	free(line);
-	//system("leaks a.out");
+	system("leaks a.out");
 	return (0);
 }*/

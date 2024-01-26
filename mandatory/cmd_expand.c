@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:46:05 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/25 12:39:03 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 09:59:54 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*get_new_string_expanded(t_expand *d)
 	d->keep = ft_strjoin(d->first, d->search);
 	if (d->keep == NULL)
 		return (perror("malloc error while expanding $"), NULL);
+	while(d->keep[d->j])
+		d->j++;
 	if (d->flag)
 		free(d->temp);
 	free(d->first);
@@ -36,9 +38,17 @@ static int	get_substrings_expand(t_expand *d, size_t pos, char **ast)
 {
 	if (d->keep == NULL)
 		d->keep = ast[pos];
-	d->i = 0;
+	d->i = d->j;
 	while (d->keep[d->i] && d->keep[d->i] != '$')
+	{
+		if (d->keep[d->i] == '\'')
+		{
+			d->i++;
+			while (d->keep[d->i] && d->keep[d->i] != '\'')
+				d->i++;
+		}
 		d->i++;
+	}
 	if (!d->keep[d->i])
 		return (1);
 	d->first = ft_substr(d->keep, 0, d->i);
@@ -87,8 +97,11 @@ t_mshell *mini_data, size_t pos)
 	new = exec_expand_comp(ast, mini_data, pos);
 	if (new == NULL)
 		return (NULL);
-	free(ast[pos]);
-	ast[pos] = new;
+	if (ft_strncmp(new, ast[pos], ft_strlen(ast[pos])))
+	{
+		free(ast[pos]);
+		ast[pos] = new;
+	}
 	return (ast);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expand_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:36:22 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/24 12:34:28 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 10:02:38 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
