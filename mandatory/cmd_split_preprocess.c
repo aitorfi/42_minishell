@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:11:47 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/19 18:23:49 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:11:25 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ int	main(void)
 	char	**arguments;
 	size_t	i;
 
-	line = "ls -l | grep \'hola que tal\' aqui 
-	\'estoy 1adios \"   pepe \"   adios\' 2\'ho\'la \"que tal\"";
+	line = "ls -l | grep \'hola que tal\' aqui \'estoy 1adios \"   pepe \"   adios\' 2\'ho\'la \"que tal\"";
 	count = count_word_preprocess(line, ' ');
 	arguments = ft_split_preprocess(line, ' ');
 	printf("%zu\n", count);

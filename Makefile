@@ -33,6 +33,7 @@ MPATH_SRCS  = \
 	cmd_split_preprocess_utils.c cmd_split_preprocess.c \
 	builtin_unset.c cmd_utils.c builtin_exit.c builtin_exit_utils.c \
 	builtin_unset_utils.c builtin_cd_utils.c ast_processor_cmd.c ast_builder_nodes.c \
+  cmd_expand.c cmd_expand_utils.c cmd_expand_increase.c \
 	
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))

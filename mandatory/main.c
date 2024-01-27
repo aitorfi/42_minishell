@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
 /*   Updated: 2024/01/27 13:18:48 by afidalgo         ###   ########.fr       */
@@ -67,7 +67,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 			return (EXIT_FAILURE);
 		}
 		add_history(line);
-		line_split = preprocess(line);
+		line_split = preprocess(line, mshell);
 		free(line);
 		ast = build_ast(line_split, mshell);
 		free_split(line_split);

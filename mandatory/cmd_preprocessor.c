@@ -6,26 +6,59 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/19 18:21:44 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:14:16 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static size_t	check_quote(char *line, char c)
+static char	**exec_trim(char **ret)
 {
 	size_t	i;
-	size_t	d_quote;
+	size_t	j;
+	size_t	c;
+	char	*temp;
+	char	char_q;
 
-	i = 0;
-	d_quote = 0;
-	while (line[i])
+	i = -1;
+	j = 0;
+	c = 0;
+	char_q = 0;
+	while (ret[++i])
 	{
-		if (line[i] == c)
-			d_quote++;
-		i++;
+		temp = malloc(sizeof(char) * ft_strlen(ret[i]) + 1);
+		if (temp == NULL)
+			return (perror("malloc error  while trim"), NULL);
+		j = 0;
+		c = 0;
+		while (ret[i][j] && ret[i][j + 1])
+		{
+			if (ret[i][j] == '\"' || ret[i][j] == '\'')
+			{
+				char_q = ret[i][j];
+				temp[c++] = ret[i][j++ + 1];
+				j++;
+				while (ret[i][j] && ret[i][j] != char_q)
+					temp[c++] = ret[i][j++];
+				if (ret[i][j] == char_q)
+				{
+					char_q = 0;
+					j++;
+				}
+			}
+			else
+				temp[c++] = ret[i][j++];
+		}
+		temp[c] = 0;
+		if (ret[i][j] != '\'' && ret[i][j] != '\"')
+		{
+			temp[c++] = ret[i][j];
+			temp[c] = 0;
+		}
+		free(ret[i]);
+		ret[i] = temp;
 	}
-	return (d_quote);
+	return (ret);
 }
 
 static char	*replace_chars(char *str, char *to_find, char replace)
@@ -48,40 +81,58 @@ static char	*replace_chars(char *str, char *to_find, char replace)
 	return (str);
 }
 
-char	**preprocess(char *line)
+char	**preprocess(char *line, t_mshell *mini_data)
 {
-	char	**ret;
-	size_t	single_quote;
-	size_t	double_quote;
+	char		**ret;
 
 	ret = NULL;
 	line = replace_chars(line, "\t\n\v\f\r", ' ');
-	single_quote = check_quote(line, '\'');
-	double_quote = check_quote(line, '\"');
 	ret = ft_split_preprocess(line, ' ');
 	if (ret == NULL)
 		return (NULL);
+	ret = do_expand(ret, mini_data);
+	if (ret == NULL)
+		return (perror("malloc error while expanding $"), NULL);
+	ret = exec_trim(ret);
+	if (ret == NULL)
+		return (perror("malloc error while trim $"), NULL);
 	return (ret);
 }
 /*
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
-	char	*line;
-	char	**line_ast;
-	size_t	i;
+	char		*line;
+	char		**line_ast;
+	size_t		i;
+	t_mshell	mini_data;
+	char		*arguments[4];
 
-	
+	arguments[0] = "export";
+	arguments[1] = "ALE=1hola 2que 3tal";
+	arguments[2] = NULL;
+	arguments[3] = NULL;
+	(void) argc;
+	(void) argv;
 	i = 0;
+	mini_data.env_custom = do_env_init(envp, 0);
+	do_export(&mini_data, arguments);
+	//while (mini_data.env_custom[i])
+	//{
+	//	printf("%s\n", mini_data.env_custom[i]);
+	//	i++;
+	//}
 	line = readline("minishell> ");
-	line_ast = preprocess(line);
+	line_ast = preprocess(line, &mini_data);
+	i = 0;
 	while (line_ast[i])
 	{
 		printf("%s\n", line_ast[i]);
 		i++;
 	}
 	ft_free_env(line_ast);
+	ft_free_env(mini_data.env_custom);
 	free(line);
+	//system("leaks a.out");
 	return (0);
-}
-*/
+}*/
