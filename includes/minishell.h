@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/26 18:12:27 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:56:31 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,16 @@ typedef struct s_expand
 	char	*search;
 	char	*keep;
 	char	*temp;
-}	t_expand;
+}			t_expand;
+
+typedef struct s_trim
+{
+	size_t	i;
+	size_t	j;
+	size_t	c;
+	char	*temp;
+	char	char_q;
+}			t_trim;
 
 // sig_handler:
 void		set_signal_handlers(void);

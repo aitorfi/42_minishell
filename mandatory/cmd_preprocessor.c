@@ -6,57 +6,64 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 12:14:16 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:25:16 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+static void	loop_trim(t_trim *d, char **ret)
+{
+	d->j = 0;
+	d->c = 0;
+	while (ret[d->i][d->j] && ret[d->i][d->j + 1])
+	{
+		if (ret[d->i][d->j] == '\"' || ret[d->i][d->j] == '\'')
+		{
+			d->char_q = ret[d->i][d->j];
+			d->temp[d->c++] = ret[d->i][d->j++ + 1];
+			d->j++;
+			while (ret[d->i][d->j] && ret[d->i][d->j] != d->char_q)
+				d->temp[d->c++] = ret[d->i][d->j++];
+			if (ret[d->i][d->j] == d->char_q)
+			{
+				d->char_q = 0;
+				d->j++;
+			}
+		}
+		else
+			d->temp[d->c++] = ret[d->i][d->j++];
+	}
+}
+
+static void	d_init_trim(t_trim *d)
+{
+	d->i = -1;
+	d->j = 0;
+	d->c = 0;
+	d->char_q = 0;
+	d->temp = NULL;
+}
+
 static char	**exec_trim(char **ret)
 {
-	size_t	i;
-	size_t	j;
-	size_t	c;
-	char	*temp;
-	char	char_q;
+	t_trim	d;
 
-	i = -1;
-	j = 0;
-	c = 0;
-	char_q = 0;
-	while (ret[++i])
+	d_init_trim(&d);
+	while (ret[++d.i])
 	{
-		temp = malloc(sizeof(char) * ft_strlen(ret[i]) + 1);
-		if (temp == NULL)
+		d.temp = malloc(sizeof(char) * ft_strlen(ret[d.i]) + 1);
+		if (d.temp == NULL)
 			return (perror("malloc error  while trim"), NULL);
-		j = 0;
-		c = 0;
-		while (ret[i][j] && ret[i][j + 1])
+		loop_trim(&d, ret);
+		d.temp[d.c] = 0;
+		if (ret[d.i][d.j] != '\'' && ret[d.i][d.j] != '\"')
 		{
-			if (ret[i][j] == '\"' || ret[i][j] == '\'')
-			{
-				char_q = ret[i][j];
-				temp[c++] = ret[i][j++ + 1];
-				j++;
-				while (ret[i][j] && ret[i][j] != char_q)
-					temp[c++] = ret[i][j++];
-				if (ret[i][j] == char_q)
-				{
-					char_q = 0;
-					j++;
-				}
-			}
-			else
-				temp[c++] = ret[i][j++];
+			d.temp[d.c++] = ret[d.i][d.j];
+			d.temp[d.c] = 0;
 		}
-		temp[c] = 0;
-		if (ret[i][j] != '\'' && ret[i][j] != '\"')
-		{
-			temp[c++] = ret[i][j];
-			temp[c] = 0;
-		}
-		free(ret[i]);
-		ret[i] = temp;
+		free(ret[d.i]);
+		ret[d.i] = d.temp;
 	}
 	return (ret);
 }
