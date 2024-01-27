@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 13:18:32 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:16:48 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	modify_stdio(int rfd, int wfd)
 static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
+	int	status;
 
 	pid = fork();
 	if (pid == -1)
@@ -59,7 +60,12 @@ static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 	else if (pid == 0)
 	{
 		if (is_builtin(node->args[0]))
-			exit(execute_builtin(node, mshell, 0));
+		{
+			status = execute_builtin(node, mshell, 0);
+			free_split(mshell->env_custom);
+			free(mshell);
+			exit(status);
+		}
 		execve(node->path, node->args, mshell->env_custom);
 		perror("Error al ejecutar comando con execve");
 		exit(EXIT_FAILURE);
