@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:20:53 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/26 15:52:55 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:18:39 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	read_ast_node_pipe(t_ast *node, int wfd, t_mshell *mshell)
 	int	exit_status;
 
 	if (pipe(pipe_fds) == -1)
-		return (notify_error("Error"));
+		return (notify_error("Error al crear la pipe"));
 	exit_status = read_ast_node(node->left, DEFAULT_FD, pipe_fds[1], mshell);
 	if (exit_status != EXIT_SUCCESS)
 		return (close_massive(pipe_fds[0], pipe_fds[1]));
@@ -69,7 +69,7 @@ static int	read_ast_node_out_redir(t_ast *node, int rfd, t_mshell *mshell)
 	else
 		fd = open(node->right->path, O_RDWR | O_CREAT | O_APPEND, 00644);
 	if (fd == -1)
-		return (notify_error("Error"));
+		return (notify_error("Error al abrir archivo destino"));
 	exit_code = read_ast_node(node->left, rfd, fd, mshell);
 	close(fd);
 	return (exit_code);
@@ -82,7 +82,7 @@ static int	read_ast_node_in_redir(t_ast *node, int wfd, t_mshell *mshell)
 
 	fd = open(node->right->path, O_RDONLY);
 	if (fd == -1)
-		return (notify_error("Error"));
+		return (notify_error("Error al abrir archivo origen"));
 	exit_code = read_ast_node(node->left, fd, wfd, mshell);
 	close(fd);
 	return (exit_code);

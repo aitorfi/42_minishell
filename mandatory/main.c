@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/26 18:09:13 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:18:48 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,26 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 	{
 		line = readline(prompt);
 		if (line == NULL)
+		{
+			rl_clear_history();
 			return (EXIT_FAILURE);
+		}
 		add_history(line);
 		line_split = preprocess(line);
 		free(line);
 		ast = build_ast(line_split, mshell);
 		free_split(line_split);
 		if (ast == NULL)
+		{
+			rl_clear_history();
 			return (EXIT_FAILURE);
-		process_ast(ast, mshell);
-		// TODO: Proteger errores en process_ast
+		}
+		if (process_ast(ast, mshell) != EXIT_SUCCESS)
+		{
+			rl_clear_history();
+			free_ast(ast);
+			return (EXIT_FAILURE);
+		}
 		read_next_line = !is_terminating_cmd(ast);
 		free_ast(ast);
 	}

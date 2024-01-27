@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/25 20:28:19 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 11:52:52 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_ast	**build_ast(char **args, t_mshell *mshell)
 
 	ast = ft_calloc(1, sizeof(t_ast *));
 	if (ast == NULL)
-		return (NULL);
+		return (notify_error_ptr("Error al alojar el AST"));
 	i = 0;
 	while (args[i])
 	{

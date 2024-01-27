@@ -6,42 +6,54 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/14 13:44:28 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:05:04 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+static char	*readline_loop(char *limit);
 static char	*join_lines(char *line1, char *line2);
 static char	*get_heredoc_path(void);
 
 char	*create_heredoc(char *limit)
 {
-	char	*line;
-	char	*hist_line;
 	char	*path;
+	char	*content;
 
-	hist_line = ft_strdup("");
-	if (hist_line == NULL)
-		return (NULL);
 	path = get_heredoc_path();
 	if (path == NULL)
-		return (free_massive(hist_line));
+		return (notify_error_ptr("Error al crear heredoc"));
+	content = readline_loop(limit);
+	if (content == NULL)
+		return (notify_error_ptr("Error al crear heredoc"));
+	create_file(path, content);
+	free(content);
+	return (path);
+}
+
+static char	*readline_loop(char *limit)
+{
+	char	*line;
+	char	*content;
+
+	content = ft_strdup("");
+	if (content == NULL)
+		return (NULL);
 	line = readline("heredoc> ");
 	if (line == NULL)
-		return (free_massive(hist_line));
+		return (free_massive(content));
 	while (ft_strncmp(line, limit, ft_strlen(line)) != 0)
 	{
-		hist_line = join_lines(hist_line, line);
-		if (hist_line == NULL)
-			return (free_massive(path));
+		content = join_lines(content, line);
+		if (content == NULL)
+			return (NULL);
 		line = readline("heredoc> ");
 		if (line == NULL)
-			return (free_massive(hist_line));
+			return (free_massive(content));
 	}
-	create_file(path, hist_line);
-	free_massive(line, hist_line);
-	return (path);
+	free(line);
+	return (content);
 }
 
 static char	*join_lines(char *line1, char *line2)
