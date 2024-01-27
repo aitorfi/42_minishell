@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/26 18:55:11 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/27 11:36:06 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@ static char	**exec_trim(char **ret)
 	size_t	c;
 	char	*temp;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	c = 0;
-	temp = NULL;
-	while (ret[i])
+	while (ret[++i])
 	{
 		temp = malloc(sizeof(char) * ft_strlen(ret[i]) + 1);
 		if (temp == NULL)
 			return (perror("malloc error  while trim"), NULL);
-		
 		j = 0;
 		c = 0;
 		while (ret[i][j] && ret[i][j + 1])
@@ -39,15 +37,16 @@ static char	**exec_trim(char **ret)
 				j++;
 			}
 			else
-				temp[c++] = ret[i][j++];	
+				temp[c++] = ret[i][j++];
 		}
 		temp[c] = 0;
 		if (ret[i][j] != '\'' && ret[i][j] != '\"')
-			temp[c] = ret[i][j];
-		//free(ret[i]);
-		//ret[i] = temp;
-		i++;
-		//printf("temp: %s\n", temp);
+		{
+			temp[c++] = ret[i][j];
+			temp[c] = 0;
+		}
+		free(ret[i]);
+		ret[i] = temp;
 	}
 	return (ret);
 }
