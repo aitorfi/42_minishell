@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 11:36:06 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:14:16 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ static char	**exec_trim(char **ret)
 	size_t	j;
 	size_t	c;
 	char	*temp;
+	char	char_q;
 
 	i = -1;
 	j = 0;
 	c = 0;
+	char_q = 0;
 	while (ret[++i])
 	{
 		temp = malloc(sizeof(char) * ft_strlen(ret[i]) + 1);
@@ -33,8 +35,16 @@ static char	**exec_trim(char **ret)
 		{
 			if (ret[i][j] == '\"' || ret[i][j] == '\'')
 			{
+				char_q = ret[i][j];
 				temp[c++] = ret[i][j++ + 1];
 				j++;
+				while (ret[i][j] && ret[i][j] != char_q)
+					temp[c++] = ret[i][j++];
+				if (ret[i][j] == char_q)
+				{
+					char_q = 0;
+					j++;
+				}
 			}
 			else
 				temp[c++] = ret[i][j++];
@@ -88,7 +98,7 @@ char	**preprocess(char *line, t_mshell *mini_data)
 		return (perror("malloc error while trim $"), NULL);
 	return (ret);
 }
-
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	//char	line[100] = "hola \t\v\f\r que\t\n\v\f\rtal ";
@@ -125,4 +135,4 @@ int	main(int argc, char **argv, char **envp)
 	free(line);
 	//system("leaks a.out");
 	return (0);
-}
+}*/
