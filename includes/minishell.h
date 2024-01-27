@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/26 15:52:06 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:12:27 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,9 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-int	g_result;
+# define DEFAULT_FD -2
 
-typedef enum e_ast_node_type
-{
-	ROOT = 0,
-	LEFT,
-	RIGHT	
-}	t_ast_node_type;
+extern int	g_result;
 
 typedef enum e_operation
 {
@@ -46,12 +41,14 @@ typedef struct s_ast
 	char			*limit;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	struct s_ast	*parent;
 }					t_ast;
 
 typedef struct s_mshell
 {
 	char	**env_custom;
 	int		stdout_fd;
+	int		stdin_fd;
 }			t_mshell;
 
 typedef struct s_preprocess
@@ -113,11 +110,20 @@ void	find_dollar(t_expand *d);
 // ast_builder:
 t_ast		**build_ast(char **args, t_mshell *mshell);
 
+// ast_builder_nodes:
+t_ast		*get_left_node(char **args, int index, t_mshell *mshell);
+t_ast		*get_right_node_command(char **args, int index, t_mshell *mshell);
+t_ast		*get_right_node_heredoc(char **args, int index);
+
 // heredoc:
 char		*create_heredoc(char *limit);
 
 // ast_processor:
-void		process_ast(t_ast **ast, t_mshell *mshell);
+int			process_ast(t_ast **ast, t_mshell *mshell);
+
+// ast_processor_cmd:
+int			read_ast_node_command(
+				t_ast *node, int rfd, int wfd, t_mshell *mshell);
 
 // utils:
 t_operation	which_operator(char *operator);
@@ -145,13 +151,18 @@ t_ast		*new_node(t_operation op, char *path, char **args, char *limit);
 
 // builtin_utils:
 int			is_builtin(char *cmd);
-int			execute_builtin(t_ast *node, t_ast_node_type type, int *rfd, int *wfd, t_mshell *mshell);
+int			execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process);
 
 // builtin_pwd:
 int			do_pwd(void);
 
 // builtin_cd:
 int			do_cd(t_mshell *mini_data, char **arguments);
+
+// builtin_cd_utils:
+char		*set_cd_special_case(
+				char *cwd, char *arguments, t_mshell *mini_data);
+char		*set_cd_one_up(char *cwd);
 
 // builtin_echo:
 int			do_echo(char **arguments);
@@ -175,21 +186,21 @@ int			change_export_env(t_mshell *mini_data, char *arguments, size_t pos);
 int			add_export_env(t_mshell *mini_data, char *arguments);
 
 // builtin_exit
-int			do_exit(char **arguments);
+int			do_exit(char **arguments, int is_main_process);
+int			can_do_exit(char **arguments);
 
 // builtin_exit_utils
 void		check_exit_args(char **arguments, int *flag);
-int			ft_atoi_exit(char *str);
+int			ft_atoi_exit(char *str, int is_main_process);
 int			is_number(char *arguments);
-void		do_exit_atoi(char *arguments);
+int			do_exit_atoi(char *arguments, int is_main_process);
 
 // builtin_unset:
 int			do_unset(t_mshell *mini_data, char **arguments);
 
-// // builtin_unset_utils:
-void	print_error_unset(char *arguments);
-int		check_unset_args(char *arguments);
-
+// builtin_unset_utils:
+void		print_error_unset(char *arguments);
+int			check_unset_args(char *arguments);
 
 // init_environment:
 // Modulo auxiliar para inicializar y guardar las variables de entorno
