@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 13:18:48 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:18:25 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 			rl_clear_history();
 			return (EXIT_FAILURE);
 		}
+		mshell->ast = ast;
 		if (process_ast(ast, mshell) != EXIT_SUCCESS)
 		{
 			rl_clear_history();

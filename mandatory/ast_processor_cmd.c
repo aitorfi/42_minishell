@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_processor_cmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 14:16:48 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:05:48 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	modify_stdio(int rfd, int wfd);
 static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell);
+static void	execute_command(t_ast *node, t_mshell *mshell);
 static int	revert_stdio(int rfd, int wfd, t_mshell *mshell);
 
 int	read_ast_node_command(t_ast *node, int rfd, int wfd, t_mshell *mshell)
@@ -46,31 +47,33 @@ static int	modify_stdio(int rfd, int wfd)
 static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
-	int	status;
 
 	pid = fork();
 	if (pid == -1)
-	{
 		return (notify_error("Error al crear proceso hijo"));
-	}
 	else if (pid > 0)
-	{
 		waitpid(pid, &g_result, 0);
-	}
 	else if (pid == 0)
-	{
-		if (is_builtin(node->args[0]))
-		{
-			status = execute_builtin(node, mshell, 0);
-			free_split(mshell->env_custom);
-			free(mshell);
-			exit(status);
-		}
-		execve(node->path, node->args, mshell->env_custom);
-		perror("Error al ejecutar comando con execve");
-		exit(EXIT_FAILURE);
-	}
+		execute_command(node, mshell);
 	return (EXIT_SUCCESS);
+}
+
+static void	execute_command(t_ast *node, t_mshell *mshell)
+{
+	int	status;
+	
+	if (is_builtin(node->args[0]))
+	{
+		status = execute_builtin(node, mshell, 0);
+		free_split(mshell->env_custom);
+		free_ast(mshell->ast);
+		free(mshell);
+		rl_clear_history();
+		exit(status);
+	}
+	execve(node->path, node->args, mshell->env_custom);
+	perror("Error al ejecutar comando con execve");
+	exit(EXIT_FAILURE);
 }
 
 static int	revert_stdio(int rfd, int wfd, t_mshell *mshell)
