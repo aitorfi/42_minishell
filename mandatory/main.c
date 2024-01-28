@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 12:44:46 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 13:20:18 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	g_result;
 
 static t_mshell	*init(char **envp);
 static int		readline_loop(char *prompt, t_mshell *mshell);
+static int		process_line(char *line, int *read_next, t_mshell *mshell);
 static int		is_terminating_cmd(t_ast **ast);
 
 int	main(int argc, char **argv, char **envp)
@@ -62,12 +63,10 @@ static t_mshell	*init(char **envp)
 static int	readline_loop(char *prompt, t_mshell *mshell)
 {
 	char	*line;
-	char	**line_split;
-	t_ast	**ast;
-	int		read_next_line;
+	int		read_next;
 
-	read_next_line = 1;
-	while (read_next_line)
+	read_next = 1;
+	while (read_next)
 	{
 		line = readline(prompt);
 		if (line == NULL)
@@ -76,27 +75,38 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 			return (notify_error("Error al leer el input del usuario"));
 		}
 		add_history(line);
-		line_split = preprocess(line, mshell);
+		if (process_line(line, &read_next, mshell) != EXIT_SUCCESS)
+		{
+			rl_clear_history();
+			return (free_massive_exit_failure(line));
+		}
 		free(line);
-		ast = build_ast(line_split, mshell);
-		free_split(line_split);
-		if (ast == NULL)
-		{
-			rl_clear_history();
-			return (EXIT_FAILURE);
-		}
-		mshell->ast = ast;
-		if (process_ast(ast, mshell) != EXIT_SUCCESS)
-		{
-			rl_clear_history();
-			free_ast(ast);
-			return (EXIT_FAILURE);
-		}
-		read_next_line = !is_terminating_cmd(ast);
-		free_ast(ast);
 	}
 	rl_clear_history();
 	return (g_result);
+}
+
+static int	process_line(char *line, int *read_next, t_mshell *mshell)
+{
+	char	**line_split;
+	t_ast	**ast;
+
+	line_split = preprocess(line, mshell);
+	if (line_split == NULL)
+		return (EXIT_FAILURE);
+	ast = build_ast(line_split, mshell);
+	free_split(line_split);
+	if (ast == NULL)
+		return (EXIT_FAILURE);
+	mshell->ast = ast;
+	if (process_ast(ast, mshell) != EXIT_SUCCESS)
+	{
+		free_ast(ast);
+		return (EXIT_FAILURE);
+	}
+	*read_next = !is_terminating_cmd(ast);
+	free_ast(ast);
+	return (EXIT_SUCCESS);
 }
 
 static int	is_terminating_cmd(t_ast **ast)
