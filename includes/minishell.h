@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/26 18:12:27 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 10:36:31 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include "../libft/libft.h"
 
 # define DEFAULT_FD -2
@@ -75,7 +76,16 @@ typedef struct s_expand
 	char	*search;
 	char	*keep;
 	char	*temp;
-}	t_expand;
+}			t_expand;
+
+typedef struct s_trim
+{
+	size_t	i;
+	size_t	j;
+	size_t	c;
+	char	*temp;
+	char	char_q;
+}			t_trim;
 
 // sig_handler:
 void		set_signal_handlers(void);
