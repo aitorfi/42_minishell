@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder_nodes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:31:39 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 13:04:46 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:32:15 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,19 @@ t_ast	*get_right_node_heredoc(char **args, int index)
 {
 	t_ast	*node;
 	char	*path;
+	char	*limit;
 
 	path = create_heredoc(args[index]);
 	if (path == NULL)
 		return (NULL);
-	node = new_node(FILE_OP, path, NULL, ft_strdup(args[index]));
+	limit = ft_strdup(args[index]);
+	if (limit == NULL)
+	{
+		free(path);
+		return (notify_error_ptr("Error al crear el heredoc"));
+	}
+	node = new_node(FILE_OP, path, NULL, limit);
 	if (node == NULL)
-		return (free_massive(path));
+		return (free_massive(path, limit));
 	return (node);
 }

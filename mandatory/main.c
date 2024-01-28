@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 11:18:25 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 12:44:46 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,21 @@ static t_mshell	*init(char **envp)
 
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (mshell == NULL)
-		exit(EXIT_FAILURE);
+		return (notify_error_ptr("Error al crear los parámetros de la shell"));
 	mshell->env_custom = do_env_init(envp, 0);
 	if (mshell->env_custom == NULL)
-		return (free_massive(mshell));
+	{
+		free_massive(mshell);
+		return (notify_error_ptr("Error al crear los parámetros de la shell"));
+	}
 	mshell->stdout_fd = dup(STDOUT_FILENO);
 	mshell->stdin_fd = dup(STDIN_FILENO);
+	if (mshell->stdout_fd == -1 || mshell->stdin_fd == -1)
+	{
+		free_split(mshell->env_custom);
+		free(mshell);
+		return (notify_error_ptr("Error al crear los parámetros de la shell"));
+	}
 	return (mshell);
 }
 
@@ -64,7 +73,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (line == NULL)
 		{
 			rl_clear_history();
-			return (EXIT_FAILURE);
+			return (notify_error("Error al leer el input del usuario"));
 		}
 		add_history(line);
 		line_split = preprocess(line, mshell);
