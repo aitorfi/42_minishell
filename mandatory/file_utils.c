@@ -6,17 +6,17 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:58:14 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/28 12:41:08 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 14:07:46 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*create_file(char *path, char *content)
+char	*create_file(char *path, char *content, mode_t mode)
 {
 	int	fd;
 
-	fd = open(path, O_RDWR | O_TRUNC | O_CREAT, 0000644);
+	fd = open(path, O_RDWR | O_TRUNC | O_CREAT, mode);
 	if (fd == -1)
 		return (notify_error_ptr("Error al escribir en el fichero"));
 	if (write(fd, content, ft_strlen(content)) == -1)

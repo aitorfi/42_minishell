@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 12:37:07 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 13:34:59 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static t_ast	*get_right_node(
 	if (node->operation == PIPE_OP)
 		return (get_right_node_command(args, index + 1, mshell));
 	if (node->operation == IN_REDIR_APPEND_OP)
-		return (get_right_node_heredoc(args, index + 1));
+		return (get_right_node_heredoc(args, index + 1, mshell));
 	path = ft_strdup(args[index + 1]);
 	if (path == NULL)
 		return (notify_error_ptr("Error al alojar el path del nodo del AST"));

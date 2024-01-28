@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 13:20:18 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 14:52:57 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,19 @@ int	main(int argc, char **argv, char **envp)
 	set_signal_handlers();
 	mshell = init(envp);
 	if (mshell == NULL)
-		exit(EXIT_FAILURE);
+		exit(notify_error("Error al crear los parámetros de la shell"));
 	exit_status = readline_loop("minishell> ", mshell);
+	if (access(mshell->heredoc_path, F_OK) == 0)
+	{
+		ft_printf("Heredoc existe vamos a borrarlo\n");
+		if (unlink(mshell->heredoc_path) == -1)
+			perror("Error al eliminar el heredoc");
+	}
+	ft_printf("Liberamos variables de entorno\n");
 	free_split(mshell->env_custom);
-	free(mshell);
+	ft_printf("Liberamos estructura de parametros\n");
+	free_massive(mshell->heredoc_path, mshell);
+	ft_printf("Finaliza el programa\n");
 	return (exit_status);
 }
 
@@ -42,20 +51,22 @@ static t_mshell	*init(char **envp)
 
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (mshell == NULL)
-		return (notify_error_ptr("Error al crear los parámetros de la shell"));
+		return (NULL);
 	mshell->env_custom = do_env_init(envp, 0);
 	if (mshell->env_custom == NULL)
+		return (free_massive(mshell));
+	mshell->heredoc_path = get_heredoc_path(mshell->env_custom);
+	if (mshell->heredoc_path == NULL)
 	{
-		free_massive(mshell);
-		return (notify_error_ptr("Error al crear los parámetros de la shell"));
+		free_split(mshell->env_custom);
+		return (free_massive(mshell));
 	}
 	mshell->stdout_fd = dup(STDOUT_FILENO);
 	mshell->stdin_fd = dup(STDIN_FILENO);
 	if (mshell->stdout_fd == -1 || mshell->stdin_fd == -1)
 	{
 		free_split(mshell->env_custom);
-		free(mshell);
-		return (notify_error_ptr("Error al crear los parámetros de la shell"));
+		return (free_massive(mshell->heredoc_path, mshell));
 	}
 	return (mshell);
 }

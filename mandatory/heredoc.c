@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 13:05:04 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 14:30:54 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 static char	*readline_loop(char *limit);
 static char	*join_lines(char *line1, char *line2);
-static char	*get_heredoc_path(void);
 
-char	*create_heredoc(char *limit)
+char	*create_heredoc(char *limit, t_mshell *mshell)
 {
 	char	*path;
 	char	*content;
 
-	path = get_heredoc_path();
-	if (path == NULL)
-		return (notify_error_ptr("Error al crear heredoc"));
 	content = readline_loop(limit);
 	if (content == NULL)
 		return (notify_error_ptr("Error al crear heredoc"));
-	create_file(path, content);
+	create_file(mshell->heredoc_path, content, 00644);
 	free(content);
+	path = ft_strdup(mshell->heredoc_path);
+	if (path == NULL)
+		return (notify_error_ptr("Error al crear heredoc"));
 	return (path);
 }
 
@@ -74,8 +73,23 @@ static char	*join_lines(char *line1, char *line2)
 	return (ret_line);
 }
 
-static char	*get_heredoc_path(void)
+char	*get_heredoc_path(char **envs)
 {
-	// TODO: Get a path for the heredoc in the users HOME directory
-	return (ft_strdup("./heredoc"));
+	char	*home_dir;
+	char	*path;
+
+	while (*envs && ft_strncmp(*envs, "HOME=", 5))
+		*envs += 1;
+	if (*envs == NULL)
+		home_dir = ft_strdup("./");
+	else
+		home_dir = ft_substr(*envs, 5, ft_strlen(*envs) - 5);
+	if (home_dir == NULL)
+		return (NULL);
+	if (home_dir[ft_strlen(home_dir) - 1] == '/')
+		path = ft_strjoin(home_dir, ".msh_heredoc");
+	else
+		path = ft_strjoin(home_dir, "/.msh_heredoc");
+	free(home_dir);
+	return (path);
 }

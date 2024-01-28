@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/28 11:16:07 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 14:19:09 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_mshell
 	int		stdout_fd;
 	int		stdin_fd;
 	t_ast	**ast;
+	char	*heredoc_path;
 }			t_mshell;
 
 typedef struct s_preprocess
@@ -124,10 +125,11 @@ t_ast		**build_ast(char **args, t_mshell *mshell);
 // ast_builder_nodes:
 t_ast		*get_left_node(char **args, int index, t_mshell *mshell);
 t_ast		*get_right_node_command(char **args, int index, t_mshell *mshell);
-t_ast		*get_right_node_heredoc(char **args, int index);
+t_ast		*get_right_node_heredoc(char **args, int index, t_mshell *mshell);
 
 // heredoc:
-char		*create_heredoc(char *limit);
+char		*create_heredoc(char *limit, t_mshell *mshell);
+char		*get_heredoc_path(char **envs);
 
 // ast_processor:
 int			process_ast(t_ast **ast, t_mshell *mshell);
@@ -149,7 +151,7 @@ int			notify_error(char *msg);
 void		*notify_error_ptr(char *msg);
 
 // file_utils:
-char		*create_file(char *path, char *content);
+char		*create_file(char *path, char *content, mode_t mode);
 char		*get_file_content_fd(int fd);
 char		*get_file_content(char *path);
 int			close_massive(int fd, ...);
