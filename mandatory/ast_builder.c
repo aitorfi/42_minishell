@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/25 20:28:19 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:37:07 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_ast	**build_ast(char **args, t_mshell *mshell)
 
 	ast = ft_calloc(1, sizeof(t_ast *));
 	if (ast == NULL)
-		return (NULL);
+		return (notify_error_ptr("Error al alojar el AST"));
 	i = 0;
 	while (args[i])
 	{
@@ -73,13 +73,20 @@ static t_ast	*create_node(
 static t_ast	*get_right_node(
 					t_ast *node, char **args, int index, t_mshell *mshell)
 {
+	t_ast	*right_node;
+	char	*path;
+
 	if (node->operation == PIPE_OP)
-		node->right = get_right_node_command(args, index + 1, mshell);
-	else if (node->operation == IN_REDIR_APPEND_OP)
-		node->right = get_right_node_heredoc(args, index + 1);
-	else
-		node->right = new_node(FILE_OP, ft_strdup(args[index + 1]), NULL, NULL);
-	return (node->right);
+		return (get_right_node_command(args, index + 1, mshell));
+	if (node->operation == IN_REDIR_APPEND_OP)
+		return (get_right_node_heredoc(args, index + 1));
+	path = ft_strdup(args[index + 1]);
+	if (path == NULL)
+		return (notify_error_ptr("Error al alojar el path del nodo del AST"));
+	right_node = new_node(FILE_OP, path, NULL, NULL);
+	if (right_node == NULL)
+		free(path);
+	return (right_node);
 }
 
 static t_ast	**build_single_cmd_ast(

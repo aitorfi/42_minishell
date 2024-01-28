@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:58:14 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/17 19:14:32 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:41:08 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ char	*create_file(char *path, char *content)
 
 	fd = open(path, O_RDWR | O_TRUNC | O_CREAT, 0000644);
 	if (fd == -1)
-		return (notify_error_ptr("Error"));
+		return (notify_error_ptr("Error al escribir en el fichero"));
 	if (write(fd, content, ft_strlen(content)) == -1)
 	{
 		close(fd);
-		return (notify_error_ptr("Error"));
+		return (notify_error_ptr("Error al escribir en el fichero"));
 	}
 	close(fd);
 	return (path);
@@ -35,9 +35,11 @@ char	*get_file_content(char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (notify_error_ptr("Error"));
+		return (notify_error_ptr("Error al obtener el contenido del fichero"));
 	content = get_file_content_fd(fd);
 	close(fd);
+	if (content == NULL)
+		return (notify_error_ptr("Error al obtener el contenido del fichero"));
 	return (content);
 }
 

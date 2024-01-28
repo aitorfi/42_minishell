@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/28 10:36:31 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 11:16:07 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_mshell
 	char	**env_custom;
 	int		stdout_fd;
 	int		stdin_fd;
+	t_ast	**ast;
 }			t_mshell;
 
 typedef struct s_preprocess

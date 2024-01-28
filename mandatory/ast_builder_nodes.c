@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder_nodes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:31:39 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/25 19:50:58 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:32:15 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ static char	**get_left_node_args(char **args, int index)
 	node_args_len = index - i;
 	node_args = ft_calloc(node_args_len + 1, sizeof(char *));
 	if (node_args == NULL)
-		return (NULL);
+		return (notify_error_ptr("Error al alojar argumentos de nodo de AST"));
 	i = 0;
 	while (i < node_args_len)
 	{
 		node_args[i] = ft_strdup(args[index - node_args_len + i + 1]);
 		if (node_args[i] == NULL)
+		{
+			perror("Error al alojar un argumento de nodo de AST");
 			return (free_split(node_args));
+		}
 		i++;
 	}
 	return (node_args);
@@ -93,13 +96,16 @@ static char	**get_right_node_args(char **args, int index)
 	node_args_len = i - index;
 	node_args = ft_calloc(node_args_len + 1, sizeof(char *));
 	if (node_args == NULL)
-		return (NULL);
+		return (notify_error_ptr("Error al alojar argumentos de nodo de AST"));
 	i = 0;
 	while (i < node_args_len)
 	{
 		node_args[i] = ft_strdup(args[index + i]);
 		if (node_args[i] == NULL)
+		{
+			perror("Error al alojar un argumento de nodo de AST");
 			return (free_split(node_args));
+		}
 		i++;
 	}
 	return (node_args);
@@ -109,12 +115,19 @@ t_ast	*get_right_node_heredoc(char **args, int index)
 {
 	t_ast	*node;
 	char	*path;
+	char	*limit;
 
 	path = create_heredoc(args[index]);
 	if (path == NULL)
 		return (NULL);
-	node = new_node(FILE_OP, path, NULL, ft_strdup(args[index]));
+	limit = ft_strdup(args[index]);
+	if (limit == NULL)
+	{
+		free(path);
+		return (notify_error_ptr("Error al crear el heredoc"));
+	}
+	node = new_node(FILE_OP, path, NULL, limit);
 	if (node == NULL)
-		return (free_massive(path));
+		return (free_massive(path, limit));
 	return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:37:18 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/26 15:53:24 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/27 11:44:15 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_ast	*new_node(t_operation op, char *path, char **args, char *limit)
 
 	node = malloc(sizeof(t_ast));
 	if (node == NULL)
-		return (NULL);
+		return (notify_error_ptr("Error al alojar nodo del AST"));
 	node->operation = op;
 	node->path = path;
 	node->args = args;
