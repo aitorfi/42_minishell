@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:06:07 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/22 10:06:39 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/29 19:01:10 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*set_cd_one_up(char *cwd)
 	i = i - 1;
 	while (cwd[i] != '/' && cwd[i])
 		i--;
-	dir_one_up = ft_substr(cwd, 0, ft_strlen(cwd) - ft_strlen(&cwd[i]));
+	dir_one_up = ft_substr(cwd, 0, ft_strlen(cwd) - ft_strlen(&cwd[i + 1]));
 	if (dir_one_up == NULL)
 		return (NULL);
 	return (dir_one_up);

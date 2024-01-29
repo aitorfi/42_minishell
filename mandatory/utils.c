@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:43:23 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/13 12:58:40 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/29 19:00:48 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_operation	which_operator(char *operator)
 	int	len;
 
 	len = ft_strlen(operator);
+	if (len < 1)
+		return (0);
 	if (!ft_strncmp(operator, "<", len))
 		return (IN_REDIR_OP);
 	if (!ft_strncmp(operator, "<<", len))
