@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 13:25:16 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/29 10:51:31 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	loop_trim(t_trim *d, char **ret)
 		if (ret[d->i][d->j] == '\"' || ret[d->i][d->j] == '\'')
 		{
 			d->char_q = ret[d->i][d->j];
-			d->temp[d->c++] = ret[d->i][d->j++ + 1];
+			if (ret[d->i][d->j + 1] != d->char_q)
+				d->temp[d->c++] = ret[d->i][d->j++ + 1];
 			d->j++;
 			while (ret[d->i][d->j] && ret[d->i][d->j] != d->char_q)
 				d->temp[d->c++] = ret[d->i][d->j++];
