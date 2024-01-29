@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 14:30:54 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/29 19:59:46 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,15 @@ char	*get_heredoc_path(char **envs)
 {
 	char	*home_dir;
 	char	*path;
+	int		i;
 
-	while (*envs && ft_strncmp(*envs, "HOME=", 5))
-		*envs += 1;
-	if (*envs == NULL)
+	i = 0;
+	while (envs[i] && ft_strncmp(envs[i], "HOME=", 5))
+		i++;
+	if (envs[i] == NULL)
 		home_dir = ft_strdup("./");
 	else
-		home_dir = ft_substr(*envs, 5, ft_strlen(*envs) - 5);
+		home_dir = ft_substr(envs[i], 5, ft_strlen(envs[i]) - 5);
 	if (home_dir == NULL)
 		return (NULL);
 	if (home_dir[ft_strlen(home_dir) - 1] == '/')
@@ -91,5 +93,6 @@ char	*get_heredoc_path(char **envs)
 	else
 		path = ft_strjoin(home_dir, "/.msh_heredoc");
 	free(home_dir);
+	printf("heredoc: %s\n", path);
 	return (path);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 14:52:57 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/29 20:12:47 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,12 @@ int	main(int argc, char **argv, char **envp)
 	exit_status = readline_loop("minishell> ", mshell);
 	if (access(mshell->heredoc_path, F_OK) == 0)
 	{
-		ft_printf("Heredoc existe vamos a borrarlo\n");
 		if (unlink(mshell->heredoc_path) == -1)
 			perror("Error al eliminar el heredoc");
 	}
-	ft_printf("Liberamos variables de entorno\n");
 	free_split(mshell->env_custom);
-	ft_printf("Liberamos estructura de parametros\n");
-	free_massive(mshell->heredoc_path, mshell);
-	ft_printf("Finaliza el programa\n");
+	free(mshell->heredoc_path);
+	free(mshell);
 	return (exit_status);
 }
 
