@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/27 12:56:31 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:31:02 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,10 @@ char	*increase_ret(char **ret);
 char	*copy_ret(char **ret, char *join);
 char	**increase_routine(char **ret);
 void	find_dollar(t_expand *d);
+
+//cmd_preprocessor_order:
+char	**order_args(char	**ret);
+char	**exec_order(char **ret, char **temp);
 
 // ast_builder:
 t_ast		**build_ast(char **args, t_mshell *mshell);

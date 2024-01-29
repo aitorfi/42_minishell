@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+         #
+#    By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 17:48:55 by alejandro         #+#    #+#              #
-#    Updated: 2024/01/25 19:39:34 by afidalgo         ###   ########.fr        #
+#    Updated: 2024/01/29 12:29:54 by alvicina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ MPATH_SRCS  = \
 	cmd_split_preprocess_utils.c cmd_split_preprocess.c \
 	builtin_unset.c cmd_utils.c builtin_exit.c builtin_exit_utils.c \
 	builtin_unset_utils.c builtin_cd_utils.c ast_processor_cmd.c ast_builder_nodes.c \
-  cmd_expand.c cmd_expand_utils.c cmd_expand_increase.c \
+  cmd_expand.c cmd_expand_utils.c cmd_expand_increase.c cmd_preprocessor_order.c \
 	
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))

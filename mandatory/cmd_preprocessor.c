@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/29 10:51:31 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:35:46 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,9 @@ char	**preprocess(char *line, t_mshell *mini_data)
 	ret = exec_trim(ret);
 	if (ret == NULL)
 		return (perror("malloc error while trim $"), NULL);
+	ret = order_args(ret);
+	if (ret == NULL)
+		return (perror("malloc error while ordering args"), NULL);
 	return (ret);
 }
 /*

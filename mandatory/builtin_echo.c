@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:38:10 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/09 12:40:11 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/29 11:08:57 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,10 @@ int	do_echo(char **arguments)
 {
 	size_t	i;
 	size_t	option;
-	int		option_exist;
 
 	i = 1;
 	option = 0;
-	option_exist = ft_check_option(arguments[i]);
-	if (arguments[i] != NULL && option_exist)
+	if (arguments[i] != NULL && ft_check_option(arguments[i]))
 	{
 		option++;
 		i++;
