@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:48:07 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/30 18:45:50 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/30 19:51:51 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*append_path_to_cmd(char **envp, char *cmd)
 {
 	char	*full_path;
 
+	if (!cmd || ft_strlen(cmd) == 0)
+		return (ft_strdup(""));
 	if (ft_strchr(cmd, '/') || is_builtin(cmd))
 		full_path = ft_strdup(cmd);
 	else
