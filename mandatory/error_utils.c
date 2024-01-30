@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:55:54 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/19 16:38:24 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:03:55 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,17 @@ void	*notify_error_ptr(char *msg)
 void	*free_massive(void *ptr, ...)
 {
 	va_list	args;
+	void	*arg_ptr;
 
 	va_start(args, ptr);
-	free(ptr);
-	ptr = va_arg(args, void *);
-	while (ptr)
+	arg_ptr = va_arg(args, void *);
+	while (arg_ptr)
 	{
-		free(ptr);
-		ptr = va_arg(args, void *);
+		free(arg_ptr);
+		arg_ptr = va_arg(args, void *);
 	}
 	va_end(args);
+	free(ptr);
 	return (NULL);
 }
 

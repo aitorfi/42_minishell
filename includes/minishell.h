@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/28 11:16:07 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:39:18 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_mshell
 	int		stdout_fd;
 	int		stdin_fd;
 	t_ast	**ast;
+	char	*heredoc_path;
 }			t_mshell;
 
 typedef struct s_preprocess
@@ -124,10 +125,11 @@ t_ast		**build_ast(char **args, t_mshell *mshell);
 // ast_builder_nodes:
 t_ast		*get_left_node(char **args, int index, t_mshell *mshell);
 t_ast		*get_right_node_command(char **args, int index, t_mshell *mshell);
-t_ast		*get_right_node_heredoc(char **args, int index);
+t_ast		*get_right_node_heredoc(char **args, int index, t_mshell *mshell);
 
 // heredoc:
-char		*create_heredoc(char *limit);
+char		*create_heredoc(char *limit, t_mshell *mshell);
+char		*get_heredoc_path(char **envs);
 
 // ast_processor:
 int			process_ast(t_ast **ast, t_mshell *mshell);
@@ -139,7 +141,12 @@ int			read_ast_node_command(
 // utils:
 t_operation	which_operator(char *operator);
 char		*which_operator_str(t_operation operator);
+int			max_of(int num1, int num2);
+
+// cmd_utils:
 char		*append_path_to_cmd(char **envp, char *cmd);
+int			is_builtin(char *cmd);
+int			execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process);
 
 // error_utils:
 void		*free_massive(void *ptr, ...);
@@ -149,7 +156,7 @@ int			notify_error(char *msg);
 void		*notify_error_ptr(char *msg);
 
 // file_utils:
-char		*create_file(char *path, char *content);
+char		*create_file(char *path, char *content, mode_t mode);
 char		*get_file_content_fd(int fd);
 char		*get_file_content(char *path);
 int			close_massive(int fd, ...);
@@ -159,10 +166,6 @@ void		*free_ast(t_ast **ast);
 void		*free_ast_node(t_ast *node);
 void		print_ast(t_ast *node, int depth);
 t_ast		*new_node(t_operation op, char *path, char **args, char *limit);
-
-// builtin_utils:
-int			is_builtin(char *cmd);
-int			execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process);
 
 // builtin_pwd:
 int			do_pwd(void);

@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:31:39 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 12:32:15 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/28 13:35:48 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,13 @@ static char	**get_right_node_args(char **args, int index)
 	return (node_args);
 }
 
-t_ast	*get_right_node_heredoc(char **args, int index)
+t_ast	*get_right_node_heredoc(char **args, int index, t_mshell *mshell)
 {
 	t_ast	*node;
 	char	*path;
 	char	*limit;
 
-	path = create_heredoc(args[index]);
+	path = create_heredoc(args[index], mshell);
 	if (path == NULL)
 		return (NULL);
 	limit = ft_strdup(args[index]);
