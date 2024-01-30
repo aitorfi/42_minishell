@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/30 18:40:20 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/30 19:04:21 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,14 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 			rl_clear_history();
 			return (notify_error("Error al leer el input del usuario"));
 		}
-		add_history(line);
-		if (process_line(line, &read_next, mshell) != EXIT_SUCCESS)
+		if (ft_strlen(line) > 0)
 		{
-			rl_clear_history();
-			return (free_massive_exit_failure(line));
+			add_history(line);
+			if (process_line(line, &read_next, mshell) != EXIT_SUCCESS)
+			{
+				rl_clear_history();
+				return (free_massive_exit_failure(line));
+			}
 		}
 		free(line);
 	}
