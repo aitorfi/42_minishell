@@ -6,7 +6,7 @@
 /*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:43:23 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/13 12:58:40 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:47:12 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ t_operation	which_operator(char *operator)
 	int	len;
 
 	len = ft_strlen(operator);
-	if (!ft_strncmp(operator, "<", len))
+	if (!ft_strncmp(operator, "<", max_of(len, 1)))
 		return (IN_REDIR_OP);
-	if (!ft_strncmp(operator, "<<", len))
+	if (!ft_strncmp(operator, "<<", max_of(len, 2)))
 		return (IN_REDIR_APPEND_OP);
-	if (!ft_strncmp(operator, ">", len))
+	if (!ft_strncmp(operator, ">", max_of(len, 1)))
 		return (OUT_REDIR_OP);
-	if (!ft_strncmp(operator, ">>", len))
+	if (!ft_strncmp(operator, ">>", max_of(len, 2)))
 		return (OUT_REDIR_APPEND_OP);
-	if (!ft_strncmp(operator, "|", len))
+	if (!ft_strncmp(operator, "|", max_of(len, 1)))
 		return (PIPE_OP);
 	return (0);
 }
@@ -47,4 +47,11 @@ char	*which_operator_str(t_operation operator)
 	if (operator == FILE_OP)
 		return ("FILE_OP");
 	return ("");
+}
+
+int	max_of(int num1, int num2)
+{
+	if (num1 > num2)
+		return (num1);
+	return (num2);
 }

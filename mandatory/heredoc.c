@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/29 19:59:46 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:40:38 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,5 @@ char	*get_heredoc_path(char **envs)
 	else
 		path = ft_strjoin(home_dir, "/.msh_heredoc");
 	free(home_dir);
-	printf("heredoc: %s\n", path);
 	return (path);
 }

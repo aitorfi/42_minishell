@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/29 20:12:47 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:40:20 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static int	is_terminating_cmd(t_ast **ast)
 	if (!ast[0]->left && !ast[0]->right && ast[0]->operation == COMMAND_OP)
 	{
 		path_len = ft_strlen(ast[0]->path);
-		if (!ft_strncmp(ast[0]->path, "exit", path_len)
+		if (!ft_strncmp(ast[0]->path, "exit", max_of(path_len, 4))
 			&& can_do_exit(ast[0]->args))
 		{
 			return (1);

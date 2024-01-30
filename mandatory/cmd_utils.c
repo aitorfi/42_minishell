@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:48:07 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 12:50:44 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:45:50 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ int	is_builtin(char *cmd)
 	int	len;
 
 	len = ft_strlen(cmd);
-	return (!ft_strncmp(cmd, "cd", len)
-		|| !ft_strncmp(cmd, "echo", len)
-		|| !ft_strncmp(cmd, "env", len)
-		|| !ft_strncmp(cmd, "export", len)
-		|| !ft_strncmp(cmd, "pwd", len)
-		|| !ft_strncmp(cmd, "unset", len)
-		|| !ft_strncmp(cmd, "exit", len)
+	return (!ft_strncmp(cmd, "cd", max_of(len, 2))
+		|| !ft_strncmp(cmd, "echo", max_of(len, 4))
+		|| !ft_strncmp(cmd, "env", max_of(len, 3))
+		|| !ft_strncmp(cmd, "export", max_of(len, 6))
+		|| !ft_strncmp(cmd, "pwd", max_of(len, 3))
+		|| !ft_strncmp(cmd, "unset", max_of(len, 5))
+		|| !ft_strncmp(cmd, "exit", max_of(len, 4))
 	);
 }
 
@@ -101,19 +101,19 @@ int	execute_builtin(t_ast *node, t_mshell *mshell, int is_main_process)
 	int	len;
 
 	len = ft_strlen(node->path);
-	if (!ft_strncmp(node->path, "cd", len))
+	if (!ft_strncmp(node->path, "cd", max_of(len, 2)))
 		return (do_cd(mshell, node->args));
-	if (!ft_strncmp(node->path, "echo", len))
+	if (!ft_strncmp(node->path, "echo", max_of(len, 4)))
 		return (do_echo(node->args));
-	if (!ft_strncmp(node->path, "env", len))
+	if (!ft_strncmp(node->path, "env", max_of(len, 3)))
 		return (execute_env(mshell->env_custom));
-	if (!ft_strncmp(node->path, "export", len))
+	if (!ft_strncmp(node->path, "export", max_of(len, 6)))
 		return (do_export(mshell, node->args));
-	if (!ft_strncmp(node->path, "pwd", len))
+	if (!ft_strncmp(node->path, "pwd", max_of(len, 3)))
 		return (do_pwd());
-	if (!ft_strncmp(node->path, "unset", len))
+	if (!ft_strncmp(node->path, "unset", max_of(len, 5)))
 		return (do_unset(mshell, node->args));
-	if (!ft_strncmp(node->path, "exit", len))
+	if (!ft_strncmp(node->path, "exit", max_of(len, 4)))
 		return (do_exit(node->args, is_main_process));
 	return (EXIT_FAILURE);
 }
