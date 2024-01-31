@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_processor_cmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 12:05:48 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:10:16 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static int	modify_stdio(int rfd, int wfd)
 static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
-
+	
+	set_signal_handlers_fork();
 	pid = fork();
 	if (pid == -1)
 		return (notify_error("Error al crear proceso hijo"));
@@ -55,6 +56,7 @@ static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 		waitpid(pid, &g_result, 0);
 	else if (pid == 0)
 		execute_command(node, mshell);
+	set_signal_handlers();
 	return (EXIT_SUCCESS);
 }
 

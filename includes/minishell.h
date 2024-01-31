@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/30 18:39:18 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:10:40 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <sys/ioctl.h>
 # include "../libft/libft.h"
 
 # define DEFAULT_FD -2
@@ -91,6 +93,9 @@ typedef struct s_trim
 
 // sig_handler:
 void		set_signal_handlers(void);
+void		set_signal_handlers_fork(void);
+void 		ft_signal_father(int signal);
+void		ft_signal_child(int signal);
 
 // cmd_preprocessor:
 char		**preprocess(char *line, t_mshell *mini_data);
