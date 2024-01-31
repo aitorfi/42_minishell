@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 13:34:59 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/31 19:42:25 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static t_ast	*get_right_node(
 					t_ast *node, char **args, int index, t_mshell *mshell);
 static t_ast	**build_single_cmd_ast(
 					t_ast **ast, char **args, t_mshell *mshell);
+static int		is_operator_valid(char **args, int index);
 
 t_ast	**build_ast(char **args, t_mshell *mshell)
 {
@@ -33,6 +34,8 @@ t_ast	**build_ast(char **args, t_mshell *mshell)
 	{
 		if (which_operator(args[i]))
 		{
+			if (!is_operator_valid(args, i))
+				return (free_ast(ast));
 			node = create_node(ast, args, i, mshell);
 			if (node == NULL)
 				return (free_ast(ast));
@@ -96,4 +99,15 @@ static t_ast	**build_single_cmd_ast(
 	if (ast[0] == NULL)
 		return (free_ast(ast));
 	return (ast);
+}
+
+static int	is_operator_valid(char **args, int index)
+{
+	if ((index > 0 && which_operator(args[index - 1]))
+		|| (args[index + 1] && which_operator(args[index - 1])))
+	{
+		write(STDERR_FILENO, "Error de sintaxis\n", 18);
+		return (0);
+	}
+	return (1);
 }

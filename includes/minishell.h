@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/30 18:39:18 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/01/31 19:27:32 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ typedef struct s_trim
 	char	*temp;
 	char	char_q;
 }			t_trim;
+
+
+
+void	print_ast(t_ast *node, int depth);
+
 
 // sig_handler:
 void		set_signal_handlers(void);
