@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:47:08 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/31 11:09:55 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/31 19:09:21 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@
 void	ft_signal_child(int signal)
 {
 	if (signal == SIGINT)
-		ft_putstr_fd("\n", 1);
+	{
+		//ft_putstr_fd("\n", 1);
+		//printf("hola\n");
+		exit (0);
+	}
 	else if (signal == SIGQUIT)
 		ft_putstr_fd("Quit: 3\n", 1);
 }

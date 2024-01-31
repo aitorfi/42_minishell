@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 16:39:36 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/20 13:56:51 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/31 19:12:58 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ int	do_export(t_mshell *mini_data, char **arguments)
 	int		arg_valid;
 	char	**env_to_export;
 
+/*	while (1)
+	{
+		write(1, "yes\n", 4);
+		sleep(1);
+	}*/
 	arg_valid = 1;
 	env_to_export = NULL;
 	if (!arguments[arg_valid])

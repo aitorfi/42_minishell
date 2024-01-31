@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/31 11:10:16 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/01/31 19:12:30 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
 	
-	set_signal_handlers_fork();
+	// handler con salto de linea solo
 	pid = fork();
 	if (pid == -1)
 		return (notify_error("Error al crear proceso hijo"));
@@ -56,6 +56,7 @@ static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 		waitpid(pid, &g_result, 0);
 	else if (pid == 0)
 		execute_command(node, mshell);
+	// handler con prompt
 	set_signal_handlers();
 	return (EXIT_SUCCESS);
 }
@@ -64,6 +65,8 @@ static void	execute_command(t_ast *node, t_mshell *mshell)
 {
 	int	status;
 	
+	// handler con solo exit
+	set_signal_handlers_fork();
 	if (is_builtin(node->args[0]))
 	{
 		status = execute_builtin(node, mshell, 0);
