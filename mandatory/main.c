@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/30 19:04:21 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:48:47 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (line == NULL)
 		{
 			rl_clear_history();
+			// para el control D tengo que cambiar esto;
 			return (notify_error("Error al leer el input del usuario"));
 		}
 		if (ft_strlen(line) > 0)

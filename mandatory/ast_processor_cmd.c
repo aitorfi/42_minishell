@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/31 19:12:30 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:07:30 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,28 @@ static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
 	
-	// handler con salto de linea solo
+	set_signal_handlers_fork();
 	pid = fork();
 	if (pid == -1)
 		return (notify_error("Error al crear proceso hijo"));
 	else if (pid > 0)
+	{
 		waitpid(pid, &g_result, 0);
+		if (WIFSIGNALED(g_result))
+		{
+			if (WTERMSIG(g_result) == 2)
+				g_result = 130;
+			else if (WTERMSIG(g_result) == 3)
+				g_result = 131;
+		}
+		else
+		{
+			write(1, "hola\n", 5);
+			g_result = WEXITSTATUS(g_result);
+		}
+	}
 	else if (pid == 0)
 		execute_command(node, mshell);
-	// handler con prompt
 	set_signal_handlers();
 	return (EXIT_SUCCESS);
 }
@@ -66,9 +79,10 @@ static void	execute_command(t_ast *node, t_mshell *mshell)
 	int	status;
 	
 	// handler con solo exit
-	set_signal_handlers_fork();
+	set_signal_handlers_builtin();
 	if (is_builtin(node->args[0]))
 	{
+		//set_signal_handlers_builtin();
 		status = execute_builtin(node, mshell, 0);
 		free_split(mshell->env_custom);
 		free_ast(mshell->ast);

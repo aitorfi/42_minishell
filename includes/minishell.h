@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/31 11:10:40 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:56:17 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ typedef struct s_preprocess
 	size_t	count;
 	size_t	final;
 	size_t	limit;
-	int		flag;
+	size_t	flag;
 	char	quote;
+	char	**s;
 	size_t	start;
 	size_t	end;
 }			t_preprocess;
@@ -94,8 +95,13 @@ typedef struct s_trim
 // sig_handler:
 void		set_signal_handlers(void);
 void		set_signal_handlers_fork(void);
+void		set_signal_handlers_builtin(void);
+
+// sig_handler_utils: 
 void 		ft_signal_father(int signal);
 void		ft_signal_child(int signal);
+void		ft_signal_child_builtin(int signal);
+
 
 // cmd_preprocessor:
 char		**preprocess(char *line, t_mshell *mini_data);
