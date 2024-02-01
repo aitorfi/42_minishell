@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/30 19:04:21 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:16:37 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int	main(int argc, char **argv, char **envp)
 			perror("Error al eliminar el heredoc");
 	}
 	free_split(mshell->env_custom);
-	free(mshell->heredoc_path);
-	free(mshell);
+	free_massive(mshell->heredoc_path, mshell, NULL);
 	return (exit_status);
 }
 
@@ -51,19 +50,19 @@ static t_mshell	*init(char **envp)
 		return (NULL);
 	mshell->env_custom = do_env_init(envp, 0);
 	if (mshell->env_custom == NULL)
-		return (free_massive(mshell));
+		return (free_massive(mshell, NULL));
 	mshell->heredoc_path = get_heredoc_path(mshell->env_custom);
 	if (mshell->heredoc_path == NULL)
 	{
 		free_split(mshell->env_custom);
-		return (free_massive(mshell));
+		return (free_massive(mshell, NULL));
 	}
 	mshell->stdout_fd = dup(STDOUT_FILENO);
 	mshell->stdin_fd = dup(STDIN_FILENO);
 	if (mshell->stdout_fd == -1 || mshell->stdin_fd == -1)
 	{
 		free_split(mshell->env_custom);
-		return (free_massive(mshell->heredoc_path, mshell));
+		return (free_massive(mshell->heredoc_path, mshell, NULL));
 	}
 	return (mshell);
 }
@@ -88,7 +87,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 			if (process_line(line, &read_next, mshell) != EXIT_SUCCESS)
 			{
 				rl_clear_history();
-				return (free_massive_exit_failure(line));
+				return (free_massive_exit_failure(line, NULL));
 			}
 		}
 		free(line);
