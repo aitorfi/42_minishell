@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:28:57 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/30 18:40:38 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:15:42 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*readline_loop(char *limit)
 		return (NULL);
 	line = readline("heredoc> ");
 	if (line == NULL)
-		return (free_massive(content));
+		return (free_massive(content, NULL));
 	while (ft_strncmp(line, limit, ft_strlen(line)) != 0)
 	{
 		content = join_lines(content, line);
@@ -49,7 +49,7 @@ static char	*readline_loop(char *limit)
 			return (NULL);
 		line = readline("heredoc> ");
 		if (line == NULL)
-			return (free_massive(content));
+			return (free_massive(content, NULL));
 	}
 	free(line);
 	return (content);
@@ -63,11 +63,11 @@ static char	*join_lines(char *line1, char *line2)
 	del_line = line2;
 	line2 = ft_strjoin(line2, "\n");
 	if (line2 == NULL)
-		return (free_massive(del_line, line1));
+		return (free_massive(del_line, line1, NULL));
 	free(del_line);
 	ret_line = ft_strjoin(line1, line2);
 	if (ret_line == NULL)
-		return (free_massive(line1, line2));
+		return (free_massive(line1, line2, NULL));
 	free(line1);
 	free(line2);
 	return (ret_line);
