@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/01 12:07:30 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:33:25 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 				g_result = 131;
 		}
 		else
-		{
-			write(1, "hola\n", 5);
 			g_result = WEXITSTATUS(g_result);
-		}
 	}
 	else if (pid == 0)
 		execute_command(node, mshell);

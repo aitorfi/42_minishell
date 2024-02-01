@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:54:40 by alvicina          #+#    #+#             */
-/*   Updated: 2024/02/01 12:03:53 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:31:00 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	ft_signal_child_builtin(int signal)
 {
 	if (signal == SIGINT)
-		exit (2);
+		exit (130);
 	else if (signal == SIGQUIT)
 	{
 		ft_putstr_fd("Quit: 3", 1);
-		exit (3);
+		exit (131);
 	}
 }
 
