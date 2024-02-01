@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/01 10:48:47 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:06:24 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (line == NULL)
 		{
 			rl_clear_history();
-			// para el control D tengo que cambiar esto;
+			if (errno == 0)
+				return (write(1, "exit\n", 5), EXIT_FAILURE);
 			return (notify_error("Error al leer el input del usuario"));
 		}
 		if (ft_strlen(line) > 0)

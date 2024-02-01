@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/01 12:33:25 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:15:37 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,9 @@ static void	execute_command(t_ast *node, t_mshell *mshell)
 {
 	int	status;
 	
-	// handler con solo exit
-	set_signal_handlers_builtin();
 	if (is_builtin(node->args[0]))
 	{
-		//set_signal_handlers_builtin();
+		set_signal_handlers_builtin();
 		status = execute_builtin(node, mshell, 0);
 		free_split(mshell->env_custom);
 		free_ast(mshell->ast);

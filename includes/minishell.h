@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/02/01 11:56:17 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:05:15 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <errno.h>
 # include "../libft/libft.h"
 
 # define DEFAULT_FD -2
