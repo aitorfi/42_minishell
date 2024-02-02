@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_split_preprocess.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:11:47 by alvicina          #+#    #+#             */
-/*   Updated: 2024/02/01 11:47:01 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:39:31 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	**ft_split_preprocess(char const *s, char c)
 	if (d_split.s == NULL)
 		return (perror("error in malloc split preprocess"), NULL);
 	if (d_split.flag == 1)
-		return (free(d_split.s), NULL);
+		return (free(d_split.s), (char **) 1);
 	d_split.limit = -1;
 	d_split.final = 0;
 	while (++d_split.limit < count_pre(s, c, &d_split.flag))

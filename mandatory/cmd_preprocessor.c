@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_preprocessor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/01 11:41:13 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:40:20 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	**preprocess(char *line, t_mshell *mini_data)
 	ret = ft_split_preprocess(line, ' ');
 	if (ret == NULL)
 		return (NULL);
+	if (ret == (char **) 1)
+		return ((char **) 1);
 	ret = do_expand(ret, mini_data);
 	if (ret == NULL)
 		return (perror("malloc error while expanding $"), NULL);
