@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/01 20:16:37 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/03 13:09:43 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			if (process_line(line, &read_next, mshell) != EXIT_SUCCESS)
+			if (process_line(line, &read_next, mshell) == MSH_FAILURE)
 			{
 				rl_clear_history();
 				return (free_massive_exit_failure(line, NULL));
@@ -100,11 +100,22 @@ static int	process_line(char *line, int *read_next, t_mshell *mshell)
 {
 	char	**line_split;
 	t_ast	**ast;
+	int		status;
 
 	line_split = preprocess(line, mshell);
+	if (line_split == (char **) 1)
+		return (MSH_ERROR);
 	if (line_split == NULL)
 		return (EXIT_FAILURE);
-	ast = build_ast(line_split, mshell);
+	ast = ft_calloc(1, sizeof(t_ast *));
+	if (ast == NULL)
+		return (notify_error("Error al alojar el AST"));
+	status = build_ast(ast, line_split, mshell);
+	if (status != MSH_SUCCESS)
+	{
+		free_ast(ast);
+		return (status);
+	}
 	free_split(line_split);
 	if (ast == NULL)
 		return (EXIT_FAILURE);

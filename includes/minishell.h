@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/31 19:27:32 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/03 13:08:55 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include "../libft/libft.h"
 
 # define DEFAULT_FD -2
+# define MSH_SUCCESS 1
+# define MSH_FAILURE 1
+# define MSH_ERROR 2
 
 extern int	g_result;
 
@@ -89,11 +92,6 @@ typedef struct s_trim
 	char	char_q;
 }			t_trim;
 
-
-
-void	print_ast(t_ast *node, int depth);
-
-
 // sig_handler:
 void		set_signal_handlers(void);
 
@@ -101,31 +99,31 @@ void		set_signal_handlers(void);
 char		**preprocess(char *line, t_mshell *mini_data);
 
 // cmd_split_preprocess:
-char	**ft_split_preprocess(char const *s, char c);
+char		**ft_split_preprocess(char const *s, char c);
 
 // cmd_split_preprocess_utils:
-void	d_init(t_preprocess *d);
-char	**ft_free_split_preprocess(char **split, size_t limit);
-void 	print_error_quote(int c);
+void		d_init(t_preprocess *d);
+char		**ft_free_split_preprocess(char **split, size_t limit);
+void 		print_error_quote(int c);
 
 // cmd_expand:
-char	**do_expand(char **ret, t_mshell *mini_data);
+char	*	*do_expand(char **ret, t_mshell *mini_data);
 
 // cmd_expand utils:
-int		check_expand(char *ret);
-char	*check_dollar(char *ret);
-void	d_expand_init(t_expand *d);
-char	*search_expand(char *to_expand, t_mshell *mini_data);
-char	*get_dollar_question(void);
+int			check_expand(char *ret);
+char		*check_dollar(char *ret);
+void		d_expand_init(t_expand *d);
+char		*search_expand(char *to_expand, t_mshell *mini_data);
+char		*get_dollar_question(void);
 
 //cmd_expand_increase:
-char	*increase_ret(char **ret);
-char	*copy_ret(char **ret, char *join);
-char	**increase_routine(char **ret);
-void	find_dollar(t_expand *d);
+char		*increase_ret(char **ret);
+char		*copy_ret(char **ret, char *join);
+char		**increase_routine(char **ret);
+void		find_dollar(t_expand *d);
 
 // ast_builder:
-t_ast		**build_ast(char **args, t_mshell *mshell);
+int			build_ast(t_ast **ast, char **args, t_mshell *mshell);
 
 // ast_builder_nodes:
 t_ast		*get_left_node(char **args, int index, t_mshell *mshell);

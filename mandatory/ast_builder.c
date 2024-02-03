@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/31 19:42:25 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/03 13:22:00 by aitorfi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,28 @@ static t_ast	**build_single_cmd_ast(
 					t_ast **ast, char **args, t_mshell *mshell);
 static int		is_operator_valid(char **args, int index);
 
-t_ast	**build_ast(char **args, t_mshell *mshell)
+int	build_ast(t_ast **ast, char **args, t_mshell *mshell)
 {
-	t_ast	**ast;
 	t_ast	*node;
 	int		i;
 
-	ast = ft_calloc(1, sizeof(t_ast *));
-	if (ast == NULL)
-		return (notify_error_ptr("Error al alojar el AST"));
 	i = 0;
 	while (args[i])
 	{
 		if (which_operator(args[i]))
 		{
 			if (!is_operator_valid(args, i))
-				return (free_ast(ast));
+				return (MSH_ERROR);
 			node = create_node(ast, args, i, mshell);
 			if (node == NULL)
-				return (free_ast(ast));
+				return (MSH_FAILURE);
 			ast[0] = node;
 		}
 		i++;
 	}
 	if (!ast[0])
 		ast = build_single_cmd_ast(ast, args, mshell);
-	return (ast);
+	return (MSH_SUCCESS);
 }
 
 static t_ast	*create_node(
