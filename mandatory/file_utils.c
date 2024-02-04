@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:58:14 by aitorfi           #+#    #+#             */
-/*   Updated: 2024/01/28 14:07:46 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:15:41 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,18 @@ char	*get_file_content_fd(int fd)
 		return (NULL);
 	content = ft_strdup("");
 	if (content == NULL)
-		return (free_massive(line));
+		return (free_massive(line, NULL));
 	while (ft_strchr(line, '\n'))
 	{
 		del = content;
 		content = ft_strjoin(content, line);
 		if (content == NULL)
-			return (free_massive(del, line));
+			return (free_massive(del, line, NULL));
 		free(del);
 		free(line);
 		line = get_next_line(fd);
 		if (line == NULL)
-			return (free_massive(content));
+			return (free_massive(content, NULL));
 	}
 	return (content);
 }

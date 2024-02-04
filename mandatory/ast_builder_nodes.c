@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder_nodes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:31:39 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/28 13:35:48 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/01 20:15:43 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_ast	*get_left_node(char **args, int index, t_mshell *mshell)
 	if (node == NULL)
 	{
 		free_split(node_args);
-		return (free_massive(cmd_path));
+		return (free_massive(cmd_path, NULL));
 	}
 	return (node);
 }
@@ -77,10 +77,7 @@ t_ast	*get_right_node_command(char **args, int index, t_mshell *mshell)
 		return (free_split(node_args));
 	node = new_node(COMMAND_OP, cmd_path, node_args, NULL);
 	if (node == NULL)
-	{
-		free_massive(node);
-		return (free_massive(cmd_path));
-	}
+		return (free_massive(cmd_path, NULL));
 	return (node);
 }
 
@@ -128,6 +125,6 @@ t_ast	*get_right_node_heredoc(char **args, int index, t_mshell *mshell)
 	}
 	node = new_node(FILE_OP, path, NULL, limit);
 	if (node == NULL)
-		return (free_massive(path, limit));
+		return (free_massive(path, limit, NULL));
 	return (node);
 }
