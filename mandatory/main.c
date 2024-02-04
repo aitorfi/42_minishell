@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/04 11:51:38 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:50:21 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	g_result;
 static t_mshell	*init(char **envp);
 static int		readline_loop(char *prompt, t_mshell *mshell);
 static int		process_line(char *line, int *read_next, t_mshell *mshell);
-static int		is_terminating_cmd(t_ast **ast);
+static int		handle_readline_error(void);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -77,12 +77,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 	{
 		line = readline(prompt);
 		if (line == NULL)
-		{
-			rl_clear_history();
-			if (errno == 0)
-				return (write(1, "exit\n", 5), EXIT_FAILURE);
-			return (notify_error("Error al leer el input del usuario"));
-		}
+			return (handle_readline_error());
 		if (ft_strlen(line) > 0)
 		{
 			add_history(line);
@@ -96,6 +91,14 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 	}
 	rl_clear_history();
 	return (g_result);
+}
+
+static int	handle_readline_error(void)
+{
+	rl_clear_history();
+	if (errno == 0)
+		return (write(1, "exit\n", 5), EXIT_FAILURE);
+	return (notify_error("Error al leer el input del usuario"));
 }
 
 static int	process_line(char *line, int *read_next, t_mshell *mshell)
@@ -122,20 +125,4 @@ static int	process_line(char *line, int *read_next, t_mshell *mshell)
 	*read_next = !is_terminating_cmd(ast);
 	free_ast(ast);
 	return (EXIT_SUCCESS);
-}
-
-static int	is_terminating_cmd(t_ast **ast)
-{
-	int	path_len;
-
-	if (!ast[0]->left && !ast[0]->right && ast[0]->operation == COMMAND_OP)
-	{
-		path_len = ft_strlen(ast[0]->path);
-		if (!ft_strncmp(ast[0]->path, "exit", max_of(path_len, 4))
-			&& can_do_exit(ast[0]->args))
-		{
-			return (1);
-		}
-	}
-	return (0);
 }
