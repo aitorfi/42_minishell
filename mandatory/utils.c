@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:43:23 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/04 10:19:10 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:46:57 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,20 @@ int	split_len(char **split)
 	while (split[i])
 		i++;
 	return (i);
+}
+
+int	is_terminating_cmd(t_ast **ast)
+{
+	int	path_len;
+
+	if (!ast[0]->left && !ast[0]->right && ast[0]->operation == COMMAND_OP)
+	{
+		path_len = ft_strlen(ast[0]->path);
+		if (!ft_strncmp(ast[0]->path, "exit", max_of(path_len, 4))
+			&& can_do_exit(ast[0]->args))
+		{
+			return (1);
+		}
+	}
+	return (0);
 }

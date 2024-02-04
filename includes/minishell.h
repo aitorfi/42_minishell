@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/02/04 10:42:09 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:47:10 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,9 @@ void		set_signal_handlers_fork(void);
 void		set_signal_handlers_builtin(void);
 
 // sig_handler_utils: 
-void 		ft_signal_father(int signal);
+void		ft_signal_father(int signal);
 void		ft_signal_child(int signal);
 void		ft_signal_child_builtin(int signal);
-
 
 // cmd_preprocessor:
 char		**preprocess(char *line, t_mshell *mini_data);
@@ -114,10 +113,10 @@ char		**ft_split_preprocess(char const *s, char c);
 // cmd_split_preprocess_utils:
 void		d_init(t_preprocess *d);
 char		**ft_free_split_preprocess(char **split, size_t limit);
-void 		print_error_quote(int c);
+void		print_error_quote(int c);
 
 // cmd_expand:
-char	*	*do_expand(char **ret, t_mshell *mini_data);
+char		**do_expand(char **ret, t_mshell *mini_data);
 
 // cmd_expand utils:
 int			check_expand(char *ret);
@@ -156,6 +155,7 @@ t_operation	which_operator(char *operator);
 char		*which_operator_str(t_operation operator);
 int			max_of(int num1, int num2);
 int			split_len(char **split);
+int			is_terminating_cmd(t_ast **ast);
 
 // cmd_utils:
 char		*append_path_to_cmd(char **envp, char *cmd);

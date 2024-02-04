@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:46:22 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/04 10:48:19 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:41:28 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	modify_stdio(int rfd, int wfd)
 static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
-	
+
 	set_signal_handlers_fork();
 	pid = fork();
 	if (pid == -1)
