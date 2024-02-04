@@ -3,19 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:47:08 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/14 14:00:25 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:14:40 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
+
+void	set_signal_handlers_builtin(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = ft_signal_child_builtin;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	set_signal_handlers_fork(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = ft_signal_child;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
 void	set_signal_handlers(void)
 {
-	//? Los procesos hijo tendrán las señales anuladas también?
+	struct sigaction	sa;
 
-	// TODO: Al recibir un ctrl-C el comando que se este ejecutando en la minishell debe terminar
-	// TODO: Si no se puede enviar un SIGINT al proceso hijo se pueden usar las seles SIGUSR1 y SIGUSR2
-
-	// TODO: La shell debe terminal al recibir una señal ctrl-D (EOF en stdin)
+	rl_catch_signals = 0;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = ft_signal_father;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
 }

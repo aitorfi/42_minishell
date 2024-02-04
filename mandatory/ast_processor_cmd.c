@@ -47,14 +47,27 @@ static int	modify_stdio(int rfd, int wfd)
 static int	execute_command_in_child_process(t_ast *node, t_mshell *mshell)
 {
 	int	pid;
-
+	
+	set_signal_handlers_fork();
 	pid = fork();
 	if (pid == -1)
 		return (notify_error("Error al crear proceso hijo"));
 	else if (pid > 0)
+	{
 		waitpid(pid, &g_result, 0);
+		if (WIFSIGNALED(g_result))
+		{
+			if (WTERMSIG(g_result) == 2)
+				g_result = 130;
+			else if (WTERMSIG(g_result) == 3)
+				g_result = 131;
+		}
+		else
+			g_result = WEXITSTATUS(g_result);
+	}
 	else if (pid == 0)
 		execute_command(node, mshell);
+	set_signal_handlers();
 	return (EXIT_SUCCESS);
 }
 
@@ -64,6 +77,7 @@ static void	execute_command(t_ast *node, t_mshell *mshell)
 
 	if (is_builtin(node->args[0]))
 	{
+		set_signal_handlers_builtin();
 		status = execute_builtin(node, mshell, 0);
 		free_split(mshell->env_custom);
 		free_ast(mshell->ast);
