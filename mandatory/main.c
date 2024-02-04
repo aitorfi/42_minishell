@@ -79,6 +79,8 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (line == NULL)
 		{
 			rl_clear_history();
+			if (errno == 0)
+				return (write(1, "exit\n", 5), EXIT_FAILURE);
 			return (notify_error("Error al leer el input del usuario"));
 		}
 		if (ft_strlen(line) > 0)

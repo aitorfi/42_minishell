@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_preprocessor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:26:09 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/29 10:51:31 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:40:20 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	**preprocess(char *line, t_mshell *mini_data)
 	ret = ft_split_preprocess(line, ' ');
 	if (ret == NULL)
 		return (NULL);
+	if (ret == (char **) 1)
+		return ((char **) 1);
 	ret = do_expand(ret, mini_data);
 	if (ret == NULL)
 		return (perror("malloc error while expanding $"), NULL);
@@ -132,9 +134,16 @@ int	main(int argc, char **argv, char **envp)
 	//}
 	line = readline("minishell> ");
 	line_ast = preprocess(line, &mini_data);
+	if (line_ast == NULL)
+	{
+		ft_free_env(mini_data.env_custom);
+		free(line);
+		return (-1);
+	}
 	i = 0;
 	while (line_ast[i])
 	{
+		printf("hola\n");
 		printf("%s\n", line_ast[i]);
 		i++;
 	}
@@ -143,4 +152,5 @@ int	main(int argc, char **argv, char **envp)
 	free(line);
 	//system("leaks a.out");
 	return (0);
-}*/
+}
+*/

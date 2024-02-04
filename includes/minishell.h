@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:51:51 by alejandro         #+#    #+#             */
-/*   Updated: 2024/01/30 18:39:18 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/01 19:05:15 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <sys/ioctl.h>
+# include <errno.h>
 # include "../libft/libft.h"
 
 # define DEFAULT_FD -2
@@ -60,8 +63,9 @@ typedef struct s_preprocess
 	size_t	count;
 	size_t	final;
 	size_t	limit;
-	int		flag;
+	size_t	flag;
 	char	quote;
+	char	**s;
 	size_t	start;
 	size_t	end;
 }			t_preprocess;
@@ -91,6 +95,14 @@ typedef struct s_trim
 
 // sig_handler:
 void		set_signal_handlers(void);
+void		set_signal_handlers_fork(void);
+void		set_signal_handlers_builtin(void);
+
+// sig_handler_utils: 
+void 		ft_signal_father(int signal);
+void		ft_signal_child(int signal);
+void		ft_signal_child_builtin(int signal);
+
 
 // cmd_preprocessor:
 char		**preprocess(char *line, t_mshell *mini_data);

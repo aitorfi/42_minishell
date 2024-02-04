@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_split_preprocess.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:11:47 by alvicina          #+#    #+#             */
-/*   Updated: 2024/01/22 13:11:25 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:39:31 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static size_t	count_start_word(char const *s, char c, t_preprocess *d)
 	return (d->start);
 }
 
-static size_t	count_word_preprocess(char const *s, char c)
+static size_t	count_pre(char const *s, char c, size_t *s_quote)
 {
 	t_preprocess	d;
 
@@ -72,36 +72,40 @@ static size_t	count_word_preprocess(char const *s, char c)
 		d.init = d.final;
 	}
 	if (d.flag)
+	{
 		print_error_quote(d.quote);
+		*s_quote = 1;
+	}
 	return (d.count);
 }
 
 char	**ft_split_preprocess(char const *s, char c)
 {
-	char			**split;
 	t_preprocess	d_split;
 
 	d_init(&d_split);
-	split = (char **)malloc((count_word_preprocess(s, c) + 1) * sizeof(char *));
-	if (split == 0)
-		return (0);
+	d_split.s = malloc((count_pre(s, c, &d_split.flag) + 1) * sizeof(char *));
+	if (d_split.s == NULL)
+		return (perror("error in malloc split preprocess"), NULL);
+	if (d_split.flag == 1)
+		return (free(d_split.s), (char **) 1);
 	d_split.limit = -1;
 	d_split.final = 0;
-	while (++d_split.limit < count_word_preprocess(s, c))
+	while (++d_split.limit < count_pre(s, c, &d_split.flag))
 	{
 		d_split.init = d_split.final;
 		d_split.start = count_start_word(s, c, &d_split);
 		d_split.final = d_split.init;
 		d_split.end = count_end_word(s, c, &d_split);
-		split[d_split.limit] = malloc (sizeof(char)
+		d_split.s[d_split.limit] = malloc (sizeof(char)
 				* (d_split.end - d_split.start + 1));
-		if (split[d_split.limit] == 0)
-			return (ft_free_split_preprocess(split, d_split.limit));
-		ft_strlcpy(split[d_split.limit], (char *)(s + d_split.start),
+		if (d_split.s[d_split.limit] == 0)
+			return (ft_free_split_preprocess(d_split.s, d_split.limit));
+		ft_strlcpy(d_split.s[d_split.limit], (char *)(s + d_split.start),
 			d_split.end - d_split.start + 1);
 	}
-	split[d_split.limit] = 0;
-	return (split);
+	d_split.s[d_split.limit] = 0;
+	return (d_split.s);
 }
 /*
 int	main(void)
@@ -111,7 +115,8 @@ int	main(void)
 	char	**arguments;
 	size_t	i;
 
-	line = "ls -l | grep \'hola que tal\' aqui \'estoy 1adios \"   pepe \"   adios\' 2\'ho\'la \"que tal\"";
+	line = "ls -l | grep \'hola que tal\' aqui \'estoy 1adios \"   pepe \"   
+	adios\' 2\'ho\'la \"que tal\"";
 	count = count_word_preprocess(line, ' ');
 	arguments = ft_split_preprocess(line, ' ');
 	printf("%zu\n", count);
