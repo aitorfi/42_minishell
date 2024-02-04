@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:31:39 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/01 20:15:43 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:18:59 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static char	**get_left_node_args(char **args, int index)
 	node_args = ft_calloc(node_args_len + 1, sizeof(char *));
 	if (node_args == NULL)
 		return (notify_error_ptr("Error al alojar argumentos de nodo de AST"));
+	if (node_args_len == 0)
+		return (node_args);
 	i = 0;
 	while (i < node_args_len)
 	{
@@ -94,6 +96,8 @@ static char	**get_right_node_args(char **args, int index)
 	node_args = ft_calloc(node_args_len + 1, sizeof(char *));
 	if (node_args == NULL)
 		return (notify_error_ptr("Error al alojar argumentos de nodo de AST"));
+	if (node_args_len == 0)
+		return (node_args);
 	i = 0;
 	while (i < node_args_len)
 	{

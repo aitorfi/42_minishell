@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:37:18 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/01/27 11:44:15 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/04 10:42:12 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ void	*free_ast(t_ast **ast)
 	free_ast_recursive(ast[0]);
 	free(ast);
 	return (NULL);
+}
+
+int	free_ast_status(t_ast **ast, int status)
+{
+	free_ast_recursive(ast[0]);
+	free(ast);
+	return (status);
 }
 
 static void	*free_ast_recursive(t_ast *node)
