@@ -3,48 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:59:30 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/03 13:22:00 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/04 10:30:19 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static t_ast	*create_node(
+static t_ast	*create_operator_node(
 					t_ast **ast, char **args, int index, t_mshell *mshell);
 static t_ast	*get_right_node(
 					t_ast *node, char **args, int index, t_mshell *mshell);
 static t_ast	**build_single_cmd_ast(
 					t_ast **ast, char **args, t_mshell *mshell);
-static int		is_operator_valid(char **args, int index);
+static int		is_operator_valid(char **args, int index, int args_len);
 
 int	build_ast(t_ast **ast, char **args, t_mshell *mshell)
 {
 	t_ast	*node;
+	int		args_len;
 	int		i;
 
+	args_len = split_len(args);
 	i = 0;
 	while (args[i])
 	{
 		if (which_operator(args[i]))
 		{
-			if (!is_operator_valid(args, i))
+			if (!is_operator_valid(args, i, args_len))
 				return (MSH_ERROR);
-			node = create_node(ast, args, i, mshell);
+			node = create_operator_node(ast, args, i, mshell);
 			if (node == NULL)
-				return (MSH_FAILURE);
+				return (EXIT_FAILURE);
 			ast[0] = node;
 		}
 		i++;
 	}
 	if (!ast[0])
 		ast = build_single_cmd_ast(ast, args, mshell);
-	return (MSH_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
-static t_ast	*create_node(
+static t_ast	*create_operator_node(
 					t_ast **ast, char **args, int index, t_mshell *mshell)
 {
 	t_ast	*node;
@@ -97,9 +99,10 @@ static t_ast	**build_single_cmd_ast(
 	return (ast);
 }
 
-static int	is_operator_valid(char **args, int index)
+static int	is_operator_valid(char **args, int index, int args_len)
 {
-	if ((index > 0 && which_operator(args[index - 1]))
+	if (index == 0 || index == (args_len - 1)
+		|| (index > 0 && which_operator(args[index - 1]))
 		|| (args[index + 1] && which_operator(args[index - 1])))
 	{
 		write(STDERR_FILENO, "Error de sintaxis\n", 18);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitorfi <aitorfi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/03 13:09:43 by aitorfi          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:51:38 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	main(int argc, char **argv, char **envp)
 	t_mshell	*mshell;
 	int			exit_status;
 
-	(void) argc; // Esto es para que no de error de parámetro sin usar.
-	(void) argv; // Esto es para que no de error de parámetro sin usar.
+	(void) argc;
+	(void) argv;
 	set_signal_handlers();
 	mshell = init(envp);
 	if (mshell == NULL)
@@ -84,7 +84,7 @@ static int	readline_loop(char *prompt, t_mshell *mshell)
 		if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			if (process_line(line, &read_next, mshell) == MSH_FAILURE)
+			if (process_line(line, &read_next, mshell) == EXIT_FAILURE)
 			{
 				rl_clear_history();
 				return (free_massive_exit_failure(line, NULL));
@@ -103,7 +103,7 @@ static int	process_line(char *line, int *read_next, t_mshell *mshell)
 	int		status;
 
 	line_split = preprocess(line, mshell);
-	if (line_split == (char **) 1)
+	if (!line_split[0] || line_split == (char **) 1)
 		return (MSH_ERROR);
 	if (line_split == NULL)
 		return (EXIT_FAILURE);
@@ -111,20 +111,12 @@ static int	process_line(char *line, int *read_next, t_mshell *mshell)
 	if (ast == NULL)
 		return (notify_error("Error al alojar el AST"));
 	status = build_ast(ast, line_split, mshell);
-	if (status != MSH_SUCCESS)
-	{
-		free_ast(ast);
-		return (status);
-	}
 	free_split(line_split);
-	if (ast == NULL)
-		return (EXIT_FAILURE);
+	if (status != EXIT_SUCCESS)
+		return (free_ast_status(ast, status));
 	mshell->ast = ast;
 	if (process_ast(ast, mshell) != EXIT_SUCCESS)
-	{
-		free_ast(ast);
-		return (EXIT_FAILURE);
-	}
+		return (free_ast_status(ast, EXIT_FAILURE));
 	*read_next = !is_terminating_cmd(ast);
 	free_ast(ast);
 	return (EXIT_SUCCESS);
