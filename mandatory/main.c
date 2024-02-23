@@ -6,7 +6,7 @@
 /*   By: afidalgo <afidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 19:07:12 by afidalgo          #+#    #+#             */
-/*   Updated: 2024/02/04 13:50:21 by afidalgo         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:09:45 by afidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static int	process_line(char *line, int *read_next, t_mshell *mshell)
 	int		status;
 
 	line_split = preprocess(line, mshell);
-	if (!line_split[0] || line_split == (char **) 1)
+	if (line_split == (char **) 1 || !line_split[0])
 		return (MSH_ERROR);
 	if (line_split == NULL)
 		return (EXIT_FAILURE);
